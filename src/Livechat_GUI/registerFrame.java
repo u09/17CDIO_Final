@@ -1,4 +1,4 @@
-package Livechat_GUI;
+package Livechat_Gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,12 +6,12 @@ import java.awt.event.*;
 
 public class registerFrame extends JFrame {
 
-	public static void showRegisterFrame() {
-		registerFrame frameTabel = new registerFrame();
-	}
+//	public static void main(String[] args) {
+//		registerFrame frameTabel = new registerFrame();
+//	}
 	
 	JPanel panel = new JPanel();
-	String myFont = "Times New Roman";
+	String myFont = "Iowan Old Style";
 	JLabel welcome = new JLabel("Registrering til LiveChat");
 	JLabel luser = new JLabel("Indtast dit ønskede brugernavn:");
 	JTextField username = new JTextField("Brugernavn", 15);
@@ -56,6 +56,7 @@ public class registerFrame extends JFrame {
 		panel.add(bconfirm);
 
 		this.add(panel);
+		getRootPane().setDefaultButton(bconfirm);
 		setVisible(true);
 		actionConfirm();
 	}
