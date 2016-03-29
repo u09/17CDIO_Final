@@ -1,4 +1,4 @@
-package Livechat_Gui;
+package Livechat_GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Start extends JFrame {
 
-	public static void main(String[] args) throws FontFormatException, IOException {
+	public static void start() throws FontFormatException, IOException {
 		Start frameTabel = new Start();
 	}
 	
