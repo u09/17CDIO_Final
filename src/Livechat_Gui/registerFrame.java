@@ -56,6 +56,7 @@ public class registerFrame extends JFrame {
 		panel.add(bconfirm);
 
 		this.add(panel);
+		getRootPane().setDefaultButton(bconfirm);
 		setVisible(true);
 		actionConfirm();
 	}

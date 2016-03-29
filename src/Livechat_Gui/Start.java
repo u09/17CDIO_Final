@@ -22,12 +22,14 @@ public class Start extends JFrame {
 	JLabel lregister = new JLabel("Registrer dig her:");
 	JButton bregister = new JButton("Registrer");
 	Point myPoint = new Point(650, 280);
+	ImageIcon img = new ImageIcon("C:\\Users\\Samil\\Desktop\\fav.png");
 
 	Start() throws FontFormatException, IOException {
 		this.setTitle("LiveChat");
 		this.setSize(330, 390);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel.setLayout(null);
 		panel.setName("LiveChat");
@@ -58,6 +60,7 @@ public class Start extends JFrame {
 		panel.add(pass);
 
 		this.add(panel);
+		getRootPane().setDefaultButton(blogin);
 		setVisible(true);
 		actionLogin();
 		actionRegister();
