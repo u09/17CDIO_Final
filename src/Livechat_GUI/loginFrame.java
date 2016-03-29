@@ -1,4 +1,4 @@
-package Livechat_Gui;
+package Livechat_GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,11 +7,11 @@ import java.awt.event.*;
 public class loginFrame extends JFrame {
 
 	JPanel panel = new JPanel();
-	String myFont = "Iowan Old Style";
+	String myFont = "Times New Roman";
 
-//	public static void main(String[] args) {
-//		loginFrame frameTabel = new loginFrame("show", "show");
-//	}
+	public static void showLoginFrame() {
+		loginFrame frameTabel = new loginFrame("show", "show");
+	}
 
 	loginFrame(String username, String password) {
 		this.setTitle("LiveChat - Bruger: " + username);

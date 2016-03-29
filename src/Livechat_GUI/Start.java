@@ -1,4 +1,4 @@
-package Livechat_Gui;
+package Livechat_GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,12 +7,12 @@ import java.io.IOException;
 
 public class Start extends JFrame {
 
-	public static void main(String[] args) throws FontFormatException, IOException {
+	public static void start() throws FontFormatException, IOException {
 		Start frameTabel = new Start();
 	}
 	
 	JPanel panel = new JPanel();
-	String myFont = "Iowan Old Style";
+	String myFont = "Times New Roman";
 	JLabel lwelcome = new JLabel("Velkommen til LiveChat");
 	JLabel llogin = new JLabel("Login her:");
 	JTextField txuser = new JTextField("Brugernavn", 15);
@@ -21,9 +21,8 @@ public class Start extends JFrame {
 	JLabel lnoUser = new JLabel("Har du ikke en bruger?");
 	JLabel lregister = new JLabel("Registrer dig her:");
 	JButton bregister = new JButton("Registrer");
-	Point myPoint = new Point(650, 280);
-
-	Start() throws FontFormatException, IOException {
+	
+	public Start() throws FontFormatException, IOException {
 		this.setTitle("LiveChat");
 		this.setSize(330, 390);
 		this.setResizable(false);
