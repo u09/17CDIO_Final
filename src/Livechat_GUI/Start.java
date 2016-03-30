@@ -24,7 +24,7 @@ public class Start extends JFrame {
 	Point myPoint = new Point(650, 280);
 	ImageIcon img = new ImageIcon("C:\\Users\\Samil\\Desktop\\fav.png");
 
-	Start() throws FontFormatException, IOException {
+	Start(){
 		this.setTitle("LiveChat");
 		this.setSize(330, 390);
 		this.setResizable(false);
@@ -76,8 +76,7 @@ public class Start extends JFrame {
 					loginFrame logFace = new loginFrame(userIn, passIn);
 					logFace.setVisible(true);
 					dispose();
-				} else {
-
+				} else{
 					JOptionPane.showMessageDialog(panel,
 		                    "<html>Login mislykkedes!<br><br>Forkert brugernavn eller password", panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
@@ -95,8 +94,8 @@ public class Start extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				registerFrame regFace = new registerFrame();
 				regFace.setVisible(true);
+				dispose();
 			}
 		});
 	}
-	
 }
