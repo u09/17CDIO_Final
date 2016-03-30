@@ -21,6 +21,7 @@ public class registerFrame extends JFrame {
 	JPasswordField pass1 = new JPasswordField("Password", 15);
 	JButton bconfirm = new JButton("Godkend");
 	Point myPoint = new Point(650, 280);
+	JButton bback = new JButton("Tilbage");
 
 	registerFrame() {
 		this.setTitle("LiveChat - Registrering");
@@ -33,18 +34,20 @@ public class registerFrame extends JFrame {
 
 		welcome.setBounds(35, 5, 300, 50);
 		luser.setBounds(45, 45, 300, 50);
-		username.setBounds(73, 90, 150, 20);
+		username.setBounds(45, 90, 215, 20);
 		lpass.setBounds(65, 105, 300, 50);
-		pass.setBounds(73, 150, 150, 20);
+		pass.setBounds(45, 150, 215, 20);
 		lpass1.setBounds(90, 160, 300, 60);
-		pass1.setBounds(73, 210, 150, 20);
-		bconfirm.setBounds(95, 250, 100, 40);
+		pass1.setBounds(45, 210, 215, 20);
+		bconfirm.setBounds(155, 250, 100, 40);
+		bback.setBounds(45,250,100,40);
 
 		welcome.setFont(new Font(myFont, 1, 20));
 		luser.setFont(new Font(myFont, 0, 15));
 		lpass.setFont(new Font(myFont, 0, 15));
 		lpass1.setFont(new Font(myFont, 0, 15));
 		bconfirm.setFont(new Font(myFont, 0, 14));
+		bback.setFont(new Font(myFont, 0, 14));
 
 		panel.add(welcome);
 		panel.add(luser);
@@ -54,11 +57,13 @@ public class registerFrame extends JFrame {
 		panel.add(pass);
 		panel.add(pass1);
 		panel.add(bconfirm);
+		panel.add(bback);
 
 		this.add(panel);
 		getRootPane().setDefaultButton(bconfirm);
 		setVisible(true);
 		actionConfirm();
+		actionBack();
 	}
 
 	public void actionConfirm() {
@@ -96,5 +101,16 @@ public class registerFrame extends JFrame {
 	public boolean checkRegister(String user, String pass1, String pass2) {
 		if(pass1.equals(pass2)) return true;
 		else return false;
+	}
+	
+	public void actionBack() {
+		bback.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				Start start = new Start();
+				dispose();
+				start.setVisible(true);
+			}
+		});
 	}
 }
