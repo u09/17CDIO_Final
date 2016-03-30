@@ -1,20 +1,19 @@
-package Livechat_GUI;
+package QuickConnect_GUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
-public class Start extends JFrame {
+public class startFrame extends JFrame {
 
-	public static void start() throws FontFormatException, IOException {
-		Start frameTabel = new Start();
+	public static void start() {
+		startFrame frameTabel = new startFrame();
 	}
 	
 	JPanel panel = new JPanel();
-	String myFont = "Iowan Old Style";
+	String myFont = "Times New Roman";
 	JLabel lwelcome = new JLabel("Velkommen til LiveChat");
-	JLabel bNavn = new JLabel("Indtast brugernavn");
+	JLabel lnavn = new JLabel("Indtast brugernavn");
 	JTextField txuser = new JTextField(15);
 	JPasswordField pass = new JPasswordField(15);
 	JButton blogin = new JButton("Login");
@@ -24,7 +23,7 @@ public class Start extends JFrame {
 	Point myPoint = new Point(650, 280);
 	ImageIcon img = new ImageIcon("C:\\Users\\Samil\\Desktop\\fav.png");
 
-	Start(){
+	startFrame() {
 		this.setTitle("LiveChat");
 		this.setSize(330, 390);
 		this.setResizable(false);
@@ -35,7 +34,7 @@ public class Start extends JFrame {
 		panel.setName("LiveChat");
 		
 		lwelcome.setBounds(50, 10, 300, 50);
-		bNavn.setBounds(125, 55, 200, 50);
+		lnavn.setBounds(125, 55, 200, 50);
 		txuser.setBounds(90, 110, 150, 20);
 		blogin.setBounds(90, 185, 150, 30);
 		pass.setBounds(90, 145, 150, 20);
@@ -44,14 +43,15 @@ public class Start extends JFrame {
 		bregister.setBounds(115, 300, 100, 30);
 
 		lwelcome.setFont(new Font(myFont, 1, 20));
-		bNavn.setFont(new Font(myFont, 0, 17));
+		lnavn.setFont(new Font(myFont, 0, 17));
 		blogin.setFont(new Font(myFont, 0, 14));
 		lnoUser.setFont(new Font(myFont, 0, 15));
 		lregister.setFont(new Font(myFont, 0, 15));
 		bregister.setFont(new Font(myFont, 0, 14));
 		
+
 		panel.add(lwelcome);
-		panel.add(bNavn);
+		panel.add(lnavn);
 		panel.add(lnoUser);
 		panel.add(lregister);
 		panel.add(blogin);

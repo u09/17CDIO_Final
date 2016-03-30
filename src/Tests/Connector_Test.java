@@ -2,9 +2,9 @@ package Tests;
 
 import java.sql.SQLException;
 
-public class connector_test {
+public class Connector_Test {
 	public static void main(String[] args) throws SQLException {
-		Connector con=new Connector("localhost","dtu_livechat","root","gmc22kra");
+		TestConnector con=new TestConnector("localhost","dtu_livechat","root","gmc22kra");
 		con.doUpdate("INSERT INTO users (username,password,email,age,timestamp) VALUES ('Umais','123','a@a.a','22','"+timestamp()+"')");
 	}
 	

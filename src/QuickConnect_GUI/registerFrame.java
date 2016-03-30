@@ -1,12 +1,13 @@
-package Livechat_GUI;
+package QuickConnect_GUI;
 
 import javax.swing.*;
 
-import Livechat.Connector;
-import Livechat.Function;
+import QuickConnect.Connector;
+import QuickConnect.Function;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class registerFrame extends JFrame {
@@ -16,7 +17,7 @@ public class registerFrame extends JFrame {
 	}
 	
 	JPanel panel = new JPanel();
-	String myFont = "Iowan Old Style";
+	String myFont = "Times New Roman";
 	JLabel welcome = new JLabel("Registrering til LiveChat");
 	JLabel luser = new JLabel("Indtast dit ønskede brugernavn:");
 	JTextField username = new JTextField(15);
@@ -111,9 +112,16 @@ public class registerFrame extends JFrame {
 							"<html>Du er registreret!<br><br>"+msg+"</html>",panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
 					dispose();
-					Start start = new Start();
+					startFrame start;
+					try {
+						start = new startFrame();
+						start.setVisible(true);
+					} catch(FontFormatException e) {
+						e.printStackTrace();
+					} catch(IOException e) {
+						e.printStackTrace();
+					}
 					dispose();
-					start.setVisible(true);
 				}
 				else{
 					JOptionPane.showMessageDialog(panel,
@@ -153,9 +161,9 @@ public class registerFrame extends JFrame {
 		bback.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				Start start = new Start();
+				startFrame startFrame = new startFrame();
 				dispose();
-				start.setVisible(true);
+				startFrame.setVisible(true);
 			}
 		});
 	}

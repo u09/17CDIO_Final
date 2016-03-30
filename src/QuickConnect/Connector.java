@@ -1,5 +1,4 @@
-package Livechat;
-
+package QuickConnect;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ public class Connector {
     private String DATABASE;
     private String USERNAME; 
     private String PASSWORD;
-    private static Connection connection;
+    private Connection connection;
     
     public Connector(String HOST, String DB, String UN, String PW){
     	this.HOST=HOST;
@@ -33,7 +32,7 @@ public class Connector {
     	return connection;
     }
     
-    public static ResultSet doQuery(String query) throws SQLException{
+    public ResultSet doQuery(String query) throws SQLException{
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(query);
         return res;
@@ -42,11 +41,5 @@ public class Connector {
     public void doUpdate(String query) throws SQLException{
         Statement stmt = connection.createStatement();
         stmt.executeUpdate(query);
-    }
-    
-    public static boolean check(String query) throws SQLException{
-    	ResultSet res=doQuery(query);
-    	if(res.next()) return true;
-    	return false;
     }
 }

@@ -5,15 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Connector {
+public class TestConnector {
     private String HOST;
     private final int PORT=3306;
     private String DATABASE;
     private String USERNAME; 
     private String PASSWORD;
-    private Connection connection;
+    private static Connection connection;
     
-    public Connector(String HOST, String DB, String UN, String PW){
+    public TestConnector(String HOST, String DB, String UN, String PW){
     	this.HOST=HOST;
     	DATABASE=DB;
     	USERNAME=UN;
@@ -32,7 +32,7 @@ public class Connector {
     	return connection;
     }
     
-    public ResultSet doQuery(String query) throws SQLException{
+    public static ResultSet doQuery(String query) throws SQLException{
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(query);
         return res;
@@ -41,5 +41,11 @@ public class Connector {
     public void doUpdate(String query) throws SQLException{
         Statement stmt = connection.createStatement();
         stmt.executeUpdate(query);
+    }
+    
+    public static boolean check(String query) throws SQLException{
+    	ResultSet res=doQuery(query);
+    	if(res.next()) return true;
+    	return false;
     }
 }
