@@ -4,7 +4,6 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import Livechat_GUI.Start;
 
 public class Main {
@@ -14,5 +13,6 @@ public class Main {
 		ResultSet rs=con.doQuery("SELECT NOW()");
 		rs.next();
 		System.out.println(rs.getString("NOW()"));
+		con.getConnection().close();
 	}
 }
