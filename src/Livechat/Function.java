@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
+import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector.Matcher;
+
 public class Function {
 	public static long timestamp(){
 		long unixTime = System.currentTimeMillis() / 1000L;
@@ -57,5 +60,9 @@ public class Function {
 		//ASCII 32-126
 		//Mindst 1 lille bogstav, 1 stort bogstav & 1 tal
 		return 0;
+	}
+	
+	public static boolean checkEmail(String email) {
+		return email.toLowerCase().matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
 	}
 }

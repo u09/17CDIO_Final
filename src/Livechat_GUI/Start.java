@@ -14,9 +14,9 @@ public class Start extends JFrame {
 	JPanel panel = new JPanel();
 	String myFont = "Iowan Old Style";
 	JLabel lwelcome = new JLabel("Velkommen til LiveChat");
-	JLabel llogin = new JLabel("Login her:");
-	JTextField txuser = new JTextField("Brugernavn", 15);
-	JPasswordField pass = new JPasswordField("Password", 15);
+	JLabel bNavn = new JLabel("Indtast brugernavn");
+	JTextField txuser = new JTextField(15);
+	JPasswordField pass = new JPasswordField(15);
 	JButton blogin = new JButton("Login");
 	JLabel lnoUser = new JLabel("Har du ikke en bruger?");
 	JLabel lregister = new JLabel("Registrer dig her:");
@@ -35,23 +35,23 @@ public class Start extends JFrame {
 		panel.setName("LiveChat");
 		
 		lwelcome.setBounds(50, 10, 300, 50);
-		llogin.setBounds(125, 55, 200, 50);
+		bNavn.setBounds(125, 55, 200, 50);
 		txuser.setBounds(90, 110, 150, 20);
-		blogin.setBounds(115, 185, 100, 40);
+		blogin.setBounds(90, 185, 150, 30);
 		pass.setBounds(90, 145, 150, 20);
 		lnoUser.setBounds(88, 235, 200, 50);
 		lregister.setBounds(108, 255, 200, 50);
-		bregister.setBounds(115, 300, 100, 40);
+		bregister.setBounds(115, 300, 100, 30);
 
 		lwelcome.setFont(new Font(myFont, 1, 20));
-		llogin.setFont(new Font(myFont, 0, 17));
+		bNavn.setFont(new Font(myFont, 0, 17));
 		blogin.setFont(new Font(myFont, 0, 14));
 		lnoUser.setFont(new Font(myFont, 0, 15));
 		lregister.setFont(new Font(myFont, 0, 15));
 		bregister.setFont(new Font(myFont, 0, 14));
 		
 		panel.add(lwelcome);
-		panel.add(llogin);
+		panel.add(bNavn);
 		panel.add(lnoUser);
 		panel.add(lregister);
 		panel.add(blogin);
