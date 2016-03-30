@@ -1,6 +1,5 @@
 package Livechat;
 
-import java.sql.Connection;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +10,7 @@ public class Function {
 		return unixTime;
 	}
 	
-	public static Connection mysql(){
+	public static Connector mysql(){
 		BufferedReader br = null;
 		try{
 			String host,db,un,pw;
@@ -20,7 +19,7 @@ public class Function {
 			db=br.readLine();
 			un=br.readLine();
 			pw=br.readLine();
-			return new Connector(host,db,un,pw).getConnection();
+			return new Connector(host,db,un,pw);
 		}catch(IOException e){
 			e.printStackTrace();
 		}finally {
