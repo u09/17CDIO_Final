@@ -1,8 +1,13 @@
 package Livechat_GUI;
 
 import javax.swing.*;
+
+import Livechat.Connector;
+import Livechat.Function;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class registerFrame extends JFrame {
 
@@ -74,8 +79,8 @@ public class registerFrame extends JFrame {
 				String cpass1 = pass.getText();
 				String cpass2 = pass1.getText();
 				
-				boolean check = checkRegister(cuser, cpass1, cpass2);
-				if(check) {
+				int check = checkRegister(cuser, cpass1, cpass2);
+				if(check==1) {
 					addUser(cuser, cpass1);
 					JOptionPane.showMessageDialog(panel,
 		                    "<html>Du er registreret!<br><br>Tryk OK for at gå til login siden", panel.getName(),
@@ -98,8 +103,14 @@ public class registerFrame extends JFrame {
 
 	}
 
-	public boolean checkRegister(String user, String pass1, String pass2) {
-		if(pass1.equals(pass2)) return true;
+	public int checkRegister(String user, String pass1, String pass2) throws SQLException {
+		Connector con=Function.mysql();
+		boolean bool;
+		int in;
+		in=Function.checkUsername(user);
+		if(!pass1.equals(pass2)) return 1;
+		bool=con.check("SELECT username FROM users WHERE username='"+user+"'");
+		if(bool) return ;
 		else return false;
 	}
 	

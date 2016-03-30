@@ -88,7 +88,7 @@ public class Start extends JFrame {
 		});
 	}
 
-	public void actionRegister() {
+	public void actionRegister(){
 		bregister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {

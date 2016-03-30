@@ -31,4 +31,17 @@ public class Function {
 		}
 		return null;
 	}
+
+	public static int checkUsername(String user) {
+		//4-24
+		//a-zA-Z0-9_-
+		return 0;
+	}
+	
+	public static int checkPassword(String pass) {
+		//8-24
+		//ASCII 32-126
+		//Mindst 1 lille bogstav, 1 stort bogstav & 1 tal
+		return 0;
+	}
 }
