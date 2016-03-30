@@ -51,18 +51,16 @@ public class Function {
 		String sl = ".*[a-z].*";
 		char c;
 		if(pass.length() <8 || pass.length() >24) return 1;
-		if(!pass.matches(bl) && !pass.matches(num) && !pass.matches(sl)) return 2;
+		if(!pass.matches(bl) || !pass.matches(num) || !pass.matches(sl)) return 2;
 		for(int i = 0; i<pass.length(); i++){
 			c = pass.charAt(i);
-			if(c<32 && c>126) return 3;
+			if(c<32 || c>126) return 3;
 		}
-		//8-24
-		//ASCII 32-126
-		//Mindst 1 lille bogstav, 1 stort bogstav & 1 tal
 		return 0;
 	}
 	
 	public static boolean checkEmail(String email) {
-		return email.toLowerCase().matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
+		return true;
+//		return email.toLowerCase().matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
 	}
 }

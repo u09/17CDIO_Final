@@ -94,33 +94,31 @@ public class registerFrame extends JFrame {
 					e.printStackTrace();
 				}
 				String msg;
-				if(check==0) msg="";
-				else if(check==1) msg="";
-				else if(check==2) msg="";
-				else if(check==3) msg="";
-				else if(check==4) msg="";
-				else if(check==5) msg="";
-				else if(check==6) msg="";
-				else if(check==7) msg="";
-				else if(check==8) msg="";
-				else msg="";
+				if(check==0) msg="Uforventet fejl";
+				else if(check==1) msg="Brugernavnet skal være 4-24 tegn";
+				else if(check==2) msg="Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: <b>-</b>,<b>_</b>";
+				else if(check==3) msg="Begge passwords skal være ens";
+				else if(check==4) msg="Passwordet skal være 8-24 tegn";
+				else if(check==5) msg="Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
+				else if(check==6) msg="Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2><b>SPACE</b>,<b>!</b>,<b>\"</b>,<b>#</b>,<b>$</b>,<b>%</b>,<b>&</b>,<b>'</b>,<b>(</b>,<b>)</b>,<b>*</b>,<b>+</b>,<b>,</b>,<b>-</b>,<b>.</b>,<b>/</b>,<b>:</b>,<b>;</b>,<b><</b>,<b>=</b>,<b>></b>,<b>?</b>,<b>@</b>,<b>[</b>,<b>\\</b>,<b>]</b>,<b>^</b>,<b>_</b>,<b>`</b>,<b>{</b>,<b>|</b>,<b>}</b>,<b>~</b></h2>";
+				else if(check==7) msg="Ugyldigt email";
+				else if(check==8) msg="Brugeren eksisterer allerede i systemet";
+				else msg="Du er registreret";
 				
 				if(check==8){
 					addUser(cuser, cpass1, cemail);
 					JOptionPane.showMessageDialog(panel,
-							"<html>Du er registreret!<br><br>"+msg,panel.getName(),
+							"<html>Du er registreret!<br><br>"+msg+"</html>",panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
 					dispose();
 					Start start = new Start();
 					dispose();
 					start.setVisible(true);
-					
 				}
 				else{
 					JOptionPane.showMessageDialog(panel,
-		                    "<html>Registrering mislykkedes!<br><br>"+msg, panel.getName(),
+		                    "<html>Registrering mislykkedes!<br><br>"+msg+"</html>", panel.getName(),
 		                    JOptionPane.WARNING_MESSAGE);
-					username.setText("");
 					pass.setText("");
 					pass1.setText("");
 					username.requestFocusInWindow();
