@@ -33,12 +33,26 @@ public class Function {
 	}
 
 	public static int checkUsername(String user) {
-		//4-24
-		//a-zA-Z0-9_-
+		char c;
+		if(user.length() <4 || user.length() > 24) return 1;
+		for(int i = 0; i<user.length(); i++){
+			c = user.charAt(i);
+			if(c!=45 && c!= 95 && (c<48 || c>57) && (c<65 || c>90) && (c<97 || c>122)) return 2;
+		}
 		return 0;
 	}
 	
 	public static int checkPassword(String pass) {
+		String num   = ".*[0-9].*";
+		String bl = ".*[A-Z].*";
+		String sl = ".*[a-z].*";
+		char c;
+		if(pass.length() <8 || pass.length() >24) return 1;
+		if(!pass.matches(bl) && !pass.matches(num) && !pass.matches(sl)) return 2;
+		for(int i = 0; i<pass.length(); i++){
+			c = pass.charAt(i);
+			if(c<32 && c>126) return 3;
+		}
 		//8-24
 		//ASCII 32-126
 		//Mindst 1 lille bogstav, 1 stort bogstav & 1 tal
