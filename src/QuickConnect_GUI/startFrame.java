@@ -4,8 +4,6 @@ import javax.swing.*;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
 
 import java.awt.*;
