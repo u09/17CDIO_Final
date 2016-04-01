@@ -1,4 +1,4 @@
-package Livechat_GUI;
+package QuickConnect_GUI;
 
 import java.awt.*;
 import java.awt.event.*;

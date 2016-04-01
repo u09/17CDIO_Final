@@ -1,4 +1,4 @@
-package Livechat;
+package QuickConnect;
 
 public class Controller {
 

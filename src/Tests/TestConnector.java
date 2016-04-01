@@ -1,5 +1,4 @@
-package Livechat;
-
+package Tests;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
-public class Connector {
+public class TestConnector {
     private String HOST;
     private final int PORT=3306;
     private String DATABASE;
@@ -16,7 +15,7 @@ public class Connector {
     private Connection connection;
     private PreparedStatement stmt=null;
     
-    public Connector(String HOST, String DB, String UN, String PW){
+    public TestConnector(String HOST, String DB, String UN, String PW){
     	this.HOST=HOST;
     	DATABASE=DB;
     	USERNAME=UN;

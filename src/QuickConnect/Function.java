@@ -1,4 +1,4 @@
-package Livechat;
+package QuickConnect;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,6 +10,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector.Matcher;
 
 public class Function {
+	
 	public static long timestamp(){
 		long unixTime = System.currentTimeMillis() / 1000L;
 		return unixTime;
