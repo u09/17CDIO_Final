@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
 		Start.start();
 		Connector con=Function.mysql();
-		ResultSet rs=con.doQuery("SELECT NOW()");
+		ResultSet rs=con.select("SELECT NOW()");
 		rs.next();
 		System.out.println(rs.getString("NOW()"));
 		con.getConnection().close();

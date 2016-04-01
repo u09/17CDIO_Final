@@ -3,6 +3,8 @@ package Livechat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector.Matcher;
@@ -33,6 +35,17 @@ public class Function {
 			}
 		}
 		return null;
+	}
+	
+	public static String md5(String str) throws NoSuchAlgorithmException{
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(str.getBytes());
+		byte[] digest = md.digest();
+		StringBuffer sb = new StringBuffer();
+		for (byte b : digest) {
+			sb.append(String.format("%02x", b & 0xff));
+		}
+		return sb.toString();
 	}
 
 	public static int checkUsername(String user) {

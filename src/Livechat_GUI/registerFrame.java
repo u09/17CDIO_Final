@@ -7,6 +7,7 @@ import Livechat.Function;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class registerFrame extends JFrame {
@@ -105,12 +106,15 @@ public class registerFrame extends JFrame {
 				else if(check==8) msg="Brugeren eksisterer allerede i systemet";
 				else msg="Du er registreret";
 				
-				if(check==8){
-					addUser(cuser, cpass1, cemail);
+				if(check==9){
+					try {
+						boolean bool=addUser(cuser, cpass1, cemail);
+					} catch (SQLException | NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					}
 					JOptionPane.showMessageDialog(panel,
 							"<html>Du er registreret!<br><br>"+msg+"</html>",panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
-					dispose();
 					Start start = new Start();
 					dispose();
 					start.setVisible(true);
@@ -127,8 +131,14 @@ public class registerFrame extends JFrame {
 		});
 	}
 	
-	public void addUser(String user, String pass, String email) {
-		
+	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
+		Connector con=Function.mysql();
+		con.update("INSERT INTO users (username,password,email,timestamp) VALUES (?,?,?,?)",
+				new String[]{"s",user},
+				new String[]{"s",Function.md5(pass)},
+				new String[]{"s",email},
+				new String[]{"l",Long.toString(Function.timestamp())});
+		return false;
 	}
 
 	public int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
@@ -144,7 +154,7 @@ public class registerFrame extends JFrame {
 		else if(in==2) return 5;
 		else if(in==3) return 6;
 		if(!Function.checkEmail(email)) return 7;
-		bool=con.check("SELECT username FROM users WHERE username='"+user+"'");
+		bool=con.check("SELECT username FROM users WHERE username=?",user);
 		if(bool) return 8;
 		else return 9;
 	}
