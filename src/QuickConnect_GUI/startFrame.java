@@ -1,8 +1,16 @@
 package QuickConnect_GUI;
 
 import javax.swing.*;
+
+import QuickConnect.Connector;
+import QuickConnect.Function;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.security.NoSuchAlgorithmException;
 
 public class startFrame extends JFrame {
 
@@ -72,11 +80,30 @@ public class startFrame extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				String userIn = txuser.getText();
 				String passIn = pass.getText();
+				Connector con = Function.mysql();
+				boolean bool= false;
+				try {
+				 bool=con.check("SELECT username FROM users WHERE username=? AND password=?",userIn,Function.md5(passIn));
+					System.out.println(bool);
+				}catch (SQLException | NoSuchAlgorithmException e){
+					e.printStackTrace();
+				}
+				
+				if(bool== true){
+					loginFrame logFace = new loginFrame(userIn, passIn);
+					logFace.setVisible(true);
+					dispose();
+				}
+				
+				/*
 				if(userIn.equals("DTU") && passIn.equals("12345")) {
 					loginFrame logFace = new loginFrame(userIn, passIn);
 					logFace.setVisible(true);
 					dispose();
-				} else{
+				} 
+				*/
+				
+				else{
 					JOptionPane.showMessageDialog(panel,
 		                    "<html>Login mislykkedes!<br><br>Forkert brugernavn eller password", panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
@@ -84,6 +111,7 @@ public class startFrame extends JFrame {
 					pass.setText("");
 					txuser.requestFocusInWindow();
 				}
+			
 			}
 		});
 	}
