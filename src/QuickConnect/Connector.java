@@ -10,7 +10,7 @@ public class Connector {
     private String HOST;
     private final int PORT=3306;
     private String DATABASE;
-    private String USERNAME; 
+    private String USERNAME;
     private String PASSWORD;
     private Connection connection;
     private PreparedStatement stmt=null;
