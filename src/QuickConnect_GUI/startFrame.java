@@ -107,7 +107,7 @@ public class startFrame extends JFrame {
 				
 				else{
 					JOptionPane.showMessageDialog(panel,
-		                    "<html>Login mislykkedes!<br><br>Forkert brugernavn eller password", panel.getName(),
+		                    "<html>Login mislykkedes!<br><br>Forkert brugernavn eller password</html>", panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
 					txuser.setText("");
 					pass.setText("");

@@ -38,7 +38,7 @@ public class Connector {
 		stmt=connection.prepareStatement(query);
 		for(int i=1;i<=val.length;i++){
 			if(val[i-1][0].equalsIgnoreCase("l")) stmt.setLong(i,Long.parseLong(val[i-1][1]));
-			else if(val[i-1][0].equalsIgnoreCase("i")) stmt.setLong(i,Integer.parseInt(val[i-1][1]));
+			else if(val[i-1][0].equalsIgnoreCase("i")) stmt.setInt(i,Integer.parseInt(val[i-1][1]));
 			else stmt.setString(i,val[i-1][1]);
 		}
 		ResultSet res = stmt.executeQuery();
@@ -62,7 +62,7 @@ public class Connector {
 		stmt=connection.prepareStatement(query);
 		for(int i=1;i<=val.length;i++){
 			if(val[i-1][0].equalsIgnoreCase("l")) stmt.setLong(i,Long.parseLong(val[i-1][1]));
-			else if(val[i-1][0].equalsIgnoreCase("i")) stmt.setLong(i,Integer.parseInt(val[i-1][1]));
+			else if(val[i-1][0].equalsIgnoreCase("i")) stmt.setInt(i,Integer.parseInt(val[i-1][1]));
 			else stmt.setString(i,val[i-1][1]);
 		}
 		stmt.executeUpdate();

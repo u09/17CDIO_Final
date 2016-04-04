@@ -96,11 +96,11 @@ public class registerFrame extends JFrame {
 				String msg;
 				if(check==0) msg="Uforventet fejl";
 				else if(check==1) msg="Brugernavnet skal være 4-24 tegn";
-				else if(check==2) msg="Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: <b>-</b>,<b>_</b>";
+				else if(check==2) msg="Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: -,_";
 				else if(check==3) msg="Begge passwords skal være ens";
 				else if(check==4) msg="Passwordet skal være 8-24 tegn";
 				else if(check==5) msg="Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
-				else if(check==6) msg="Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2><b>SPACE</b>,<b>!</b>,<b>\"</b>,<b>#</b>,<b>$</b>,<b>%</b>,<b>&</b>,<b>'</b>,<b>(</b>,<b>)</b>,<b>*</b>,<b>+</b>,<b>,</b>,<b>-</b>,<b>.</b>,<b>/</b>,<b>:</b>,<b>;</b>,<b><</b>,<b>=</b>,<b>></b>,<b>?</b>,<b>@</b>,<b>[</b>,<b>\\</b>,<b>]</b>,<b>^</b>,<b>_</b>,<b>`</b>,<b>{</b>,<b>|</b>,<b>}</b>,<b>~</b></h2>";
+				else if(check==6) msg="Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
 				else if(check==7) msg="Ugyldigt email";
 				else if(check==8) msg="Brugeren eksisterer allerede i systemet";
 				else msg="Du er registreret";
