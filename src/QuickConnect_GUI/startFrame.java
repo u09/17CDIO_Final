@@ -19,7 +19,8 @@ public class startFrame extends JFrame {
 	JPanel panel = new JPanel();
 	String myFont = "Times New Roman";
 	JLabel lwelcome = new JLabel("Velkommen til LiveChat");
-	JLabel lnavn = new JLabel("Indtast brugernavn");
+	JLabel lnavn = new JLabel("Indtast brugernavn:");
+	JLabel lpass = new JLabel("Indtast adgangskode:");
 	JTextField txuser = new JTextField(15);
 	JPasswordField pass = new JPasswordField(15);
 	JButton blogin = new JButton("Login");
@@ -39,17 +40,19 @@ public class startFrame extends JFrame {
 		panel.setLayout(null);
 		panel.setName("LiveChat");
 		
-		lwelcome.setBounds(50, 10, 300, 50);
-		lnavn.setBounds(125, 55, 200, 50);
-		txuser.setBounds(90, 110, 150, 20);
+		lwelcome.setBounds(60, 10, 300, 50);
+		lnavn.setBounds(95, 50, 200, 50);
+		txuser.setBounds(90, 95, 150, 20);
+		lpass.setBounds(90, 110, 200, 50);
+		pass.setBounds(90, 155, 150, 20);
 		blogin.setBounds(90, 185, 150, 30);
-		pass.setBounds(90, 145, 150, 20);
-		lnoUser.setBounds(88, 235, 200, 50);
-		lregister.setBounds(108, 255, 200, 50);
+		lnoUser.setBounds(95, 235, 200, 50);
+		lregister.setBounds(110, 255, 200, 50);
 		bregister.setBounds(115, 300, 100, 30);
 
 		lwelcome.setFont(new Font(myFont, 1, 20));
 		lnavn.setFont(new Font(myFont, 0, 17));
+		lpass.setFont(new Font(myFont, 0, 17));
 		blogin.setFont(new Font(myFont, 0, 14));
 		lnoUser.setFont(new Font(myFont, 0, 15));
 		lregister.setFont(new Font(myFont, 0, 15));
@@ -58,6 +61,7 @@ public class startFrame extends JFrame {
 
 		panel.add(lwelcome);
 		panel.add(lnavn);
+		panel.add(lpass);
 		panel.add(lnoUser);
 		panel.add(lregister);
 		panel.add(blogin);

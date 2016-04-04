@@ -39,17 +39,17 @@ public class registerFrame extends JFrame {
 		panel.setLayout(null);
 		panel.setName("LiveChat - Registrering");
 
-		welcome.setBounds(35, 5, 300, 50);
+		welcome.setBounds(40, 5, 300, 50);
 		luser.setBounds(45, 45, 300, 50);
 		username.setBounds(45, 90, 215, 20);
 		lpass.setBounds(65, 105, 300, 50);
 		pass.setBounds(45, 150, 215, 20);
-		lpass1.setBounds(90, 160, 300, 60);
+		lpass1.setBounds(90, 165, 300, 60);
 		pass1.setBounds(45, 210, 215, 20);
-		bconfirm.setBounds(155, 315, 100, 40);
-		bback.setBounds(45,315,100,40);
-		email.setBounds(45, 280, 215, 20);
-		lemail.setBounds(90, 230, 250, 60);
+		lemail.setBounds(90, 225, 250, 60);
+		email.setBounds(45, 270, 215, 20);
+		bconfirm.setBounds(155, 305, 100, 40);
+		bback.setBounds(45,305,100,40);
 
 		welcome.setFont(new Font(myFont, 1, 20));
 		luser.setFont(new Font(myFont, 0, 15));
