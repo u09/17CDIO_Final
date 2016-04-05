@@ -1,4 +1,4 @@
-package QuickConnect_GUI.JavaFX;
+package QuickConnect_GUI_JavaFX;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -26,19 +26,16 @@ public class startFrame extends Application{
 	}
 	
 	@Override
-	public void start(Stage myStage) throws Exception {
+	public void start(Stage stage) throws Exception {
 		
-		StackPane myPane = new StackPane();
-		
-		myPane.getChildren().add(addVBox());
+		StackPane pane = new StackPane();
+		pane.getChildren().add(addVBox());
 
-		Scene myScene = new Scene(myPane, 300, 300);
+		Scene scene = new Scene(pane, 300, 300);
 		
-		
-		
-		myStage.setScene(myScene);
-		myStage.setTitle("Layout Sample");
-        myStage.show();
+		stage.setScene(scene);
+		stage.setTitle("Layout Sample");
+        stage.show();
 		
 		
 		
