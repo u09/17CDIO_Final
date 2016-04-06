@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
-import QuickConnect_GUI.startFrame;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector.Matcher;

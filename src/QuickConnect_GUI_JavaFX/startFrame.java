@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-
 import QuickConnect.Connector;
 import QuickConnect.Function;
 import javafx.application.Application;
