@@ -122,7 +122,7 @@ public class startFrame2 extends JFrame {
 		bregister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				registerFrame regFace = new registerFrame();
+				registerFrame2 regFace = new registerFrame2();
 				regFace.setVisible(true);
 				dispose();
 			}

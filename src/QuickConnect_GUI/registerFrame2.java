@@ -13,10 +13,10 @@ import java.security.NoSuchAlgorithmException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class registerFrame extends JFrame {
+public class registerFrame2 extends JFrame {
 
 	public static void showRegisterFrame() {
-		registerFrame frameTabel = new registerFrame();
+		registerFrame2 frameTabel = new registerFrame2();
 	}
 	
 	JPanel panel = new JPanel();
@@ -34,7 +34,7 @@ public class registerFrame extends JFrame {
 	JTextField email = new JTextField(15);
 	JLabel lemail = new JLabel("Indtast din E-mail");
 
-	registerFrame() {
+	registerFrame2() {
 		this.setTitle("LiveChat - Registrering");
 		this.setSize(300, 400);
 		this.setResizable(false);
