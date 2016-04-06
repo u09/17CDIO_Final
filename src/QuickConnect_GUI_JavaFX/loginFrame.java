@@ -5,6 +5,8 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import QuickConnect.Connector;
 import QuickConnect.Function;
 import javafx.application.Application;
@@ -12,7 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -24,10 +26,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class startFrame extends Application{
+public class loginFrame extends Application{
 	
 	public static void main(String[] args) {
-		launch(startFrame.class, args);
+		launch(loginFrame.class, args);
 	}
 	
 	@Override
@@ -67,51 +69,6 @@ public class startFrame extends Application{
 		Button bRegister = new Button("Registrer");
 		
 		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, bLogin, lNoUser, lRegister, bRegister);
-		
-		bLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @FXML
-            public void handle(ActionEvent event) {
-            	String userIn = inUser.getText();
-				String passIn = inPass.getText();
-				Connector con = Function.mysql();
-				boolean bool= false;
-				try {
-				 bool=con.check("SELECT username FROM users WHERE username=? AND password=?",userIn,Function.md5(passIn));
-					System.out.println(bool);
-				}catch (SQLException | NoSuchAlgorithmException e){
-					e.printStackTrace();
-				}
-				
-				if(bool== true){
-//					loginFrame logFace = new loginFrame();
-					Stage stage = new Stage();
-					loginFrame Lf = new loginFrame();
-	
-						try {
-							Lf.start(stage);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					startFrame fr = new startFrame();
-					((Node)(event.getSource())).getScene().getWindow().hide();
-				}
-				
-				/*
-				if(userIn.equals("DTU") && passIn.equals("12345")) {
-					loginFrame logFace = new loginFrame(userIn, passIn);
-					logFace.setVisible(true);
-					dispose();
-				} 
-				*/
-				
-				else{
-					inUser.setText("");
-					inPass.setText("");
-					inUser.requestFocus();
-				}
-            }
-        });
 		
 		return myVBox;
 	}

@@ -4,16 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class loginFrame extends JFrame {
+public class loginFrame2 extends JFrame {
 
 	JPanel panel = new JPanel();
 	String myFont = "Times New Roman";
 
 	public static void showLoginFrame() {
-		loginFrame frameTabel = new loginFrame("show", "show");
+		loginFrame2 frameTabel = new loginFrame2("show", "show");
 	}
 
-	loginFrame(String username, String password) {
+	loginFrame2(String username, String password) {
 		this.setTitle("LiveChat - Bruger: " + username);
 		this.setSize(500, 700);
 		this.setResizable(false);

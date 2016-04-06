@@ -92,7 +92,7 @@ public class startFrame extends JFrame {
 				}
 				
 				if(bool== true){
-					loginFrame logFace = new loginFrame(userIn, passIn);
+					loginFrame2 logFace = new loginFrame2(userIn, passIn);
 					logFace.setVisible(true);
 					dispose();
 				}
