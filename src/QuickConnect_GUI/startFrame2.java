@@ -10,10 +10,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.security.NoSuchAlgorithmException;
 
-public class startFrame extends JFrame {
+public class startFrame2 extends JFrame {
 
 	public static void start() {
-		startFrame frameTabel = new startFrame();
+		startFrame2 frameTabel = new startFrame2();
 	}
 	
 	JPanel panel = new JPanel();
@@ -30,7 +30,7 @@ public class startFrame extends JFrame {
 	Point myPoint = new Point(650, 280);
 	ImageIcon img = new ImageIcon("C:\\Users\\Samil\\Desktop\\fav.png");
 
-	startFrame() {
+	public startFrame2() {
 		this.setTitle("LiveChat");
 		this.setSize(330, 390);
 		this.setResizable(false);

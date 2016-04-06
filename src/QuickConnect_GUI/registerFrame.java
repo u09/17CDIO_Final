@@ -3,6 +3,10 @@ package QuickConnect_GUI;
 import javax.swing.*;
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.security.NoSuchAlgorithmException;
@@ -79,9 +83,9 @@ public class registerFrame extends JFrame {
 	}
 
 	public void actionConfirm() {
-		bconfirm.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
+		bRegister.setOnAction(new EventHandler<ActionEvent>() {
+            @FXML
+            public void handle(ActionEvent event) {
 				String cuser = username.getText();
 				String cpass1 = pass.getText();
 				String cpass2 = pass1.getText();
@@ -114,7 +118,7 @@ public class registerFrame extends JFrame {
 					JOptionPane.showMessageDialog(panel,
 							"<html>Du er registreret!<br><br>"+msg+"</html>",panel.getName(),
 		                    JOptionPane.INFORMATION_MESSAGE);
-					startFrame start = new startFrame();
+					startFrame2 start = new startFrame2();
 					dispose();
 					start.setVisible(true);
 				}
@@ -162,7 +166,7 @@ public class registerFrame extends JFrame {
 		bback.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				startFrame startFrame = new startFrame();
+				startFrame2 startFrame = new startFrame2();
 				dispose();
 				startFrame.setVisible(true);
 			}
