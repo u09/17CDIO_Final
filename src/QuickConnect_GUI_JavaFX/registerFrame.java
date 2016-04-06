@@ -55,20 +55,21 @@ public class registerFrame extends Application{
 		myVBox.setSpacing(12.0);
 		myVBox.setAlignment(Pos.CENTER);
 		
-		Text lTitle = new Text("Velkommen til QuickConnect");
+		Text lTitle = new Text("QuickConnect registrering");
 		lTitle.setFont(getMyFont(1, 20));
-		Text lUser = new Text("Indtast dit brugernavn:");
+		Text lUser = new Text("Indtast ønsket brugernavn:");
 		TextField inUser = new TextField("Brugernavn");
 		inUser.setMaxSize(150, 20);
 		Text lPass = new Text("Indtast dit password:");
 		PasswordField inPass = new PasswordField();
 		inPass.setMaxSize(150, 20);
-		Button bLogin = new Button("Login");
-		Text lNoUser = new Text("Har du ikke nogen bruger?");
+		Text lPass2 = new Text("Gentag Venligst dit password");
+		PasswordField inPass2 = new PasswordField();
+		inPass2.setMaxSize(150, 20);
 		Text lRegister = new Text("Registrer her:");
 		Button bRegister = new Button("Registrer");
 		
-		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, bLogin, lNoUser, lRegister, bRegister);
+		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, lPass2, inPass2 , lRegister, bRegister);
 		
 		return myVBox;
 	}
