@@ -5,17 +5,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.text.Text;
+import QuickConnect_GUI.startFrame;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector.Matcher;
 
 public class Function {
-	
+
 	public static long timestamp(){
 		long unixTime = System.currentTimeMillis() / 1000L;
 		return unixTime;
 	}
-	
+
 	public static Connector mysql(){
 		BufferedReader br = null;
 		try{
@@ -37,7 +43,7 @@ public class Function {
 		}
 		return null;
 	}
-	
+
 	public static String md5(String str) throws NoSuchAlgorithmException{
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(str.getBytes());
@@ -58,7 +64,7 @@ public class Function {
 		}
 		return 0;
 	}
-	
+
 	public static int checkPassword(String pass) {
 		String num   = ".*[0-9].*";
 		String bl = ".*[A-Z].*";
@@ -72,9 +78,17 @@ public class Function {
 		}
 		return 0;
 	}
-	
+
 	public static boolean checkEmail(String email) {
+		boolean b = email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"); 
+		if (b == false) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Ugyldig e-mail adresse!");
+			alert.setHeaderText(null);
+			alert.setContentText("Indtast en gyldig e-mail adresse, for at kunne registrere dig.");
+			alert.showAndWait();
+
+		}	
 		return true;
-//		return email.toLowerCase().matches("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
 	}
 }
