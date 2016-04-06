@@ -85,7 +85,6 @@ public class startFrame extends Application{
 				}
 				
 				if(bool== true){
-//					loginFrame logFace = new loginFrame();
 					Stage stage = new Stage();
 					loginFrame Lf = new loginFrame();
 	
@@ -98,15 +97,6 @@ public class startFrame extends Application{
 					startFrame fr = new startFrame();
 					((Node)(event.getSource())).getScene().getWindow().hide();
 				}
-				
-				/*
-				if(userIn.equals("DTU") && passIn.equals("12345")) {
-					loginFrame logFace = new loginFrame(userIn, passIn);
-					logFace.setVisible(true);
-					dispose();
-				} 
-				*/
-				
 				else{
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Forkert kode");
@@ -120,6 +110,45 @@ public class startFrame extends Application{
             }
         });
 		
+		bRegister.setOnAction(new EventHandler<ActionEvent>() {
+            @FXML
+            public void handle(ActionEvent event) {
+            	String userIn = inUser.getText();
+				String passIn = inPass.getText();
+				Connector con = Function.mysql();
+				boolean bool= false;
+				try {
+				 bool=con.check("SELECT username FROM users WHERE username=? AND password=?",userIn,Function.md5(passIn));
+					System.out.println(bool);
+				}catch (SQLException | NoSuchAlgorithmException e){
+					e.printStackTrace();
+				}
+				
+				if(bool== true){
+					Stage stage = new Stage();
+					loginFrame Lf = new loginFrame();
+	
+						try {
+							Lf.start(stage);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					startFrame fr = new startFrame();
+					((Node)(event.getSource())).getScene().getWindow().hide();
+				}
+				else{
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Forkert kode");
+					alert.setHeaderText("Forkert kodeord eller brugernavn");
+					alert.setContentText("Venligst indtast dit kodeord og brugernavn igen");
+
+					alert.showAndWait();
+					inPass.setText("");
+					inUser.requestFocus();
+				}
+            }
+        });
 		return myVBox;
 	}
 	
