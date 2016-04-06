@@ -82,11 +82,11 @@ public class Function {
 	public static boolean checkEmail(String email) {
 		boolean b = email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"); 
 		if (b == false) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Ugyldig e-mail adresse!");
-			alert.setHeaderText(null);
-			alert.setContentText("Indtast en gyldig e-mail adresse, for at kunne registrere dig.");
-			alert.showAndWait();
+			Alert advarsel = new Alert(AlertType.INFORMATION);
+			advarsel.setTitle("Ugyldig e-mail adresse!");
+			advarsel.setHeaderText(null);
+			advarsel.setContentText("Indtast en gyldig e-mail adresse, for at kunne registrere dig.");
+			advarsel.showAndWait();
 
 		}	
 		return true;
