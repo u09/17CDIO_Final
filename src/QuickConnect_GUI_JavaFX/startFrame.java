@@ -43,7 +43,7 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 		pane.getChildren().add(addVBox());
 
 		Scene scene = new Scene(pane, 300, 350);
-		File file = new File("src\\QuickConnect_GUI_JavaFX\\standardLayout.css");
+		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
 		stage.setScene(scene);
