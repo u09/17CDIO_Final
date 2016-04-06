@@ -73,8 +73,25 @@ public class registerFrame extends Application{
 		inEmail.setMaxSize(150, 20);
 		Text lRegister = new Text("Registrer her:");
 		Button bRegister = new Button("Registrer");
+		Button bBack = new Button("Tilbage");
 		
-		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, lPass2, inPass2 , lEmail , inEmail, lRegister, bRegister);
+		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, lPass2, inPass2 , lEmail , inEmail, lRegister, bRegister, bBack);
+		
+		bBack.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Stage stage = new Stage();
+            	startFrame sF = new startFrame();
+            	try {
+					sF.start(stage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+        });
+		
 		bRegister.setOnAction(new EventHandler<ActionEvent>() {
             @FXML
             public void handle(ActionEvent event) {
