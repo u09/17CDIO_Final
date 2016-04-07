@@ -5,26 +5,21 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-
 import QuickConnect.Connector;
 import QuickConnect.Function;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -48,7 +43,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 		pane.getChildren().add(addVBox());
 
 		Scene scene = new Scene(pane, 300, 450);
-		File file = new File("src\\QuickConnect_GUI_JavaFX\\standardLayout.css");
+		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
 		stage.setScene(scene);
@@ -66,29 +61,34 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 
 		Text lTitle = new Text("QuickConnect registrering");
 		lTitle.setFont(startFrame.getMyFont(1, 20));
-		Text lUser = new Text("Indtast �nsket brugernavn:");
-		inUser = new TextField("Brugernavn");
+		Text lUser = new Text("Indtast ønsket brugernavn:");
+		inUser = new TextField();
 		inUser.setMaxSize(150, 20);
+		inUser.setPromptText("Brugernavn");
 		Text lPass = new Text("Indtast dit password:");
 		inPass1 = new PasswordField();
 		inPass1.setMaxSize(150, 20);
-		Text lPass2 = new Text("Gentag Venligst dit password");
+		inPass1.setPromptText("Password");
+		Text lPass2 = new Text("Gentag dit password:");
 		inPass2 = new PasswordField();
 		inPass2.setMaxSize(150, 20);
+		inPass2.setPromptText("Password");
 		Text lEmail = new Text("Indtast din email:");
 		inEmail = new TextField();
 		inEmail.setMaxSize(150, 20);
+		inEmail.setPromptText("E-mail");
 		Text lRegister = new Text("Registrer her:");
 		bRegister = new Button("Registrer");
 		bRegister.setOnAction(this);
 		bBack = new Button("Tilbage");
 		bBack.setOnAction(this);
-		
-		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass1, lPass2, inPass2, lEmail, inEmail, lRegister, bRegister, bBack);
+
+		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass1, lPass2, inPass2, lEmail, inEmail, lRegister,
+		        bRegister, bBack);
 
 		return myVBox;
 	}
-	
+
 	@Override
 	public void handle(ActionEvent event) {
 		// handle for bBack

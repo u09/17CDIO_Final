@@ -4,12 +4,12 @@ import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+
 import QuickConnect.Connector;
 import QuickConnect.Function;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -62,11 +62,13 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 		Text lTitle = new Text("Velkommen til QuickConnect");
 		lTitle.setFont(getMyFont(1, 20));
 		Text lUser = new Text("Indtast dit brugernavn:");
-		inUser = new TextField("Brugernavn");
+		inUser = new TextField();
 		inUser.setMaxSize(150, 20);
+		inUser.setPromptText("Brugernavn");
 		Text lPass = new Text("Indtast dit password:");
 		inPass = new PasswordField();
 		inPass.setMaxSize(150, 20);
+		inPass.setPromptText("Password");
 		bLogin = new Button("Login");
 		bLogin.setOnAction(this);
 		Text lNoUser = new Text("Har du ikke nogen bruger?");

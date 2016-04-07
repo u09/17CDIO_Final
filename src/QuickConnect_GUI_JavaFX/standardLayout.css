@@ -1,3 +1,7 @@
-.root{
-	-fx-background-image: url("bg.jpg");
+.root {
+	-fx-font-family: "Iowan Old Style";
+	/*-fx-background-image: url("bg.jpg");*/
+}
+.button {
+	-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
 }
