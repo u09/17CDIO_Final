@@ -28,7 +28,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class registerFrame extends startFrame implements EventHandler<ActionEvent> {
+public class registerFrame extends Application implements EventHandler<ActionEvent> {
 
 	TextField inUser;
 	PasswordField inPass1;
@@ -65,7 +65,7 @@ public class registerFrame extends startFrame implements EventHandler<ActionEven
 		myVBox.setAlignment(Pos.CENTER);
 
 		Text lTitle = new Text("QuickConnect registrering");
-		lTitle.setFont(getMyFont(1, 20));
+		lTitle.setFont(startFrame.getMyFont(1, 20));
 		Text lUser = new Text("Indtast �nsket brugernavn:");
 		inUser = new TextField("Brugernavn");
 		inUser.setMaxSize(150, 20);
@@ -106,7 +106,7 @@ public class registerFrame extends startFrame implements EventHandler<ActionEven
 		if(event.getSource() == bRegister) {
 
 			String cuser = inUser.getText();
-			String cpass1 = inPass.getText();
+			String cpass1 = inPass1.getText();
 			String cpass2 = inPass2.getText();
 			String cemail = inEmail.getText();
 
@@ -150,32 +150,11 @@ public class registerFrame extends startFrame implements EventHandler<ActionEven
 				// alert.setContentText("<html>Registrering
 				// mislykkedes!<br><br>"+msg+"</html>");
 
-				inPass.setText("");
+				inPass1.setText("");
 				inPass2.setText("");
 				inUser.requestFocus();
 			}
 		}
-	}
-
-	/**
-	 * Returns the font with a given style and size
-	 * @param style - NORMAL: 0, BOLD: 1
-	 * @param size
-	 * @return
-	 */
-	public Font getMyFont(int style, int size) {
-
-		Font myFont;
-		String myFontName = "Iowan Old Style";
-
-		switch(style) {
-
-		case 0: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
-		case 1: return myFont = Font.font(myFontName, FontWeight.BOLD, size);
-		default: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
-
-		}
-
 	}
 
 	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {

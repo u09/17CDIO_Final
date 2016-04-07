@@ -99,7 +99,7 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 				programFrame pf = new programFrame();
 
 				try {
-					pf.startPFrame(stage, userIn, passIn);
+					pf.start(stage);
 				} catch(Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -132,25 +132,21 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 	}
 
 	/**
-	 * 
-	 * @param style
-	 *            - NORMAL: 0, BOLD: 1
+	 * Returns the font with a given style and size
+	 * @param style - NORMAL: 0, BOLD: 1
 	 * @param size
 	 * @return
 	 */
-	public Font getMyFont(int style, int size) {
+	public static Font getMyFont(int style, int size) {
 
 		Font myFont;
 		String myFontName = "Iowan Old Style";
 
 		switch(style) {
 
-		case 0:
-			return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
-		case 1:
-			return myFont = Font.font(myFontName, FontWeight.BOLD, size);
-		default:
-			return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
+		case 0: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
+		case 1: return myFont = Font.font(myFontName, FontWeight.BOLD, size);
+		default: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
 
 		}
 
