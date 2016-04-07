@@ -55,10 +55,10 @@ public class programFrame extends Application implements EventHandler<ActionEven
 
 	}
 
-	private Node addHBox() {
+	private HBox addHBox() {
 
 		HBox hBox = new HBox(0);
-		hBox.setAlignment(Pos.CENTER);
+		hBox.setId("hbox");
 		Text lTitle = new Text("Velkommen til QuickConnect " + username);
 		lTitle.setFont(startFrame.getMyFont(1, 20));
 
@@ -103,7 +103,6 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		list.setItems(items);
 		onlineScrollPane.setPrefHeight(1500);
 		onlineScrollPane.setContent(list);
-		onlineScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
 		onlinePane.getChildren().addAll(myHBox, onlineScrollPane);
 		onlinePane.setVisible(true);

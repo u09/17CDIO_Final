@@ -42,7 +42,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 		StackPane pane = new StackPane();
 		pane.getChildren().add(addVBox());
 
-		Scene scene = new Scene(pane, 300, 450);
+		Scene scene = new Scene(pane, 320, 470);
 		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
@@ -60,7 +60,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 		myVBox.setAlignment(Pos.CENTER);
 
 		Text lTitle = new Text("QuickConnect registrering");
-		lTitle.setFont(startFrame.getMyFont(1, 20));
+		lTitle.getStyleClass().add("titles");
 		Text lUser = new Text("Indtast ønsket brugernavn:");
 		inUser = new TextField();
 		inUser.setMaxSize(150, 20);

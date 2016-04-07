@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -42,7 +43,7 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 		StackPane pane = new StackPane();
 		pane.getChildren().add(addVBox());
 
-		Scene scene = new Scene(pane, 300, 350);
+		Scene scene = new Scene(pane, 320, 370);
 		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
@@ -54,13 +55,12 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 	}
 
 	private VBox addVBox() {
-
+		
 		VBox myVBox = new VBox();
-		myVBox.setSpacing(12.0);
-		myVBox.setAlignment(Pos.CENTER);
+		myVBox.getStyleClass().add("vbox");
 
 		Text lTitle = new Text("Velkommen til QuickConnect");
-		lTitle.setFont(getMyFont(1, 20));
+		lTitle.getStyleClass().add("titles");
 		Text lUser = new Text("Indtast dit brugernavn:");
 		inUser = new TextField();
 		inUser.setMaxSize(150, 20);

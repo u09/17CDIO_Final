@@ -1,7 +1,100 @@
 .root {
 	-fx-font-family: "Iowan Old Style";
+	-fx-font-size: 14px;
+	-fx-font-weight: normal;
+	-fx-font-style: normal;
 	/*-fx-background-image: url("bg.jpg");*/
 }
+
+.titles {
+	-fx-font-size: 22px;
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+}
+
+.label {
+	-fx-alignment:; /*[ top-left | top-center | top-right | center-left | center | center-right bottom-left | bottom-center | bottom-right | baseline-left | baseline-center | baseline-right ]*/
+	-fx-text-alignment:; /*[ left | center | right | justify ]*/
+	-fx-text-overrun:; /*[ center-ellipsis | center-word-ellipsis | clip | ellipsis | leading-ellipsis | leading-word-ellipsis | word-ellipsis ]*/
+	-fx-wrap-text:; /*<boolean>*/
+	-fx-font:; /*<font>*/
+	-fx-underline:; /*<boolean>*/
+	-fx-graphic:; /*<uri>*/
+	-fx-content-display:; /*[ top | right | bottom | left | center | right | graphic-only | text-only ]*/
+	-fx-graphic-text-gap:; /*<size>*/
+	-fx-label-padding:; /*<size> | <size> <size> <size> <size>*/
+	-fx-text-fill:; /*<paint>*/
+	-fx-ellipsis-string:; /*<string>*/
+}
+
+.text {
+	-fx-font:; /*<font>*/
+	-fx-font-smoothing-type:; /* [ gray | lcd ] */
+	-fx-strikethrough:; /*<boolean>*/
+	-fx-text-alignment:; /*[ left | center | right | justify ]*/
+	-fx-text-origin:; /*[ baseline | top | bottom ]*/
+	-fx-underline:;
+	-fx-strikethrough:; /*<boolean>*/
+}
+
+.menu-bar {
+	-fx-use-system-menu-bar:; /*<boolean>*/
+}
+
+.scroll-pane {
+	-fx-fit-to-width:; /*<boolean>*/
+	-fx-fit-to-height:; /*<boolean>*/
+	-fx-pannable:; /*<boolean>*/
+	-fx-hbar-policy:; /*[ never | always | as-needed ]*/
+	-fx-vbar-policy:; /*[ never | always | as-needed ]*/
+}
+
+.tab-pane {
+	-fx-tab-min-width:; /*<integer>*/
+	-fx-tab-max-width:;	/*<integer>*/
+	-fx-tab-min-height:; /*<integer>*/
+	-fx-tab-max-height:; /*<integer>*/
+}
+
+.list-view {
+	-fx-orientation:; /*[ horizontal | vertical ]*/
+}
+
+.hbox {
+	-fx-background-color: linear-gradient(#93cede, #61a2b1);
+	-fx-spacing: 0;
+	-fx-padding: 0;
+	-fx-alignment: center;
+	-fx-fill-height: true;
+}
+
+.vbox {
+	-fx-spacing: 12;
+	-fx-alignment: center;
+}
+
 .button {
-	-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+	-fx-background-color: linear-gradient(#f2f2f2, #d6d6d6),
+		linear-gradient(#fcfcfc 0%, #d9d9d9 20%, #d6d6d6 100%),
+		linear-gradient(#dddddd 0%, #f6f6f6 50%);
+	-fx-background-radius: 8, 7, 6;
+	-fx-background-insets: 0, 1, 2;
+	-fx-text-fill: black;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.button:hover {
+	-fx-background-color: linear-gradient(#93cede, #61a2b1);
+	-fx-background-radius: 8, 7, 6;
+	-fx-background-insets: 0, 1, 2;
+	-fx-text-fill: black;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.button:focused {
+	-fx-background-color: linear-gradient(#93cede, #61a2b1);
+	-fx-background-radius: 8, 7, 6;
+	-fx-background-insets: 0, 1, 2;
+	-fx-text-fill: black;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
