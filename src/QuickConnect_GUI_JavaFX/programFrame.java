@@ -47,9 +47,9 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(addHBox());
 		borderPane.setLeft(addTabs());
+		borderPane.setCenter(addMessagePane());
 
 		Scene scene = new Scene(borderPane, 1000, 700);
-
 		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
@@ -58,31 +58,37 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		stage.show();
 
 	}
-
+	
+	private Node addMessagePane() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private HBox addHBox() {
 
-		MenuBar myMenuBar = new MenuBar();
-		Menu qC = new Menu("QuickConnect");
-		Menu profile = new Menu("Min profil");
-		ObservableList<Menu> menus = FXCollections.<Menu>observableArrayList(qC, profile);
-		
-		MenuItem signOut = new MenuItem("Log ud");
-		MenuItem close = new MenuItem("Luk");
-		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
-		close.setOnAction((ActionEvent t) -> {
-		    System.exit(0);
-		});
-		qC.getItems().addAll(signOut, close);
-		
-		MenuItem settings = new MenuItem("Instillinger");
-		profile.getItems().addAll(settings);
-		
-		myMenuBar.getMenus().addAll(menus);
-		
 		HBox hBox = new HBox(0);
 		hBox.setId("hbox");
 		Text lTitle = new Text("Velkommen til QuickConnect " + username);
 		lTitle.setFont(startFrame.getMyFont(1, 20));
+		MenuBar myMenuBar = new MenuBar();
+		myMenuBar.setUseSystemMenuBar(true);
+		Menu qC = new Menu("QuickConnect");
+		Menu profile = new Menu("Min profil");
+		ObservableList<Menu> menus = FXCollections.<Menu>observableArrayList(qC, profile);
+		
+		MenuItem about = new MenuItem("Om");
+		MenuItem close = new MenuItem("Luk");
+		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
+		close.setOnAction((ActionEvent t) -> {
+			System.exit(0);
+		});
+		qC.getItems().addAll(about, close);
+		
+		MenuItem signOut = new MenuItem("Log ud");
+		MenuItem settings = new MenuItem("Instillinger");
+		profile.getItems().addAll(settings, signOut);
+		
+		myMenuBar.getMenus().addAll(menus);
 
 		hBox.getChildren().addAll(myMenuBar);
 		return hBox;
