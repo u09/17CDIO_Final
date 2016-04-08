@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class FunctionUser {
-	
+	// hej
 	public static void ChangeNickname(String nickname, String username) throws SQLException{
 		Connector con = Function.mysql();
 		con.update("UPDATE users set nickname=? WHERE username=?", nickname,username);
