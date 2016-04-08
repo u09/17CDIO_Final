@@ -13,6 +13,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
@@ -57,12 +60,26 @@ public class programFrame extends Application implements EventHandler<ActionEven
 
 	private HBox addHBox() {
 
+		MenuBar myMenuBar = new MenuBar();
+		Menu qC = new Menu("QuickConnect");
+		Menu profile = new Menu("Min profil");
+		ObservableList<Menu> menus = FXCollections.<Menu>observableArrayList(qC, profile);
+		
+		MenuItem signOut = new MenuItem("Log ud");
+		MenuItem close = new MenuItem("Luk");
+		qC.getItems().addAll(signOut, close);
+		
+		MenuItem settings = new MenuItem("Instillinger");
+		profile.getItems().addAll(settings);
+		
+		myMenuBar.getMenus().addAll(menus);
+		
 		HBox hBox = new HBox(0);
 		hBox.setId("hbox");
 		Text lTitle = new Text("Velkommen til QuickConnect " + username);
 		lTitle.setFont(startFrame.getMyFont(1, 20));
 
-		hBox.getChildren().addAll(lTitle);
+		hBox.getChildren().addAll(myMenuBar);
 		return hBox;
 	}
 
