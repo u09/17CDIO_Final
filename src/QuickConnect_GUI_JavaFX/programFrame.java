@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -32,6 +34,8 @@ import javafx.stage.Stage;
 
 public class programFrame extends Application implements EventHandler<ActionEvent> {
 
+	Scene scene;;
+	BorderPane borderPane;
 	String username;
 	String password;
 
@@ -44,12 +48,12 @@ public class programFrame extends Application implements EventHandler<ActionEven
 
 		stage.setTitle("QuickConnect - user: " + username);
 
-		BorderPane borderPane = new BorderPane();
+		borderPane = new BorderPane();
 		borderPane.setTop(addHBox());
 		borderPane.setLeft(addTabs());
 		borderPane.setCenter(addMessagePane());
 
-		Scene scene = new Scene(borderPane, 1000, 700);
+		scene = new Scene(borderPane, 1000, 700);
 		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
@@ -72,9 +76,11 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		lTitle.setFont(startFrame.getMyFont(1, 20));
 		MenuBar myMenuBar = new MenuBar();
 		myMenuBar.setUseSystemMenuBar(true);
+		
 		Menu qC = new Menu("QuickConnect");
 		Menu profile = new Menu("Min profil");
-		ObservableList<Menu> menus = FXCollections.<Menu>observableArrayList(qC, profile);
+		Menu show = new Menu("Vis");
+		ObservableList<Menu> menus = FXCollections.<Menu>observableArrayList(qC, profile, show);
 		
 		MenuItem about = new MenuItem("Om");
 		MenuItem close = new MenuItem("Luk");
@@ -100,21 +106,21 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		tabPane.setPrefHeight(1500);
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		
-		Tab tabOnline = new Tab("Online", addOnlineContent());
+		Tab tabRecent = new Tab("Seneste", addRecentContent());
 		Tab tabFriends = new Tab("Venner", addFriendsContent());
 		Tab tabGroups = new Tab("Grupper", addGroupsContent());
-		tabOnline.setTooltip(new Tooltip("Vis alle online venner"));
+		tabRecent.setTooltip(new Tooltip("Vis alle online venner"));
 		tabFriends.setTooltip(new Tooltip("Vis alle venner"));
 		tabGroups.setTooltip(new Tooltip("Vis mine grupper"));
 
-		tabPane.getTabs().addAll(tabOnline, tabFriends, tabGroups);
+		tabPane.getTabs().addAll(tabRecent, tabFriends, tabGroups);
 
 		return tabPane;
 	}
 
-	private Node addOnlineContent() {
+	private Node addRecentContent() {
 
-		VBox onlinePane = new VBox();
+		VBox recentPane = new VBox();
 
 		HBox myHBox = new HBox(0);
 		TextField inSearch = new TextField();
@@ -123,24 +129,26 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		Button bSearch = new Button("Søg");
 		myHBox.getChildren().addAll(inSearch, bSearch);
 
-		ScrollPane onlineScrollPane = new ScrollPane();
+		ScrollPane recentScrollPane = new ScrollPane();
 		ListView<String> list = new ListView<String>();
 		ObservableList<String> items = FXCollections.observableArrayList("Ahmad", "Ibrahim", "Samil", "Tolga", "Harun",
 		        "Umais", "Lars", "Hans", "Peter", "Søren", "Gurli", "Lars", "Hans", "Peter", "Søren", "Gurli", "Hans",
 		        "Peter", "Søren", "Gurli");
 		list.setItems(items);
-		onlineScrollPane.setPrefHeight(1500);
-		onlineScrollPane.setContent(list);
+		recentScrollPane.setContent(list);
 
-		onlinePane.getChildren().addAll(myHBox, onlineScrollPane);
-		onlinePane.setVisible(true);
+		recentPane.getChildren().addAll(myHBox, recentScrollPane);
+		recentPane.setVisible(true);
 		
-		return onlinePane;
+		return recentPane;
 	}
 
 	private Node addFriendsContent() {
 		
-		VBox friendsPane = new VBox();
+		SplitPane mySplitPane = new SplitPane();
+		VBox friendsPaneOnline = new VBox();
+		VBox friendsPaneOffline = new VBox();
+		
 
 		HBox myHBox = new HBox(0);
 		TextField inSearch = new TextField();
@@ -148,11 +156,29 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		inSearch.setPromptText("Indtast søgning");
 		Button bSearch = new Button("Søg");
 		myHBox.getChildren().addAll(inSearch, bSearch);
-
-		friendsPane.getChildren().addAll(myHBox);
-		friendsPane.setVisible(true);
+		ScrollPane onlineScrollPane = new ScrollPane();
+		ListView<String> onlineList = new ListView<String>();
+		ObservableList<String> onlineItems = FXCollections.observableArrayList("Online1", "Online2", "Online3", "Online4", "Online5", "Online10", "Online20", "Online30", "Online40", "Online50", "Online100", "Online200",
+		        "Online300	", "Online400", "Online500");
+		onlineList.setItems(onlineItems);
+		onlineScrollPane.setContent(onlineList);
 		
-		return friendsPane;
+		friendsPaneOnline.getChildren().addAll(myHBox, onlineScrollPane);
+		
+		ScrollPane offlineScrollPane = new ScrollPane();
+		ListView<String> offlineList = new ListView<String>();
+		ObservableList<String> offlineItems = FXCollections.observableArrayList("Offline1", "Offline2", "Offline3", "Offline4", "Offline5", "Offline10", "Offline20", "Offline30", "Offline40", "Offline50", "Offline100", "Offline200",
+		        "Offline300	", "Offline400", "Offline500");
+		offlineList.setItems(offlineItems);
+		offlineScrollPane.setContent(offlineList);
+		
+		friendsPaneOffline.getChildren().addAll(offlineScrollPane);
+		
+		mySplitPane.getItems().addAll(friendsPaneOnline, friendsPaneOffline);
+		mySplitPane.setOrientation(Orientation.VERTICAL);
+		mySplitPane.setVisible(true);
+		
+		return mySplitPane;
 	}
 
 	private Node addGroupsContent() {
@@ -166,7 +192,14 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		Button bSearch = new Button("Søg");
 		myHBox.getChildren().addAll(inSearch, bSearch);
 
-		groupsPane.getChildren().addAll(myHBox);
+		ScrollPane groupScrollPane = new ScrollPane();
+		ListView<String> list = new ListView<String>();
+		ObservableList<String> items = FXCollections.observableArrayList("Group1", "Group2", "Group3", "Group4", "Group5", "Group10", "Group20", "Group30", "Group40", "Group50", "Group100", "Group200",
+		        "Group300", "Group400", "Group500");
+		list.setItems(items);
+		groupScrollPane.setContent(list);
+		
+		groupsPane.getChildren().addAll(myHBox, groupScrollPane);
 		groupsPane.setVisible(true);
 		
 		return groupsPane;
