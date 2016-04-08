@@ -11,7 +11,7 @@ public class FunctionUser {
 	
 	public static void ChangeNickname(String nickname, String username) throws SQLException{
 		Connector con = Function.mysql();
-		con.update("UPDATE nickname FROM users=? WHERE username=?", nickname,username);
+		con.update("UPDATE users set nickname=? WHERE username=?", nickname,username);
 		
 	}
 
