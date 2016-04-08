@@ -23,6 +23,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -67,6 +68,10 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		
 		MenuItem signOut = new MenuItem("Log ud");
 		MenuItem close = new MenuItem("Luk");
+		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
+		close.setOnAction((ActionEvent t) -> {
+		    System.exit(0);
+		});
 		qC.getItems().addAll(signOut, close);
 		
 		MenuItem settings = new MenuItem("Instillinger");
@@ -163,7 +168,7 @@ public class programFrame extends Application implements EventHandler<ActionEven
 
 	@Override
 	public void handle(ActionEvent event) {
-
+		
 	}
 
 }

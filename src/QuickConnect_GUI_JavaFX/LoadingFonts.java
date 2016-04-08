@@ -1,4 +1,4 @@
-package QuickConnect_GUI;
+package QuickConnect_GUI_JavaFX;
 
 import java.awt.*;
 import java.awt.event.*;

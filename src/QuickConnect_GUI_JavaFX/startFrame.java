@@ -33,10 +33,6 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 	Button bLogin;
 	Button bRegister;
 
-	public static void main(String[] args) {
-		launch(startFrame.class, args);
-	}
-
 	@Override
 	public void start(Stage stage) throws Exception {
 
