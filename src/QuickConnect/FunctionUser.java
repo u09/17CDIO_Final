@@ -12,7 +12,7 @@ public class FunctionUser {
 	static Connector con = Function.mysql();
 	
 	public static void ChangeNickname(String nickname, String username) throws SQLException{
-		con.update("UPDATE nickname FROM users=? WHERE username=?", nickname,username);
+		con.update("UPDATE nickname set nickname=? WHERE username=?", nickname,username);
 	}
 	public static void changePassword(String username, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
 		if(Function.checkPassword(newPass)==0 && newPass.equals(newPass2)){
