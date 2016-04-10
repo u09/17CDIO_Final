@@ -13,20 +13,20 @@
           <Menu mnemonicParsing="false" text="QuickConnect">
             <items>
                   <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" text="Om" />
-                  <MenuItem mnemonicParsing="false" text="Luk" />
+              <MenuItem fx:id="about" mnemonicParsing="false" text="Om" />
+                  <MenuItem fx:id="close" mnemonicParsing="false" text="Luk" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Min Profil">
             <items>
-              <MenuItem mnemonicParsing="false" text="Indstillinger" />
-                  <MenuItem mnemonicParsing="false" text="Log ud" />
+              <MenuItem fx:id="settings" mnemonicParsing="false" text="Indstillinger" />
+                  <MenuItem fx:id="signOut" mnemonicParsing="false" text="Log ud" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Vis">
             <items>
-              <MenuItem mnemonicParsing="false" text="Fuld skærm" />
-                  <MenuItem mnemonicParsing="false" text="Afslut fuld skærm" />
+              <MenuItem fx:id="fullScreen" mnemonicParsing="false" text="Fuld skærm" />
+                  <MenuItem fx:id="exitFullScreen" mnemonicParsing="false" text="Afslut fuld skærm" />
             </items>
           </Menu>
         </menus>

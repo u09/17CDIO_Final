@@ -1,80 +1,66 @@
-package QuickConnect_GUI_JavaFX;
+package SceneBuild_JavaFX;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import QuickConnect_GUI_JavaFX.registerFrame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class startFrame extends Application implements EventHandler<ActionEvent> {
 
+	FXMLLoader loader;
+	private VBox startFrame;
+	@FXML Label lTitle, lUser, lPass, lNoUser, lRegister; 
+	@FXML
+	Button bLogin, bRegister;
+	@FXML
 	TextField inUser;
+	@FXML
 	PasswordField inPass;
-	Button bLogin;
-	Button bRegister;
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage primaryStage) throws Exception {
 
-		StackPane pane = new StackPane();
-		pane.getChildren().add(addVBox());
+		loader = new FXMLLoader();
+		loader.setLocation(MainApp.class.getResource("startFrame.fxml"));
+		loader.setController(this);
 
-		Scene scene = new Scene(pane, 320, 370);
-		File file = new File("src/QuickConnect_GUI_JavaFX/standardLayout.css");
+		try {
+			startFrame = (VBox) loader.load();
+			bLogin.setOnAction(this);
+			bRegister.setOnAction(this);
+		} catch(IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(startFrame);
+		File file = new File("src/SceneBuild_JavaFX/standardLayout.css");
 		URL url = file.toURI().toURL();
 		scene.getStylesheets().add(url.toExternalForm());
-		stage.setScene(scene);
-		stage.setResizable(false);
-		stage.sizeToScene();
-		stage.setTitle("QuickConnect");
-		stage.show();
-	}
-
-	private VBox addVBox() {
-		
-		VBox myVBox = new VBox();
-		myVBox.getStyleClass().add("vbox");
-
-		Text lTitle = new Text("Velkommen til QuickConnect");
 		lTitle.getStyleClass().add("titles");
-		Text lUser = new Text("Indtast dit brugernavn:");
-		inUser = new TextField();
-		inUser.setMaxSize(150, 20);
-		inUser.setPromptText("Brugernavn");
-		Text lPass = new Text("Indtast dit password:");
-		inPass = new PasswordField();
-		inPass.setMaxSize(150, 20);
-		inPass.setPromptText("Password");
-		bLogin = new Button("Login");
-		bLogin.setOnAction(this);
-		Text lNoUser = new Text("Har du ikke nogen bruger?");
-		Text lRegister = new Text("Registrer her:");
-		bRegister = new Button("Registrer");
-		bRegister.setOnAction(this);
+		primaryStage.setResizable(false);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 
-		myVBox.getChildren().addAll(lTitle, lUser, inUser, lPass, inPass, bLogin, lNoUser, lRegister, bRegister);
-
-		return myVBox;
 	}
 
 	@Override
@@ -86,7 +72,8 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 			Connector con = Function.mysql();
 			boolean bool = false;
 			try {
-				bool = con.check("SELECT username FROM users WHERE username=? AND password=?", userIn, Function.md5(passIn));
+				bool = con.check("SELECT username FROM users WHERE username=? AND password=?", userIn,
+				        Function.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -94,7 +81,7 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 
 			if(bool == true) {
 				Stage stage = new Stage();
-				programFrame pf = new programFrame();
+				MainApp pf = new MainApp();
 
 				try {
 					pf.start(stage);
@@ -125,27 +112,6 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 				e.printStackTrace();
 			}
 			((Node) (event.getSource())).getScene().getWindow().hide();
-		}
-
-	}
-
-	/**
-	 * Returns the font with a given style and size
-	 * @param style - NORMAL: 0, BOLD: 1
-	 * @param size
-	 * @return
-	 */
-	public static Font getMyFont(int style, int size) {
-
-		Font myFont;
-		String myFontName = "Iowan Old Style";
-
-		switch(style) {
-
-		case 0: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
-		case 1: return myFont = Font.font(myFontName, FontWeight.BOLD, size);
-		default: return myFont = Font.font(myFontName, FontWeight.NORMAL, size);
-
 		}
 
 	}

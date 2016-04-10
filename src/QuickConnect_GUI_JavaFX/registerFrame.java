@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import SceneBuild_JavaFX.startFrame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

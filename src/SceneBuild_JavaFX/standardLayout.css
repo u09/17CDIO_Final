@@ -3,6 +3,8 @@
 	-fx-font-size: 14px;
 	-fx-font-weight: normal;
 	-fx-font-style: normal;
+	-fx-spacing:	 12;	 
+	-fx-alignment: center;	 
 	/*-fx-background-image: url("bg.jpg");*/
 }
 
@@ -71,6 +73,7 @@
 .vbox {
 	-fx-spacing: 12;
 	-fx-alignment: center;
+	-fx-fill-width:;
 }
 
 .button {
