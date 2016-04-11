@@ -35,7 +35,6 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
 		StackPane pane = new StackPane();
 		pane.getChildren().add(addVBox());
 
