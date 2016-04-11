@@ -1,4 +1,4 @@
-package QuickConnect_GUI_JavaFX;
+package SceneBuild_JavaFX;
 
 import java.io.File;
 import java.net.URL;
@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class registerFrame extends Application implements EventHandler<ActionEvent> {
+public class registerWindow extends Application implements EventHandler<ActionEvent> {
 
 	TextField inUser;
 	PasswordField inPass1;
@@ -33,7 +33,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 	Button bBack;
 
 	public static void main(String[] args) {
-		launch(registerFrame.class, args);
+		launch(registerWindow.class, args);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 		// handle for bBack
 		if(event.getSource() == bBack) {
 			Stage stage = new Stage();
-			startFrame sF = new startFrame();
+			loginWindow sF = new loginWindow();
 			try {
 				sF.start(stage);
 			} catch(Exception e) {
@@ -136,7 +136,7 @@ public class registerFrame extends Application implements EventHandler<ActionEve
 				}
 
 				Stage stage = new Stage();
-				startFrame Sf = new startFrame();
+				loginWindow Sf = new loginWindow();
 				try {
 					Sf.start(stage);
 				} catch(Exception e) {
