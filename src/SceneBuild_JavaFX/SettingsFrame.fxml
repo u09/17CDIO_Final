@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="440.0" prefWidth="377.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <TitledPane animated="false" layoutY="26.0" prefHeight="297.0" prefWidth="412.0" text="Generelt">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="410.0">
+               <children>
+                  <TabPane layoutX="-2.0" layoutY="-1.0" prefHeight="274.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Ændre nickname">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="338.0">
+                                 <children>
+                                    <Label layoutX="75.0" layoutY="64.0" text="Indtast nyt nickname" />
+                                    <TextField layoutX="206.0" layoutY="60.0" />
+                                    <Button layoutX="159.0" layoutY="112.0" mnemonicParsing="false" text="Gem nickname" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Ændre password">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="412.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="14.0" text="Indtast nuværende password" />
+                                    <Label layoutX="14.0" layoutY="89.0" text="Indtast ny password" />
+                                    <Label layoutX="14.0" layoutY="153.0" text="Indtast ny password igen" />
+                                    <TextField layoutX="206.0" layoutY="10.0" />
+                                    <TextField layoutX="206.0" layoutY="85.0" />
+                                    <TextField layoutX="206.0" layoutY="149.0" />
+                                    <Button layoutX="159.0" layoutY="195.0" mnemonicParsing="false" text="Gem password" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" layoutY="322.0" prefHeight="232.0" prefWidth="412.0" text="Blokering">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="178.0" prefWidth="410.0">
+               <children>
+                  <TextArea layoutX="13.0" layoutY="35.0" prefHeight="168.0" prefWidth="383.0" />
+                  <Label layoutX="14.0" layoutY="6.0" text="Blokerede kontaktpersoner:" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <MenuBar layoutY="2.0" prefHeight="0.0" prefWidth="412.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Indstillinger" />
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
