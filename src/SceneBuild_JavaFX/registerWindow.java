@@ -74,7 +74,6 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 			e.printStackTrace();
 		}
 		
-//		bLogin.setOnAction(this);
 		bRegister.setOnAction(this);
 		bBack.setOnAction(this);
 		lTitle.getStyleClass().add("titles");

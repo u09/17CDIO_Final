@@ -77,7 +77,7 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 			e.printStackTrace();
 		}
 
-		setMenuBarShortcuts();
+		setMenuBarFunctions();
 
 		ObservableList<String> items = FXCollections.observableArrayList("Ahmad", "Ibrahim", "Samil", "Tolga", "Harun",
 		        "Umais", "Lars", "Hans", "Peter", "Søren", "Gurli", "Lars", "Hans", "Peter");
@@ -93,22 +93,47 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 
 		ObservableList<String> groupsItems = FXCollections.observableArrayList("Group1", "Group2", "Group3", "Group4",
 		        "Group5", "Group10", "Group20", "Group30", "Group40", "Group50");
+		
 		groupsList.setItems(groupsItems);
 	}
 
-	private void setMenuBarShortcuts() {
+	private void setMenuBarFunctions() {
 
+		about.setOnAction(this);
+		close.setOnAction(this);
 		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
+		settings.setOnAction(this);
 
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
+		if(event.getSource() == about) {
+			
+		}
 		if(event.getSource() == close) {
 			System.exit(0);
 		}
+		if(event.getSource() == settings) {
+			Stage stage = new Stage();
+			settingsWindow sF = new settingsWindow();
+			try {
+				sF.start(stage);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(event.getSource() == logOut) {
+
+		}
+		if(event.getSource() == fullScreen) {
+
+		}
+		if(event.getSource() == exitFullScreen) {
+
+		}
 	}
-	
+
 	public Stage getPrimaryStage() {
 		return myStage;
 	}
