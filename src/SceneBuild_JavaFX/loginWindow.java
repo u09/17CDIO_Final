@@ -2,13 +2,13 @@ package SceneBuild_JavaFX;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
-import QuickConnect_GUI_JavaFX.registerFrame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,10 +25,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class startFrame extends Application implements EventHandler<ActionEvent> {
+public class loginWindow extends Application implements EventHandler<ActionEvent> {
 
+	private Stage myStage;
+	private Scene myScene;
+	private VBox LoginFrame;
 	FXMLLoader loader;
-	private VBox startFrame;
 	@FXML
 	Label lTitle, lUser, lPass, lNoUser, lRegister;
 	@FXML
@@ -39,29 +41,42 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 	PasswordField inPass;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage stage) {
+		this.myStage = stage;
+		this.myStage.setTitle("QuickConnect");
+		this.myStage.setResizable(false);
 
-		loader = new FXMLLoader();
-		loader.setLocation(MainApp.class.getResource("startFrame.fxml"));
-		loader.setController(this);
-
+		showLoginFrame();
+		
+		myScene = new Scene(LoginFrame);
+		
+		File file = new File("src/SceneBuild_JavaFX/standardLayout.css");
+		URL url;
 		try {
-			startFrame = (VBox) loader.load();
-			bLogin.setOnAction(this);
-			bRegister.setOnAction(this);
-		} catch(IOException e) {
-			// TODO Auto-generated catch block
+			url = file.toURI().toURL();
+			myScene.getStylesheets().add(url.toExternalForm());
+		} catch(MalformedURLException e) {
 			e.printStackTrace();
 		}
-		Scene scene = new Scene(startFrame);
-		File file = new File("src/SceneBuild_JavaFX/standardLayout.css");
-		URL url = file.toURI().toURL();
-		scene.getStylesheets().add(url.toExternalForm());
-		lTitle.getStyleClass().add("titles");
-		primaryStage.setResizable(false);
-		primaryStage.setScene(scene);
-		primaryStage.show();
 
+		this.myStage.setScene(myScene);
+		this.myStage.show();
+	}
+
+	private void showLoginFrame() {
+		
+		loader = new FXMLLoader();
+		loader.setLocation(loginWindow.class.getResource("LoginFrame.fxml"));
+		loader.setController(this);
+		try {
+			LoginFrame = (VBox) loader.load();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		bLogin.setOnAction(this);
+		bRegister.setOnAction(this);
+		lTitle.getStyleClass().add("titles");
 	}
 
 	@Override
@@ -82,10 +97,10 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 
 			if(bool == true) {
 				Stage stage = new Stage();
-				MainApp pf = new MainApp();
+				chatWindow cW = new chatWindow();
 
 				try {
-					pf.start(stage);
+					cW.start(stage);
 				} catch(Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -106,7 +121,7 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
 			Stage stage = new Stage();
-			registerFrame Rf = new registerFrame();
+			registerWindow Rf = new registerWindow();
 			try {
 				Rf.start(stage);
 			} catch(Exception e) {

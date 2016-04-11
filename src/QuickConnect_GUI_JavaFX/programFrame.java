@@ -3,7 +3,7 @@ package QuickConnect_GUI_JavaFX;
 import java.io.File;
 import java.net.URL;
 
-import SceneBuild_JavaFX.startFrame;
+import SceneBuild_JavaFX.loginWindow;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,7 +74,7 @@ public class programFrame extends Application implements EventHandler<ActionEven
 		HBox hBox = new HBox(0);
 		hBox.setId("hbox");
 		Text lTitle = new Text("Velkommen til QuickConnect " + username);
-		lTitle.setFont(startFrame.getMyFont(1, 20));
+		lTitle.setFont(loginWindow.getMyFont(1, 20));
 		MenuBar myMenuBar = new MenuBar();
 		myMenuBar.setUseSystemMenuBar(true);
 		

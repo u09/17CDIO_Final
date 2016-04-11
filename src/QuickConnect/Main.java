@@ -4,10 +4,10 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import SceneBuild_JavaFX.startFrame;
+import SceneBuild_JavaFX.loginWindow;
 
 public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
-		startFrame.launch(startFrame.class, args);
+		loginWindow.launch(loginWindow.class, args);
 	}
 }
