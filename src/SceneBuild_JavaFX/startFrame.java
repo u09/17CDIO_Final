@@ -29,7 +29,8 @@ public class startFrame extends Application implements EventHandler<ActionEvent>
 
 	FXMLLoader loader;
 	private VBox startFrame;
-	@FXML Label lTitle, lUser, lPass, lNoUser, lRegister; 
+	@FXML
+	Label lTitle, lUser, lPass, lNoUser, lRegister;
 	@FXML
 	Button bLogin, bRegister;
 	@FXML
