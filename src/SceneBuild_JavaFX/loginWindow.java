@@ -88,7 +88,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			Connector con = Function.mysql();
 			boolean bool = false;
 			try {
-				bool = con.check("SELECT username FROM users WHERE username=? AND password=?", userIn,
+				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn,
 				        Function.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
