@@ -86,6 +86,7 @@ public class Function {
 			advarsel.setHeaderText(null);
 			advarsel.setContentText("Indtast en gyldig e-mail adresse, for at kunne registrere dig.");
 			advarsel.showAndWait();
+			
 
 		}	
 		return true;
