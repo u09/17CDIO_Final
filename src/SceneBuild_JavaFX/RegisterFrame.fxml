@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="TOP_LEFT" prefHeight="24.0" prefWidth="283.0" text="Quick Connect registrering" textFill="#252222" />
+      <Label prefHeight="21.0" prefWidth="205.0" text="Indtast ønsket brugernavn:" />
+      <TextField promptText="Brugernavn" />
+      <Label prefHeight="21.0" prefWidth="164.0" text="Indtast dit password:" />
+      <TextField promptText="Password" />
+      <Label prefHeight="21.0" prefWidth="146.0" text="Gentag dit password:" />
+      <TextField promptText="Password" />
+      <Label text="Indtast din E-mail:" />
+      <TextField promptText="E-mail" />
+      <Label text="Registrer her:" />
+      <Button mnemonicParsing="false" text="Registrer" />
+      <Button mnemonicParsing="false" text="Tilbage" />
+   </children>
+</VBox>
