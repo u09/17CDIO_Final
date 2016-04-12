@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -9,13 +10,13 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.TextFlow?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <left>
@@ -25,9 +26,13 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="338.0" prefWidth="267.0">
                      <children>
-                        <ListView fx:id="recentList" prefHeight="338.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <TextField prefHeight="27.0" prefWidth="200.0" />
-                        <Button layoutX="200.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                        <ListView fx:id="recentList" focusTraversable="false" layoutY="46.0" prefHeight="292.0" prefWidth="227.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0">
+                           <children>
+                              <TextField prefHeight="27.0" prefWidth="187.0" />
+                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>
@@ -80,9 +85,13 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="groupsList" prefHeight="338.0" prefWidth="228.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <TextField prefHeight="27.0" prefWidth="200.0" />
-                        <Button layoutX="200.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                        <ListView fx:id="groupsList" prefHeight="338.0" prefWidth="228.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0">
+                           <children>
+                              <TextField prefHeight="27.0" prefWidth="187.0" />
+                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
               </content>
@@ -93,26 +102,8 @@
         </tabs>
       </TabPane>
    </left>
-   <center>
-      <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" prefHeight="439.0" prefWidth="566.0" text="untitled" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <HBox layoutX="15.0" layoutY="334.0" prefHeight="24.0" prefWidth="541.0">
-                     <children>
-                        <TextField prefHeight="27.0" prefWidth="458.0" promptText="Indtast din besked" />
-                        <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" />
-                        <Button defaultButton="true" mnemonicParsing="false" prefHeight="28.0" text="Send" />
-                     </children>
-                  </HBox>
-                  <TextFlow prefHeight="372.0" prefWidth="564.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-        </content>
-      </TitledPane>
-   </center>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
          <menus>
             <Menu mnemonicParsing="false" text="QuickConnect">
                <items>
@@ -134,6 +125,41 @@
                </items>
             </Menu>
          </menus>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
       </MenuBar>
    </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TitledPane collapsible="false" prefHeight="371.0" prefWidth="566.0" text="Samtale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="343.0" prefWidth="564.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="24.0" prefWidth="541.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextField prefHeight="27.0" prefWidth="466.0" promptText="Indtast din besked" />
+                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                                    <Button defaultButton="true" mnemonicParsing="false" prefHeight="27.0" text="Send" />
+                                 </children>
+                              </HBox>
+                           </bottom>
+                           <center>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextArea fx:id="textArea" editable="false" prefHeight="296.0" prefWidth="544.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>

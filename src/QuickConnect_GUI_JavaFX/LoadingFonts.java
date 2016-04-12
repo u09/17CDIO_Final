@@ -1,8 +1,18 @@
 package QuickConnect_GUI_JavaFX;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
   
 public class LoadingFonts implements ActionListener
 {
@@ -18,7 +28,8 @@ public class LoadingFonts implements ActionListener
         fontCombo.addActionListener(this);
     }
   
-    public void actionPerformed(ActionEvent e)
+    @Override
+	public void actionPerformed(ActionEvent e)
     {
         String name = (String)fontCombo.getSelectedItem();
         font = Font.decode(name).deriveFont(24f);
@@ -37,9 +48,10 @@ public class LoadingFonts implements ActionListener
     {
         String name = (String)fontCombo.getItemAt(0);
         font = new Font(name, Font.PLAIN, 24);
-        label = new JLabel(name, JLabel.CENTER)
+        label = new JLabel(name, SwingConstants.CENTER)
         {
-            protected void paintComponent(Graphics g)
+            @Override
+			protected void paintComponent(Graphics g)
             {
                 ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                                  RenderingHints.VALUE_ANTIALIAS_ON);

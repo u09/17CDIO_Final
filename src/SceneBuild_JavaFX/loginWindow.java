@@ -75,6 +75,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		}
 		
 		bLogin.setOnAction(this);
+		bLogin.setDefaultButton(true);
 		bRegister.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
 	}
