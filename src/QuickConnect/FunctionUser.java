@@ -1,15 +1,16 @@
 package QuickConnect;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FunctionUser {
-	
-	static Connector con = Function.mysql();
+	private static Connector con = Function.mysql();
 	
 	public static void ChangeNickname(String nickname, String username) throws SQLException{
 		con.update("UPDATE users set nickname=? WHERE username=?", nickname,username);
 	}
+	
 	public static void changePassword(String username, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
 		if(Function.checkPassword(newPass)==0 && newPass.equals(newPass2)){
 			con.update("update users set password=? where username =?", Function.md5(newPass),username);
@@ -23,6 +24,7 @@ public class FunctionUser {
 			// Passwordet må kun indeholde tegn fra ascii<32 || ascii>126
 		}
 	}
+	
 	public static void deleteUser(String username, String password) throws SQLException, NoSuchAlgorithmException{
 		boolean bool = false;
 			bool = con.check("SELECT username FROM users WHERE username=? AND password=?", username, Function.md5(password));
@@ -32,5 +34,8 @@ public class FunctionUser {
 			System.out.println("Password forkert");
 		}
 	}
-
+	
+	public static void showGroups(int id) throws SQLException{
+//		ResultSet rs=con.select("SELECT * FROM ");
+	}
 }
