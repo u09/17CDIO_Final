@@ -7,13 +7,13 @@ import java.sql.SQLException;
 public class FunctionUser {
 	private static Connector con = Function.mysql();
 	
-	public static void ChangeNickname(String nickname, String username) throws SQLException{
-		con.update("UPDATE users set nickname=? WHERE username=?", nickname,username);
+	public static void ChangeNickname(String nickname, int id) throws SQLException{
+		con.update("UPDATE users set nickname=? WHERE user_id=?",new String[]{"s",nickname},new String[]{"i",""+id});
 	}
 	
-	public static void changePassword(String username, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
+	public static void changePassword(int id, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
 		if(Function.checkPassword(newPass)==0 && newPass.equals(newPass2)){
-			con.update("update users set password=? where username =?", Function.md5(newPass),username);
+			con.update("update users set password=? where user_id =?", new String[]{"s",Function.md5(newPass)},new String []{"i",""+id});
 		}else if(newPass.equals(newPass2)){
 			// password stemmer ikke
 		}else if(Function.checkPassword(newPass)==1){
@@ -25,11 +25,11 @@ public class FunctionUser {
 		}
 	}
 	
-	public static void deleteUser(String username, String password) throws SQLException, NoSuchAlgorithmException{
+	public static void deleteUser(int id, String password) throws SQLException, NoSuchAlgorithmException{
 		boolean bool = false;
-			bool = con.check("SELECT username FROM users WHERE username=? AND password=?", username, Function.md5(password));
+			bool = con.check("SELECT user_id FROM users WHERE user_id=? AND password=?", new String []{"i",""+id},new String[]{"s",Function.md5(password)});
 		if(bool){
-			con.update("DELETE FROM users WHERE username=?",username);
+			con.update("DELETE FROM users WHERE user_id=?",new String[]{"i",""+id});
 		}else{
 			System.out.println("Password forkert");
 		}
