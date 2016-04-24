@@ -43,7 +43,7 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 	@Override
 	public void start(Stage stage) {
 		this.myStage = stage;
-		this.myStage.setTitle("QuickConnect- Register");
+		this.myStage.setTitle("QuickConnect - Registering");
 		this.myStage.setResizable(false);
 
 		showRegisterFrame();
@@ -135,11 +135,10 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 				((Node) (event.getSource())).getScene().getWindow().hide();
 			} else {
 				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Forkert kode");
-				alert.setHeaderText("Forkert kodeord eller brugernavn");
-				// alert.setContentText("<html>Registrering
-				// mislykkedes!<br><br>"+msg+"</html>");
-
+				alert.setTitle(this.myStage.getTitle());
+				alert.setHeaderText("Registrering mislykkedes!");
+				alert.setContentText(msg);
+				alert.show();
 				inPass.setText("");
 				inNewPass.setText("");
 				inUser.requestFocus();

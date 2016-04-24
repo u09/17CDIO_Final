@@ -147,8 +147,7 @@ public class registerWindow2 extends Application implements EventHandler<ActionE
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Forkert kode");
 				alert.setHeaderText("Forkert kodeord eller brugernavn");
-				// alert.setContentText("<html>Registrering
-				// mislykkedes!<br><br>"+msg+"</html>");
+				alert.setContentText("<html>Registrering mislykkedes!<br><br>"+msg+"</html>");
 
 				inPass1.setText("");
 				inPass2.setText("");

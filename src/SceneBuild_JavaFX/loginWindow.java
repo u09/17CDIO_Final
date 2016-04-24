@@ -110,8 +110,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				((Node) (event.getSource())).getScene().getWindow().hide();
 			} else {
 				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Forkert kode");
-				alert.setHeaderText("Forkert kodeord eller brugernavn");
+				alert.setTitle(this.myStage.getTitle());
+				alert.setHeaderText("Login mislykkedes!");
 				alert.setContentText("Venligst indtast dit kodeord og brugernavn igen");
 
 				alert.showAndWait();
