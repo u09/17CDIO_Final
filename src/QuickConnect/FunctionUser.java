@@ -3,6 +3,7 @@ package QuickConnect;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FunctionUser {
 	private static Connector con = Function.mysql();
@@ -35,7 +36,10 @@ public class FunctionUser {
 		}
 	}
 	
-	public static void showGroups(int id) throws SQLException{
-//		ResultSet rs=con.select("SELECT * FROM ");
+	public static ArrayList<String> showGroups(int id) throws SQLException{
+		ArrayList<String> groups=new ArrayList<String>();
+		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[]{"i",""+id});
+		while(rs.next()) groups.add(rs.getString("group_name"));
+		return groups;
 	}
 }
