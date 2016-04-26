@@ -10,9 +10,9 @@ import javafx.application.Application;
 
 public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
-		ArrayList<String> g=FunctionUser.showGroups(1);
-		for(int i=1;i<=g.size();i++) System.out.println(g.get(i-1));
-		System.out.println("tesT");
+//		ArrayList<String> g=FunctionUser.showGroups(1);
+//		for(int i=1;i<=g.size();i++) System.out.println(g.get(i-1));
+//		System.out.println("tesT");
 		Application.launch(loginWindow.class, args);
 	}
 }
