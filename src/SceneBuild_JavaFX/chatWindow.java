@@ -71,6 +71,21 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 		}
 
 		setMenuBarFunctions();
+		getListsContents();
+		setListsFunctions();
+	}
+
+	private void setMenuBarFunctions() {
+		
+		menuBar.setUseSystemMenuBar(true);
+		about.setOnAction(this);
+		close.setOnAction(this);
+		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
+		settings.setOnAction(this);
+		
+	}
+	
+	private void getListsContents() {
 		
 		String[] rec = {"Recent1", "Recent2"};
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
@@ -87,18 +102,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 		String[] gro = {"Group1", "Group2"};
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
-	}
-
-	private void setMenuBarFunctions() {
-
-		menuBar.setUseSystemMenuBar(true);
-		about.setOnAction(this);
-		close.setOnAction(this);
-		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
-		settings.setOnAction(this);
 		
 	}
-	
+
 	private void setListsFunctions() {
 		
 		recentList.setOnMouseClicked(new EventHandler<MouseEvent>() {
