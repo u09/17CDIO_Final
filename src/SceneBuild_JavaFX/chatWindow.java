@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import QuickConnect.User;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class chatWindow extends Application implements EventHandler<ActionEvent> {
+public class chatWindow implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
 	private Scene myScene;
@@ -39,11 +40,12 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 	ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML
 	TitledPane titledPane;
-	
-	@Override
-	public void start(Stage stage) {
+	User user;
+
+	public void start(Stage stage,User user) {
+		this.user=user;
 		this.myStage = stage;
-		this.myStage.setTitle("QuickConnect - user: ");
+		this.myStage.setTitle("QuickConnect - user: "+user.Username);
 
 		showChatFrame();
 

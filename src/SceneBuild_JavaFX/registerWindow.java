@@ -174,7 +174,7 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 			return 6;
 		if(!Function.checkEmail(email))
 			return 7;
-		bool = con.check("SELECT username FROM users WHERE username=?", user);
+		bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
 		if(bool)
 			return 8;
 		else return 9;
