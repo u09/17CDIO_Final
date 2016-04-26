@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import QuickConnect.User;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -89,19 +91,34 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			Connector con = Function.mysql();
 			boolean bool = false;
 			try {
-				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn,
-				        Function.md5(passIn));
+				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 
-			if(bool == true) {
+			if(bool==true) {
+				User user = null;
+				try {
+					ResultSet sql=con.select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
+					sql.next();
+					user = new User(
+							sql.getInt("user_ID"),
+							sql.getString("username"),
+							sql.getString("email"),
+							sql.getString("nickname"),
+							sql.getInt("age"),
+							sql.getInt("user_created"));
+				} catch (NoSuchAlgorithmException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+				
 				Stage stage = new Stage();
 				chatWindow cW = new chatWindow();
 
 				try {
-					cW.start(stage);
+					cW.start(stage,user);
 				} catch(Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

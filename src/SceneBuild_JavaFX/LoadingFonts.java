@@ -1,4 +1,4 @@
-package QuickConnect_GUI_JavaFX;
+package SceneBuild_JavaFX;
 
 import java.awt.Font;
 import java.awt.Graphics;
