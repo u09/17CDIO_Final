@@ -18,6 +18,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -70,22 +71,21 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 		}
 
 		setMenuBarFunctions();
-
-		ObservableList<String> items = FXCollections.observableArrayList("Ahmad", "Ibrahim", "Samil", "Tolga", "Harun",
-		        "Umais", "Lars", "Hans", "Peter", "Søren", "Gurli", "Lars", "Hans", "Peter");
+		
+		String[] rec = {"Recent1", "Recent2"};
+		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
-
-		ObservableList<String> onlineItems = FXCollections.observableArrayList("Online1", "Online2", "Online3",
-		        "Online4", "Online5", "Online10", "Online20", "Online30", "Online40", "Online50");
+		
+		String[] onl = {"Online1", "Online2"};
+		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
 
-		ObservableList<String> offlineItems = FXCollections.observableArrayList("Offline1", "Offline2", "Offline3",
-		        "Offline4", "Offline5", "Offline10", "Offline20", "Offline30", "Offline40", "Offline50");
+		String[] off = {"Offline1", "Offline2"};
+		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 
-		ObservableList<String> groupsItems = FXCollections.observableArrayList("Group1", "Group2", "Group3", "Group4",
-		        "Group5", "Group10", "Group20", "Group30", "Group40", "Group50");
-		
+		String[] gro = {"Group1", "Group2"};
+		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
 	}
 
@@ -97,11 +97,42 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
 		settings.setOnAction(this);
 		
-		String text1 = "Dette er en TextArea. Vi kunne bruge den til at samtalen.\n\n";
-		String text2 = "Alt dette er en <Strings>.\n\n";
-		String text3 = "Man kan ikke ændre ved skrifttypen og størrelsen og tykkelsen osv. fordi det er String.\n\n";
-		String text4 = "Så vi skal nok bruge TextFlow i stedet for TextArea.\n\n";
-	    textArea.appendText(text1 + text2 + text3 + text4);
+	}
+	
+	private void setListsFunctions() {
+		
+		recentList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	            System.out.println("clicked on " + recentList.getSelectionModel().getSelectedItem());
+	        }
+	    });
+		
+		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	            System.out.println("clicked on " + friendsOnlineList.getSelectionModel().getSelectedItem());
+	        }
+	    });
+		
+		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	            System.out.println("clicked on " + friendsOfflineList.getSelectionModel().getSelectedItem());
+	        }
+	    });
+		
+		groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	            System.out.println("clicked on " + groupsList.getSelectionModel().getSelectedItem());
+	        }
+	    });
+		
 	}
 
 	@Override
