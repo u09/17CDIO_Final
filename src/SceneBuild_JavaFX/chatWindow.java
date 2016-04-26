@@ -17,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +37,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 	MenuItem about, close, settings, logOut, fullScreen, exitFullScreen;
 	@FXML
 	ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
-
+	@FXML
+	TitledPane titledPane;
+	
 	@Override
 	public void start(Stage stage) {
 		this.myStage = stage;
@@ -69,7 +72,8 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		titledPane.setText("Chat system");
 		setMenuBarFunctions();
 		getListsContents();
 		setListsFunctions();
@@ -111,7 +115,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	            System.out.println("clicked on " + recentList.getSelectionModel().getSelectedItem());
+	        	String name = recentList.getSelectionModel().getSelectedItem();
+	            System.out.println("clicked on " + name);
+	            titledPane.setText(name);
 	        }
 	    });
 		
@@ -119,7 +125,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	            System.out.println("clicked on " + friendsOnlineList.getSelectionModel().getSelectedItem());
+	        	String name = recentList.getSelectionModel().getSelectedItem();
+	            System.out.println("clicked on " + name);
+	            titledPane.setText(name);
 	        }
 	    });
 		
@@ -127,7 +135,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	            System.out.println("clicked on " + friendsOfflineList.getSelectionModel().getSelectedItem());
+	        	String name = friendsOfflineList.getSelectionModel().getSelectedItem();
+	            System.out.println("clicked on " + name);
+	            titledPane.setText(name);
 	        }
 	    });
 		
@@ -135,7 +145,9 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	            System.out.println("clicked on " + groupsList.getSelectionModel().getSelectedItem());
+	        	String name = groupsList.getSelectionModel().getSelectedItem();
+	            System.out.println("clicked on " + name);
+	            titledPane.setText(name);
 	        }
 	    });
 		
@@ -159,7 +171,7 @@ public class chatWindow extends Application implements EventHandler<ActionEvent>
 			}
 		}
 		if(event.getSource() == logOut) {
-
+			
 		}
 		if(event.getSource() == fullScreen) {
 
