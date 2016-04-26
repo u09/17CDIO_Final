@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 
+import QuickConnect.FunctionUser;
 import QuickConnect.User;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -42,7 +44,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	TitledPane titledPane;
 	User user;
 
-	public void start(Stage stage,User user) {
+	public void start(Stage stage,User user) throws SQLException {
 		this.user=user;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: "+user.Username);
@@ -64,8 +66,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		this.myStage.show();
 	}
 
-	public void showChatFrame() {
-
+	public void showChatFrame() throws SQLException {
 		loader = new FXMLLoader();
 		loader.setLocation(chatWindow.class.getResource("ChatFrame.fxml"));
 		loader.setController(this);
@@ -74,7 +75,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
 		titledPane.setText("Chat system");
 		setMenuBarFunctions();
 		getListsContents();
@@ -82,17 +82,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void setMenuBarFunctions() {
-		
 		menuBar.setUseSystemMenuBar(true);
 		about.setOnAction(this);
 		close.setOnAction(this);
 		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
 		settings.setOnAction(this);
-		
 	}
 	
-	private void getListsContents() {
-		
+	private void getListsContents() throws SQLException {
 		String[] rec = {"Recent1", "Recent2"};
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
@@ -105,14 +102,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 
-		String[] gro = {"Group1", "Group2"};
+		String[] gro = FunctionUser.showGroups(user.UserID);//{"Group1", "Group2"};
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
-		
 	}
 
 	private void setListsFunctions() {
-		
 		recentList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 	        @Override
@@ -152,7 +147,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	            titledPane.setText(name);
 	        }
 	    });
-		
 	}
 
 	@Override
