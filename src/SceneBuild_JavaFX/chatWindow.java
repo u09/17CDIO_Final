@@ -7,7 +7,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import QuickConnect.Function;
 import QuickConnect.FunctionUser;
+import QuickConnect.Threads;
 import QuickConnect.User;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -39,7 +41,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class chatWindow implements EventHandler<ActionEvent> {
+public class chatWindow implements EventHandler<ActionEvent>{
 
 	private Stage myStage;
 	private Scene myScene;
@@ -83,6 +85,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
+		Runnable r = new Threads(user);
+		new Thread(r).start();
 	}
 
 	public void showChatFrame() throws SQLException {
