@@ -157,7 +157,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 			@Override
 			public void handle(MouseEvent event) {
-				String name = recentList.getSelectionModel().getSelectedItem();
+				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
 				titledPane.setText(name);
 			}
