@@ -148,7 +148,7 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 
 	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
 		Connector con = Function.mysql();
-		con.update("INSERT INTO users (username,password,email,timestamp) VALUES (?,?,?,?)", new String[] { "s", user },
+		con.update("INSERT INTO users (username,password,email,user_created) VALUES (?,?,?,?)", new String[] { "s", user },
 		        new String[] { "s", Function.md5(pass) }, new String[] { "s", email },
 		        new String[] { "l", Long.toString(Function.timestamp()) });
 		return false;
