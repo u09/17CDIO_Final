@@ -50,13 +50,14 @@ public class FunctionUser {
 		}
 	}
 	
-	public static void deleteUser(int id, String password) throws SQLException, NoSuchAlgorithmException{
+	public static int deactivateUser(int id, String password) throws SQLException, NoSuchAlgorithmException{
 		boolean bool = false;
-			bool = con.check("SELECT user_id FROM users WHERE user_id=? AND password=?", new String []{"i",""+id},new String[]{"s",Function.md5(password)});
+			bool = con.check("SELECT user_id FROM users WHERE user_ID=? AND password=?", new String []{"i",""+id},new String[]{"s",Function.md5(password)});
 		if(bool){
-			con.update("DELETE FROM users WHERE user_id=?",new String[]{"i",""+id});
+			con.update("update users set user_deleted=1 WHERE user_ID=?",new String[][]{{"i",""+id}});
+			return 0; 
 		}else{
-			System.out.println("Password forkert");
+			return 1; 
 		}
 	}
 	

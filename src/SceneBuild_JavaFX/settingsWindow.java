@@ -30,8 +30,8 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	Scene myScene;
 	AnchorPane settingsFrame;
 	FXMLLoader loader;
-	@FXML TextField inNickname, inCurrentPass, inNewPass, inNewPass2;
-	@FXML Button bSaveNickname, bSavePass;
+	@FXML TextField inNickname, inCurrentPass, inNewPass, inNewPass2,inCurrentPass2;
+	@FXML Button bSaveNickname, bSavePass, bDeleteUser;
 	User user;
 
 	public void start(Stage stage, User user) throws Exception {
@@ -79,6 +79,8 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		bSaveNickname.setDefaultButton(true);
 		bSavePass.setOnAction(this);
 		bSavePass.setDefaultButton(true);
+		bDeleteUser.setOnAction(this);
+		bDeleteUser.setDefaultButton(true);
 
 	}
 
@@ -135,6 +137,27 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				passFail.show();
 			}
 		}
+		if(event.getSource() == bDeleteUser){
+			int deactivateUserAnswer = 0;
+			try{
+				deactivateUserAnswer = FunctionUser.deactivateUser(user.UserID,inCurrentPass2.getText());
+			}
+			catch(SQLException | NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+			if(deactivateUserAnswer == 0){
+				Alert deactivateSuccess = new Alert(AlertType.INFORMATION);
+				deactivateSuccess.setTitle(myStage.getTitle());
+				deactivateSuccess.setHeaderText("Deaktivering af bruger lykkedes");
+				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
+				deactivateSuccess.show();
+			}
+			else if(deactivateUserAnswer == 1){
+				Alert deactivateFail = new Alert(AlertType.INFORMATION);
+				deactivateFail.setHeaderText("Deaktivering af bruger mislykkedes");
+				deactivateFail.setContentText("Forkert password");
+				deactivateFail.show();
+			}
+		}
 	}
-
 }
