@@ -1,3 +1,10 @@
-/SceneBuild_JavaFX/
 /QuickConnect/
 /QuickConnect_GUI_JavaFX/
+/SceneBuild_JavaFX/
+<<<<<<< Updated upstream
+/QuickConnect/
+/QuickConnect_GUI_JavaFX/
+=======
+/Tests/
+/layoutsamplecss/
+>>>>>>> Stashed changes

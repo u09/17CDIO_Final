@@ -60,7 +60,23 @@ public class FunctionUser {
 		}
 	}
 	
+
+	
+	public static String[] showOnlineUsers(int id) throws SQLException{
+		ArrayList <String> onlineUsers= new ArrayList<String>();
+		
+		ResultSet rs = con.select("select username from users  where user_id = any(select user_id from contacts where contact_id = ?) OR user_id = any(select contact_id from contacts where user_id = ?)  and online=1;",new String[]{"i",""+id});
+		while(rs.next())
+		onlineUsers.add(rs.getString("username"));
+		return onlineUsers.toArray(new String[onlineUsers.size()]);
+	}
+	
+	
+	
+	
+	
 	public static String[] showGroups(int id) throws SQLException{
+
 		ArrayList<String> groups=new ArrayList<String>();
 		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[][]{{"i",""+id}});
 		while(rs.next()) groups.add(rs.getString("group_name"));
