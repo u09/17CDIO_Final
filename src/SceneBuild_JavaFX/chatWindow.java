@@ -131,11 +131,11 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
 		
-		String[] onl = { "Online1", "Online2" };
+		String[] onl = FunctionUser.showOnlineUsers(user.UserID);
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
 
-		String[] off = { "Offline1", "Offline2" };
+		String[] off = FunctionUser.showOfflineUsers(user.UserID);
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 
