@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import QuickConnect.User;
@@ -56,7 +57,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	@FXML
 	ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML
-	TitledPane titledPane;
+	TitledPane titledPane, onlinePane, offlinePane;
 	@FXML
 	TextArea textArea;
 	@FXML
@@ -163,10 +164,13 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		String[] onl = FunctionUser.showOnlineUsers(user.UserID);
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
+		onlinePane.setText("Online ("+onlineItems.size()+" venner)");
 
 		String[] off = FunctionUser.showOfflineUsers(user.UserID);
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
+		offlinePane.setText("Offline ("+offlineItems.size()+" venner)");
+		
 
 		String[] gro = FunctionUser.showGroups(user.UserID);// {"Group1",
 		                                                    // "Group2"};
@@ -182,7 +186,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = recentList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				titledPane.setText(name);
+				if (name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 
@@ -192,7 +196,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				titledPane.setText(name);
+				if (name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 
@@ -201,8 +205,9 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(MouseEvent event) {
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
+				
 				System.out.println("clicked on " + name);
-				titledPane.setText(name);
+				if (name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 
@@ -212,7 +217,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = groupsList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				titledPane.setText(name);
+				if (name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 	}
