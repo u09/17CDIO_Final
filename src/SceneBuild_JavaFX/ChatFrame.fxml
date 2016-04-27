@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <TabPane prefHeight="371.0" prefWidth="227.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -26,11 +26,11 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="338.0" prefWidth="267.0">
                      <children>
-                        <ListView fx:id="recentList" focusTraversable="false" layoutY="46.0" prefHeight="292.0" prefWidth="227.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
-                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0">
+                        <ListView fx:id="recentList" focusTraversable="false" layoutY="46.0" prefHeight="292.0" prefWidth="227.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0">
                            <children>
-                              <TextField prefHeight="27.0" prefWidth="187.0" />
-                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                              <TextField fx:id="inSearchRecent" prefHeight="27.0" prefWidth="187.0" />
+                              <Button fx:id="bSearchRecent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                            </children>
                         </HBox>
                      </children>
@@ -48,7 +48,7 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <TitledPane animated="false" prefHeight="181.0" prefWidth="225.0" text="Online" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TitledPane animated="false" prefHeight="181.0" prefWidth="225.0" text="Online" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
@@ -74,6 +74,12 @@
                               </AnchorPane>
                           </items>
                         </SplitPane>
+                        <HBox spacing="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <TextField fx:id="inSearchFriends" prefHeight="27.0" prefWidth="187.0" />
+                              <Button fx:id="bSearchFriends" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>
@@ -85,11 +91,11 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="groupsList" prefHeight="338.0" prefWidth="228.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
-                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0">
+                        <ListView fx:id="groupsList" prefHeight="338.0" prefWidth="228.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
+                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0">
                            <children>
-                              <TextField prefHeight="27.0" prefWidth="187.0" />
-                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                              <TextField fx:id="inSearchGroups" prefHeight="27.0" prefWidth="187.0" />
+                              <Button fx:id="bSearchGroups" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                            </children>
                         </HBox>
                      </children>
@@ -103,7 +109,7 @@
       </TabPane>
    </left>
    <top>
-      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" prefWidth="812.0" BorderPane.alignment="CENTER">
          <menus>
             <Menu mnemonicParsing="false" text="QuickConnect">
                <items>
@@ -139,11 +145,11 @@
                      <children>
                         <BorderPane prefHeight="343.0" prefWidth="564.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <bottom>
-                              <HBox alignment="CENTER" prefHeight="24.0" prefWidth="541.0" BorderPane.alignment="CENTER">
+                              <HBox fx:id="hBoxMessage" alignment="CENTER" prefHeight="24.0" prefWidth="541.0" spacing="4.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <TextField prefHeight="27.0" prefWidth="466.0" promptText="Indtast din besked" />
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
-                                    <Button defaultButton="true" mnemonicParsing="false" prefHeight="27.0" text="Send" />
+                                    <TextField fx:id="inMessage" prefHeight="27.0" prefWidth="466.0" promptText="Indtast din besked" />
+                                    <Button fx:id="bEmojis" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                                    <Button fx:id="bSend" defaultButton="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" text="Send" />
                                  </children>
                               </HBox>
                            </bottom>

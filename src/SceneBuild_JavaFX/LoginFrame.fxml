@@ -13,7 +13,7 @@
       <Label fx:id="lTitle" text="Velkommen til" />
       <ImageView fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@bg.jpg" />
+            <Image url="@../../Icons/bg.jpg" />
          </image>
       </ImageView>
       <Label fx:id="lUser" text="Indtast dit brugernavn:" />

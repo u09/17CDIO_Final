@@ -52,7 +52,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		
 		myScene = new Scene(LoginFrame);
 		
-		File file = new File("src/SceneBuild_JavaFX/standardLayout.css");
+		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");
 		URL url;
 		try {
 			url = file.toURI().toURL();
