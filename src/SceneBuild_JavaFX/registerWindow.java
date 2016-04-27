@@ -50,7 +50,7 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 		
 		myScene = new Scene(RegisterFrame);
 		
-		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");
+		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
 		try {
 			url = file.toURI().toURL();

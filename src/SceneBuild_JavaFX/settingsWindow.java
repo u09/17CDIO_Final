@@ -31,7 +31,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	Scene myScene;
 	AnchorPane settingsFrame;
 	FXMLLoader loader;
-	@FXML TextField inNickname, inCurrentPass, inNewPass, inNewPass2,inCurrentPass2;
+	@FXML TextField inNickname, inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML Button bSaveNickname, bSavePass, bDeleteUser;
 	User user;
 
@@ -40,12 +40,11 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Settings");
 		this.myStage.setResizable(false);
-
 		showSettingsFrame();
 
 		myScene = new Scene(settingsFrame);
 
-		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");
+		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
 		try {
 			url = file.toURI().toURL();
@@ -150,7 +149,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				Alert deactivateSuccess = new Alert(AlertType.INFORMATION);
 				deactivateSuccess.setTitle(myStage.getTitle());
 				deactivateSuccess.setHeaderText("Deaktivering af bruger lykkedes");
-				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
+				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger pÃ¥");
 				deactivateSuccess.show();
 				((Node) event.getSource()).getScene().getWindow().hide();
 			}

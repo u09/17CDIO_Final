@@ -4,15 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import QuickConnect.Connector;
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import QuickConnect.User;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +25,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
@@ -35,14 +33,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class chatWindow implements EventHandler<ActionEvent>{
 	
@@ -50,6 +47,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	private Scene myScene;
 	private BorderPane chatFrame;
 	FXMLLoader loader;
+	Thread th;
+	URL url;
 	@FXML
 	MenuBar menuBar;
 	@FXML
@@ -63,9 +62,11 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	@FXML
 	TextField inMessage;
 	@FXML
-	Button bEmojis, bSend, bSearchRecent, bSearchFriends, bSearchGroups;
+	Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups;
 	@FXML
 	HBox hBoxMessage;
+	@FXML
+	ColorPicker colorPick;
 	User user;
 
 	public void start(Stage stage, User user) throws SQLException {
@@ -78,8 +79,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		FunctionUser.setOnlineUser(user.UserID);
 		myScene = new Scene(chatFrame);
 
-		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");
-		URL url;
+		File file = new File("QuickConnectCSS/StandardLayout.css");
 		try {
 			url = file.toURI().toURL();
 			myScene.getStylesheets().add(url.toExternalForm());
@@ -108,7 +108,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			    }
 			  }
 			};
-			Thread th = new Thread(task);
+			th = new Thread(task);
 			th.setDaemon(true);
 			th.start();
 		
@@ -117,6 +117,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	}
 
 	public void showChatFrame() throws SQLException {
+		
 		loader = new FXMLLoader();
 		loader.setLocation(chatWindow.class.getResource("ChatFrame.fxml"));
 		loader.setController(this);
@@ -125,8 +126,9 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
 		titledPane.setText("Chat system");
-		hBoxMessage.setHgrow(inMessage, Priority.ALWAYS);
+		HBox.setHgrow(inMessage, Priority.ALWAYS);
 		bSearchRecent.setId("bSearch");
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
@@ -149,7 +151,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		fullScreen.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
 		exitFullScreen.setOnAction(this);
 		exitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
-		exitFullScreen.setDisable(true);
+		colorPick.setOnAction(this);
 
 	}
 
@@ -218,10 +220,17 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == about) {
-
+			ButtonType close = new ButtonType("Luk", ButtonData.OK_DONE);
+			Alert aboutInfo = new Alert(AlertType.NONE, "Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadre enhver der laver rav.", close);
+			aboutInfo.initOwner(myStage);
+			aboutInfo.setTitle("Om QuickConnect");
+			aboutInfo.setHeaderText("QuickConnect™\nVersion 1.0 (2016)");
+			aboutInfo.initModality(Modality.NONE);
+			aboutInfo.show();
 		}
 		if(event.getSource() == close) {
 			System.exit(0);
+			th.interrupt();
 		}
 		if(event.getSource() == settings) {
 			Stage stage = new Stage();
@@ -234,18 +243,14 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		}
 		if(event.getSource() == signOut) {
 			
-			Alert confirmSignOut = new Alert(AlertType.CONFIRMATION);
-			DialogPane x = confirmSignOut.getDialogPane();
-			x.getStylesheets().add(getClass().getResource("StandardLayout.css").toExternalForm());
-			
-			confirmSignOut.setTitle("Log ud");
-			confirmSignOut.setHeaderText("Du er ved at logge ud af QuickConnect");
-			confirmSignOut.setContentText("Er du sikker på at du vil logge ud?");
-			
 			ButtonType bSignOut = new ButtonType("Log ud", ButtonData.OK_DONE);
 			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
 			bCancel.getButtonData().isCancelButton();
-			confirmSignOut.getButtonTypes().setAll(bSignOut, bCancel);
+			Alert confirmSignOut = new Alert(AlertType.CONFIRMATION, null, bSignOut, bCancel);
+			confirmSignOut.initOwner(myStage);
+			confirmSignOut.setTitle("Log ud");
+			confirmSignOut.setHeaderText("Du er ved at logge ud af QuickConnect");
+			confirmSignOut.setContentText("Er du sikker på at du vil logge ud?");
 			
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
 			if(result.get() == bSignOut) {
@@ -262,6 +267,10 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			myStage.setFullScreen(false);
 			exitFullScreen.setDisable(true);
 		}
+		if(event.getSource() == colorPick) {
+			System.out.println(colorPick.getValue().toString());
+		}
+
 	}
 
 	public Stage getPrimaryStage() {

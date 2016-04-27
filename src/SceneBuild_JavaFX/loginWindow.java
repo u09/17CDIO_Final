@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +54,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		
 		myScene = new Scene(LoginFrame);
 		
-		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");
+		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
 		try {
 			url = file.toURI().toURL();
@@ -76,11 +77,13 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
 		bLogin.setOnAction(this);
 		bLogin.setDefaultButton(true);
 		bRegister.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
+		byte[] emojiBytes = new byte[]{(byte)0xF0, (byte)0x9F, (byte)0x98, (byte)0x81};
+		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
+		inUser.setText(emojiAsString);
 	}
 
 	@Override
