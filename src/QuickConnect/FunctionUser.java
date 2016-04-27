@@ -90,4 +90,8 @@ public class FunctionUser {
 		return groups.toArray(new String[groups.size()]);
 	}
 	
+	public static void setOnlineUser(int id) throws SQLException{
+		 con.update("UPDATE users set online=1 WHERE user_ID="+id);
+	}
+	
 }

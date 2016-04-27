@@ -71,7 +71,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
 
 		showChatFrame();
-
+		FunctionUser.setOnlineUser(user.UserID);
 		myScene = new Scene(chatFrame);
 
 		File file = new File("src/SceneBuild_JavaFX/StandardLayout.css");

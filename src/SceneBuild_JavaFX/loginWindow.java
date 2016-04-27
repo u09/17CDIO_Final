@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import QuickConnect.FunctionUser;
 import QuickConnect.User;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -99,6 +100,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 
 			if(bool==true) {
 				User user = null;
+					
+						
 				try {
 					ResultSet sql=con.select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
 					sql.next();
