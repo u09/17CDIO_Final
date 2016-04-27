@@ -66,7 +66,7 @@ public class FunctionUser {
 	public static String[] showOnlineUsers(int id) throws SQLException{
 		ArrayList <String> onlineUsers= new ArrayList<String>();
 		
-		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ?) OR user_id = any(select contact_id from contacts where user_id = ?))  and online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
+		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
 		while(rs.next())
 		onlineUsers.add(rs.getString("username"));
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
@@ -76,7 +76,7 @@ public class FunctionUser {
 	public static String[] showOfflineUsers(int id) throws SQLException{
 		ArrayList <String> offlineUsers= new ArrayList<String>();
 		
-		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ?) OR user_id = any(select contact_id from contacts where user_id = ?))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
+		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
 		while(rs.next())
 		offlineUsers.add(rs.getString("username"));
 		return offlineUsers.toArray(new String[offlineUsers.size()]);
