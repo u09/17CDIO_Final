@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -151,6 +152,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				deactivateSuccess.setHeaderText("Deaktivering af bruger lykkedes");
 				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
 				deactivateSuccess.show();
+				((Node) event.getSource()).getScene().getWindow().hide();
 			}
 			else if(deactivateUserAnswer == 1){
 				Alert deactivateFail = new Alert(AlertType.INFORMATION);

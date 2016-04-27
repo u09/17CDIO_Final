@@ -61,7 +61,9 @@ public class FunctionUser {
 		}
 	}
 	
-
+	public static void activateUser(int id) throws SQLException{
+		con.update("update users set user_deleted=0 WHERE user_ID=?",new String[][]{{"i",""+id}});
+	}
 	
 	public static String[] showOnlineUsers(int id) throws SQLException{
 		ArrayList <String> onlineUsers= new ArrayList<String>();

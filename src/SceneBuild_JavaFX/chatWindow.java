@@ -7,6 +7,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import QuickConnect.Connector;
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
@@ -42,7 +43,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class chatWindow implements EventHandler<ActionEvent>{
-
+	
 	private Stage myStage;
 	private Scene myScene;
 	private BorderPane chatFrame;
@@ -71,6 +72,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
 
 		showChatFrame();
+		FunctionUser.activateUser(user.UserID);
 		FunctionUser.setOnlineUser(user.UserID);
 		myScene = new Scene(chatFrame);
 
