@@ -67,17 +67,18 @@ public class FunctionUser {
 	
 	public static String[] showOnlineUsers(int id) throws SQLException{
 		ArrayList <String> onlineUsers= new ArrayList<String>();
-		
-		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
-		while(rs.next())
-		onlineUsers.add(rs.getString("username"));
+		ResultSet rs = con.select("select user_ID,nickname from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
+		while(rs.next()){
+			int uid=rs.getInt("user_ID");
+			boolean chk=con.check("SELECT user_ID FROM users WHERE last_on<"+(Function.timestamp()-7));
+			if(chk) con.update("UPDATE users SET online=0 WHERE user_ID="+uid);
+			else onlineUsers.add(rs.getString("nickname"));
+		}
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
 	
-	
 	public static String[] showOfflineUsers(int id) throws SQLException{
 		ArrayList <String> offlineUsers= new ArrayList<String>();
-		
 		ResultSet rs = con.select("select username from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
 		while(rs.next())
 		offlineUsers.add(rs.getString("username"));
@@ -86,7 +87,6 @@ public class FunctionUser {
 	
 	
 	public static String[] showGroups(int id) throws SQLException{
-
 		ArrayList<String> groups=new ArrayList<String>();
 		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[][]{{"i",""+id}});
 		while(rs.next()) groups.add(rs.getString("group_name"));

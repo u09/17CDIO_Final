@@ -14,7 +14,6 @@ public class Threads implements Runnable {
 			try {
 				sql.update("UPDATE users SET last_on='"+Function.timestamp()+"' WHERE user_ID='"+user.UserID+"'");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

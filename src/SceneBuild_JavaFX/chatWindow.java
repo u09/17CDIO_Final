@@ -13,8 +13,10 @@ import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import QuickConnect.User;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -87,6 +89,29 @@ public class chatWindow implements EventHandler<ActionEvent>{
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
+		
+		Task<Void> task = new Task<Void>() {
+			  @Override
+			  public Void call() throws Exception {
+			    while (true) {
+			      Platform.runLater(new Runnable() {
+			        @Override
+			        public void run() {
+			        	try {
+							getListsContents();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+			        }
+			      });
+			      Thread.sleep(5000);
+			    }
+			  }
+			};
+			Thread th = new Thread(task);
+			th.setDaemon(true);
+			th.start();
+		
 		Runnable r = new Threads(user);
 		new Thread(r).start();
 	}
