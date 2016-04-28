@@ -48,7 +48,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	private Scene myScene;
 	private BorderPane chatFrame;
 	FXMLLoader loader;
-	Thread th;
+	static Thread th;
 	URL url;
 	@FXML
 	MenuBar menuBar;
@@ -234,8 +234,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			aboutInfo.show();
 		}
 		if(event.getSource() == close) {
-			System.exit(0);
-			th.interrupt();
+			closeChatWindow();
 		}
 		if(event.getSource() == settings) {
 			Stage stage = new Stage();
@@ -260,6 +259,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
 			if(result.get() == bSignOut) {
 				System.out.println("Trykket på Log ud");
+				closeChatWindow();
 			} else {
 				confirmSignOut.close();
 			}
@@ -282,7 +282,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		return myStage;
 	}
 
-	public static void closeloginWindow() {
-		myStage.close();
+	public static void closeChatWindow() {
+		System.exit(0);
+		th.interrupt();
 	}
 }
