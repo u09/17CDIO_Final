@@ -2,9 +2,7 @@ package QuickConnect;
 
 import java.awt.FontFormatException;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import SceneBuild_JavaFX.loginWindow;
 import javafx.application.Application;

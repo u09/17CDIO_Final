@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
-import QuickConnect.FunctionUser;
 import QuickConnect.User;
 import javafx.application.Application;
 import javafx.event.ActionEvent;

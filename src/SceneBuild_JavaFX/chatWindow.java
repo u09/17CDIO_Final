@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import QuickConnect.User;
@@ -27,7 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -44,7 +41,6 @@ import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent>{
 	
-	static int id;
 	public static Stage myStage;
 	private Scene myScene;
 	private BorderPane chatFrame;
@@ -72,13 +68,12 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	User user;
 
 	public void start(Stage stage, User user) throws SQLException {
-		id = user.UserID;
 		this.user = user;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
 		showChatFrame();
 		FunctionUser.activateUser(user.UserID);
-		FunctionUser.setOnlineUser(user.UserID);
+		FunctionUser.setUserOnline(user.UserID);
 		myScene = new Scene(chatFrame);
 
 		File file = new File("QuickConnectCSS/StandardLayout.css");
@@ -285,9 +280,9 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		return myStage;
 	}
 
-	public static void closeChatWindow() {
+	public void closeChatWindow() {
 		try {
-			FunctionUser.setOfflineUser(id);
+			FunctionUser.setOfflineUser(user.UserID);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

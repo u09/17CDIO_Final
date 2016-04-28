@@ -7,11 +7,8 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-import QuickConnect.Connector;
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
