@@ -44,7 +44,7 @@ import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent>{
 	
-	private Stage myStage;
+	public static Stage myStage;
 	private Scene myScene;
 	private BorderPane chatFrame;
 	FXMLLoader loader;
@@ -74,7 +74,6 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		this.user = user;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
-
 		showChatFrame();
 		FunctionUser.activateUser(user.UserID);
 		FunctionUser.setOnlineUser(user.UserID);
@@ -280,5 +279,9 @@ public class chatWindow implements EventHandler<ActionEvent>{
 
 	public Stage getPrimaryStage() {
 		return myStage;
+	}
+
+	public static void closeloginWindow() {
+		myStage.close();
 	}
 }

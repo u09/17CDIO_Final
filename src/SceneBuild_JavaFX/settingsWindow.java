@@ -152,6 +152,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
 				deactivateSuccess.show();
 				((Node) event.getSource()).getScene().getWindow().hide();
+				chatWindow.closeloginWindow();
 			}
 			else if(deactivateUserAnswer == 1){
 				Alert deactivateFail = new Alert(AlertType.INFORMATION);
