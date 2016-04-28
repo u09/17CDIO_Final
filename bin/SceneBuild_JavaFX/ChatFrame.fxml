@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
 <?import javafx.scene.*?>
@@ -80,8 +79,9 @@
                         </SplitPane>
                         <HBox spacing="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0">
                            <children>
-                              <TextField fx:id="inSearchFriends" minHeight="-Infinity" prefHeight="27.0" prefWidth="187.0" promptText="Søg i venner" />
+                              <TextField fx:id="inSearchFriends" minHeight="-Infinity" prefHeight="27.0" prefWidth="171.0" promptText="Søg i venner" />
                               <Button fx:id="bSearchFriends" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
+                              <Button fx:id="bAddFriend" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                            </children>
                         </HBox>
                      </children>

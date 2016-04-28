@@ -63,7 +63,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	@FXML
 	TextField inMessage;
 	@FXML
-	Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups;
+	Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend;
 	@FXML
 	HBox hBoxMessage;
 	@FXML
@@ -133,6 +133,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
+		bAddFriend.setId("bAddFriend");
 		setMenuBarFunctions();
 		getListsContents();
 		setListsFunctions();
