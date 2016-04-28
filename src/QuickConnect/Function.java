@@ -5,12 +5,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class Function {
-
+	private static Connector con = Function.mysql();
+	
 	public static long timestamp(){
 		long unixTime = System.currentTimeMillis() / 1000L;
 		return unixTime;
@@ -83,5 +87,35 @@ public class Function {
 			advarsel.showAndWait();
 		}	
 		return true;
+	}
+
+	
+	public static String[] showOnlineUsers(int id) throws SQLException{
+		ArrayList <String> onlineUsers= new ArrayList<String>();
+		ResultSet rs = con.select("SELECT user_ID,nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = ? AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = ? AND status= 1))  AND online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
+		while(rs.next()){
+			int uid=rs.getInt("user_ID");
+			System.out.println(Function.timestamp()-10);
+			System.out.println((int)(Function.timestamp()-10));
+			boolean chk=con.check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(Function.timestamp()-10));
+			if(chk) con.update("UPDATE users SET online=0 WHERE user_ID="+uid);
+			else onlineUsers.add(rs.getString("nickname"));
+		}
+		return onlineUsers.toArray(new String[onlineUsers.size()]);
+	}
+	
+	public static String[] showOfflineUsers(int id) throws SQLException{
+		ArrayList <String> offlineUsers= new ArrayList<String>();
+		ResultSet rs = con.select("select nickname from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
+		while(rs.next())
+		offlineUsers.add(rs.getString("nickname"));
+		return offlineUsers.toArray(new String[offlineUsers.size()]);
+	}
+	
+	public static String[] showGroups(int id) throws SQLException{
+		ArrayList<String> groups=new ArrayList<String>();
+		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[][]{{"i",""+id}});
+		while(rs.next()) groups.add(rs.getString("group_name"));
+		return groups.toArray(new String[groups.size()]);
 	}
 }

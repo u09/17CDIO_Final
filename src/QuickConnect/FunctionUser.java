@@ -3,7 +3,6 @@ package QuickConnect;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class FunctionUser {
 	private static Connector con = Function.mysql();
@@ -18,14 +17,14 @@ public class FunctionUser {
 		}
 	}
 	
-	public static String getNickName(int id) {
-		String nickName = null;
-		try {
-			nickName = con.select("SELECT nickname FROM users WHERE user_id=?", new String[]{"i",""+id}).toString();
-		} catch(SQLException e) {
-			e.printStackTrace();
+	public static String getNickName(int id) throws SQLException {
+		ResultSet rs = con.select("SELECT nickname FROM users WHERE user_id=?", new String[][]{{"i",""+id}});
+		String nickname = null;
+		while(rs.next()) {
+			String em = rs.getString("nickname");
+			nickname = em.replace("\n", ",");
 		}
-		return nickName;
+		return nickname;
 	}
 	
 	public static int changePassword(int id, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
@@ -73,41 +72,15 @@ public class FunctionUser {
 		con.update("update users set user_deleted=0 WHERE user_ID=?",new String[][]{{"i",""+id}});
 	}
 	
-	public static String[] showOnlineUsers(int id) throws SQLException{
-		ArrayList <String> onlineUsers= new ArrayList<String>();
-		ResultSet rs = con.select("SELECT user_ID,nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = ? AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = ? AND status= 1))  AND online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
-		while(rs.next()){
-			int uid=rs.getInt("user_ID");
-			System.out.println(Function.timestamp()-10);
-			System.out.println((int)(Function.timestamp()-10));
-			boolean chk=con.check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(Function.timestamp()-10));
-			if(chk) con.update("UPDATE users SET online=0 WHERE user_ID="+uid);
-			else onlineUsers.add(rs.getString("nickname"));
-		}
-		return onlineUsers.toArray(new String[onlineUsers.size()]);
-	}
-	
-	public static String[] showOfflineUsers(int id) throws SQLException{
-		ArrayList <String> offlineUsers= new ArrayList<String>();
-		ResultSet rs = con.select("select nickname from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
-		while(rs.next())
-		offlineUsers.add(rs.getString("nickname"));
-		return offlineUsers.toArray(new String[offlineUsers.size()]);
-	}
-	
-	
-	public static String[] showGroups(int id) throws SQLException{
-		ArrayList<String> groups=new ArrayList<String>();
-		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[][]{{"i",""+id}});
-		while(rs.next()) groups.add(rs.getString("group_name"));
-		return groups.toArray(new String[groups.size()]);
-	}
-	
 	public static void setOnlineUser(int id) throws SQLException{
 		 con.update("UPDATE users set online=1 WHERE user_ID="+id);
 	}
 	public static void setOfflineUser(int id) throws SQLException{
 		 con.update("UPDATE users set online=0 WHERE user_ID="+id);
+	}
+	
+	public static void sendMessage(String msg, int send_id, int receive_id) {
+		
 	}
 	
 }

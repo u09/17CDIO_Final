@@ -9,8 +9,6 @@ import javafx.application.Application;
 
 public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
-		String[] g=FunctionUser.showGroups(1);
-		for(int i=1;i<=g.length;i++) System.out.println(g[i-1]);
 		Application.launch(loginWindow.class, args);
 	}
 }

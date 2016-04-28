@@ -51,7 +51,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 
 		showLoginFrame();
 		
-		myScene = new Scene(LoginFrame);
+		this.myScene = new Scene(LoginFrame);
 		
 		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;

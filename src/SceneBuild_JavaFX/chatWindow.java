@@ -7,6 +7,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import QuickConnect.User;
@@ -31,7 +32,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -131,6 +134,21 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddFriend");
+		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>(){
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode().equals(KeyCode.ENTER)) {
+					String msg = inMessage.getText();
+//					FunctionUser.sendMessage(msg, user.UserID, titledPane.getText());
+					try {
+						textArea.appendText(FunctionUser.getNickName(user.UserID) + ":\n" + msg + "\n");
+					} catch(SQLException e) {
+						e.printStackTrace();
+					}
+					inMessage.clear();
+				}
+			}
+		});
 		setMenuBarFunctions();
 		getListsContents();
 		setListsFunctions();
@@ -158,18 +176,18 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
 		
-		String[] onl = FunctionUser.showOnlineUsers(user.UserID);
+		String[] onl = Function.showOnlineUsers(user.UserID);
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online ("+onlineItems.size()+" venner)");
 
-		String[] off = FunctionUser.showOfflineUsers(user.UserID);
+		String[] off = Function.showOfflineUsers(user.UserID);
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline ("+offlineItems.size()+" venner)");
 		
 
-		String[] gro = FunctionUser.showGroups(user.UserID);// {"Group1",
+		String[] gro = Function.showGroups(user.UserID);// {"Group1",
 		                                                    // "Group2"};
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
@@ -202,7 +220,6 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(MouseEvent event) {
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
-				
 				System.out.println("clicked on " + name);
 				if (name != null && !name.isEmpty()) titledPane.setText(name);
 			}
