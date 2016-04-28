@@ -36,9 +36,11 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML Button bSaveNickname, bSavePass, bDeleteUser;
 	User user;
+	chatWindow cW;
 
 	public void start(Stage stage, User user) throws Exception {
 		this.user = user;
+		this.cW = null;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Settings");
 		this.myStage.setResizable(false);
@@ -168,7 +170,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
 				deactivateSuccess.show();
 				((Node) event.getSource()).getScene().getWindow().hide();
-				chatWindow.closeChatWindow();
+				cW.closeChatWindow();
 			}
 			else if(deactivateUserAnswer == 1){
 				Alert deactivateFail = new Alert(AlertType.INFORMATION);
