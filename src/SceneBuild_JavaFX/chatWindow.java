@@ -44,6 +44,7 @@ import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent>{
 	
+	static int id;
 	public static Stage myStage;
 	private Scene myScene;
 	private BorderPane chatFrame;
@@ -71,6 +72,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	User user;
 
 	public void start(Stage stage, User user) throws SQLException {
+		id = user.UserID;
 		this.user = user;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
@@ -235,6 +237,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		}
 		if(event.getSource() == close) {
 			closeChatWindow();
+			
 		}
 		if(event.getSource() == settings) {
 			Stage stage = new Stage();
@@ -283,6 +286,11 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	}
 
 	public static void closeChatWindow() {
+		try {
+			FunctionUser.setOfflineUser(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		System.exit(0);
 		th.interrupt();
 	}

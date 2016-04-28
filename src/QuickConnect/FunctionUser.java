@@ -109,5 +109,8 @@ public class FunctionUser {
 	public static void setOnlineUser(int id) throws SQLException{
 		 con.update("UPDATE users set online=1 WHERE user_ID="+id);
 	}
+	public static void setOfflineUser(int id) throws SQLException{
+		 con.update("UPDATE users set online=0 WHERE user_ID="+id);
+	}
 	
 }
