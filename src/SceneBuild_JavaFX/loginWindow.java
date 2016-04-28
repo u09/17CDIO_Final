@@ -102,9 +102,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			}
 
 			if(bool==true) {
-				User user = null;
-					
-						
+				User user = null;	
 				try {
 					ResultSet sql=con.select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
 					sql.next();
@@ -118,7 +116,6 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				} catch (NoSuchAlgorithmException | SQLException e1) {
 					e1.printStackTrace();
 				}
-				
 				
 				Stage stage = new Stage();
 				chatWindow cW = new chatWindow();

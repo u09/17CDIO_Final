@@ -21,7 +21,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -31,7 +34,9 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	Scene myScene;
 	AnchorPane settingsFrame;
 	FXMLLoader loader;
-	@FXML TextField inNickname, inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
+	@FXML TextField inNickname;
+	@FXML
+	PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML Button bSaveNickname, bSavePass, bDeleteUser;
 	User user;
 
@@ -74,13 +79,25 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void setButtonFunctions() {
-
+		EventHandler<KeyEvent> haha = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getSource() == inNickname && event.getCode().equals(KeyCode.ENTER)) bSaveNickname.fire();
+				if(event.getSource() == inCurrentPass && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
+				if(event.getSource() == inNewPass && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
+				if(event.getSource() == inNewPass2 && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
+				if(event.getSource() == inCurrentPass2 && event.getCode().equals(KeyCode.ENTER)) bDeleteUser.fire();
+			}
+		};
+		
+		inNickname.setOnKeyPressed(haha);
 		bSaveNickname.setOnAction(this);
-		bSaveNickname.setDefaultButton(true);
+		inCurrentPass.setOnKeyPressed(haha);
+		inNewPass.setOnKeyPressed(haha);
+		inNewPass2.setOnKeyPressed(haha);
 		bSavePass.setOnAction(this);
-		bSavePass.setDefaultButton(true);
+		inCurrentPass2.setOnKeyPressed(haha);
 		bDeleteUser.setOnAction(this);
-		bDeleteUser.setDefaultButton(true);
 
 	}
 
@@ -102,7 +119,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				Alert nicknameFail = new Alert(AlertType.ERROR);
 				nicknameFail.setTitle(myStage.getTitle());
 				nicknameFail.setHeaderText("Nickname blev ikke sat!");
-				nicknameFail.setContentText("Nicknamet må maks være på 15 tegn.");
+				nicknameFail.setContentText("Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
 				nicknameFail.show();
 			}
 		}
@@ -129,6 +146,8 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 					message = "Passwordet skal være mellem 8-24 tegn.";
 				else if(changePassAnswer == 3)
 					message = "Passwordet skal mindst indeholde \n1 stort bogstav, 1 lille bogstav og 1 tal.";
+				else if(changePassAnswer == 4) 
+					message = "Det nuværende password er ikke korrekt";
 				else message = "Passwordet må kun indeholde tal, bogstaver og følgende tegn: \n <h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
 				Alert passFail = new Alert(AlertType.ERROR);
 				passFail.setTitle(myStage.getTitle());

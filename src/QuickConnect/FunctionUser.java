@@ -12,6 +12,7 @@ public class FunctionUser {
 	private static Connector con = Function.mysql();
 	
 	public static int changeNickname(String nickname, int id) {
+		if(nickname.length() ==0 || nickname.equals(" ")) return 2;
 		try {
 			con.update("UPDATE users set nickname=? WHERE user_id=?",new String[]{"s",nickname},new String[]{"i",""+id});
 			return 0;
@@ -20,19 +21,26 @@ public class FunctionUser {
 		}
 	}
 	
-//	public static String getNickName(int id) {
-//		Vi skal lave en funktion som retunerer brugerens nickname.
-//		String nickName = null;
-//		try {
-//			nickName = con.select("SELECT nickname FROM users WHERE user_id=?", new String[]{"i",""+id}).toString();
-//		} catch(SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return nickName;
-//	}
+	public static String getNickName(int id) {
+		String nickName = null;
+		try {
+			nickName = con.select("SELECT nickname FROM users WHERE user_id=?", new String[]{"i",""+id}).toString();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return nickName;
+	}
 	
 	public static int changePassword(int id, String oldPass, String newPass, String newPass2) throws SQLException, NoSuchAlgorithmException{
-		if(Function.checkPassword(newPass)==0 && newPass.equals(newPass2)){
+		ResultSet rs = con.select("SELECT password from users where user_id=?", new String[][]{{"i",""+id}});
+		String arr = null;
+		while (rs.next()) {
+			String em = rs.getString("password");
+			arr = em.replace("\n", ",");
+		}
+		System.out.println(arr);
+		System.out.println(Function.md5(oldPass));
+		if(Function.checkPassword(newPass)==0 && newPass.equals(newPass2) && Function.md5(oldPass).equals(arr)){
 			con.update("update users set password=? where user_id =?", new String[]{"s",Function.md5(newPass)},new String []{"i",""+id});
 			return 0;
 		}else if(!newPass.equals(newPass2)){
@@ -44,9 +52,12 @@ public class FunctionUser {
 		}else if(Function.checkPassword(newPass)==2){
 			// Password skal indeholde et tal, stort og et lille bogstav
 			return 3;
+		}else if(!Function.md5(oldPass).equals(arr)){
+			// oldPass er ikke det rigtige
+			return 4;
 		}else {
 			// Passwordet må kun indeholde tegn fra ascii<32 || ascii>126
-			return 4;
+			return 5;
 		}
 	}
 	

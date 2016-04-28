@@ -226,7 +226,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	public void handle(ActionEvent event) {
 		if(event.getSource() == about) {
 			ButtonType close = new ButtonType("Luk", ButtonData.OK_DONE);
-			Alert aboutInfo = new Alert(AlertType.NONE, "Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadre enhver der laver rav.", close);
+			Alert aboutInfo = new Alert(AlertType.NONE, "Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadrer enhver der laver rav.", close);
 			aboutInfo.initOwner(myStage);
 			aboutInfo.setTitle("Om QuickConnect");
 			aboutInfo.setHeaderText("QuickConnect™\nVersion 1.0 (2016)");
