@@ -83,4 +83,17 @@ public class FunctionUser {
 		
 	}
 	
+	public static void addFriend(int id, String username) throws SQLException {
+		ResultSet rs =con.select("SELECT user_id FROM users WHERE username=?",new String[][]{{"s",""+username}});
+		String contact_id = null;
+		int c_id=0;
+		while (rs.next()) {
+			String em = rs.getString("user_id");
+			contact_id = em.replace("\n", ",");
+			c_id= Integer.parseInt(contact_id);
+			
+		}
+		con.update("INSERT INTO contacts VALUES(user_id="+id+",contact_id="+c_id+", status=0, friends_since="+Long.toString(Function.timestamp()));
+	}
+	
 }

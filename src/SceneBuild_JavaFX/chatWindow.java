@@ -77,6 +77,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		showChatFrame();
 		FunctionUser.activateUser(user.UserID);
 		FunctionUser.setOnlineUser(user.UserID);
+		FunctionUser.addFriend(5, "meedodk");
 		myScene = new Scene(chatFrame);
 
 		File file = new File("QuickConnectCSS/StandardLayout.css");
