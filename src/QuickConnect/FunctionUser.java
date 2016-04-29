@@ -93,7 +93,8 @@ public class FunctionUser {
 			c_id= Integer.parseInt(contact_id);
 			
 		}
-		con.update("INSERT INTO contacts VALUES(user_id="+id+",contact_id="+c_id+", status=0, friends_since="+Long.toString(Function.timestamp()));
+		con.update("INSERT INTO contacts VALUES(user_id=?,contact_id=?, status=0, friends_since=?", new String []{ "i",""+id },
+				new String [] {"i",""+c_id},new String[] { "l", Long.toString(Function.timestamp()) });
 	}
 	
 }
