@@ -4,6 +4,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Modality;
+
 public class FunctionUser {
 	private static Connector con = Function.mysql();
 	
@@ -83,8 +87,8 @@ public class FunctionUser {
 		
 	}
 	
-	public static void addFriend(int id, String username) throws SQLException {
-		ResultSet rs =con.select("SELECT user_id FROM users WHERE username=?",new String[][]{{"s",""+username}});
+	public static int addFriend(int id, String username) throws SQLException {
+		ResultSet rs =con.select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",new String[][]{{"s",""+username}});
 		String contact_id = null;
 		int c_id=0;
 		while (rs.next()) {
@@ -93,8 +97,16 @@ public class FunctionUser {
 			c_id= Integer.parseInt(contact_id);
 			
 		}
+		boolean isNotFriends = false;
+		isNotFriends = con.check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?", new String []{"i",""+c_id},new String[]{"s",""+id});
+		isNotFriends = con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?", new String []{"i",""+c_id},new String[]{"s",""+id});
+		if(isNotFriends){
 		con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String []{ "i",""+id },
 				new String [] {"i",""+c_id},new String[] { "l", Long.toString(Function.timestamp()) });
+		return 1;
+		}
+		else return 2;
+		
 	}
 	
 }

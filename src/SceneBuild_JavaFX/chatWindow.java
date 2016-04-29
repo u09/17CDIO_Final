@@ -168,6 +168,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		exitFullScreen.setOnAction(this);
 		exitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
 		colorPick.setOnAction(this);
+		bAddFriend.setOnAction(this);
 
 	}
 
@@ -289,6 +290,15 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		}
 		if(event.getSource() == colorPick) {
 			System.out.println(colorPick.getValue().toString());
+		}
+		if(event.getSource() == bAddFriend){
+			Stage stage = new Stage();
+			friendsWindow fW = new friendsWindow();
+			try {
+				fW.start(stage, user);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
