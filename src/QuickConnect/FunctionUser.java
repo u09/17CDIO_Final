@@ -10,17 +10,17 @@ public class FunctionUser {
 	public static boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
 		Connector con = Function.mysql();
 		con.update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
-		        new String[] { "s", Function.md5(pass) }, new String[] { "s", email },
-		        new String[] { "l", Long.toString(Function.timestamp()) });
+				new String[] { "s", Function.md5(pass) }, new String[] { "s", email },
+				new String[] { "l", Long.toString(Function.timestamp()) });
 		return false;
 	}
-	
+
 	public static int changeNickname(String nickname, int id) {
 		if(nickname.length() == 0 || nickname.equals(" "))
 			return 2;
 		try {
 			con.update("UPDATE users set nickname=? WHERE user_id=?", new String[] { "s", nickname },
-			        new String[] { "i", "" + id });
+					new String[] { "i", "" + id });
 			return 0;
 		} catch(SQLException e) {
 			return 1;
@@ -38,7 +38,7 @@ public class FunctionUser {
 	}
 
 	public static int changePassword(int id, String oldPass, String newPass, String newPass2)
-	        throws SQLException, NoSuchAlgorithmException {
+			throws SQLException, NoSuchAlgorithmException {
 		ResultSet rs = con.select("SELECT password from users where user_id=?", new String[][] { { "i", "" + id } });
 		String arr = null;
 		while(rs.next()) {
@@ -49,7 +49,7 @@ public class FunctionUser {
 		System.out.println(Function.md5(oldPass));
 		if(Function.checkPassword(newPass) == 0 && newPass.equals(newPass2) && Function.md5(oldPass).equals(arr)) {
 			con.update("update users set password=? where user_id =?", new String[] { "s", Function.md5(newPass) },
-			        new String[] { "i", "" + id });
+					new String[] { "i", "" + id });
 			return 0;
 		} else if(!newPass.equals(newPass2)) {
 			// newPass stemmer ikke med med newPass2 stemmer ikke
@@ -72,7 +72,7 @@ public class FunctionUser {
 	public static int deactivateUser(int id, String password) throws SQLException, NoSuchAlgorithmException {
 		boolean bool = false;
 		bool = con.check("SELECT user_id FROM users WHERE user_ID=? AND password=?", new String[] { "i", "" + id },
-		        new String[] { "s", Function.md5(password) });
+				new String[] { "s", Function.md5(password) });
 		if(bool) {
 			con.update("update users set user_deleted=1 WHERE user_ID=?", new String[][] { { "i", "" + id } });
 			return 0;
@@ -99,7 +99,7 @@ public class FunctionUser {
 
 	public static int addFriend(int id, String username) throws SQLException {
 		ResultSet rs = con.select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
-		        new String[][] { { "s", "" + username } });
+				new String[][] { { "s", "" + username } });
 		String contact_id = null;
 		int c_id = 0;
 		while(rs.next()) {
@@ -109,16 +109,15 @@ public class FunctionUser {
 
 		}
 		boolean isNotFriends = false;
-		isNotFriends = con.check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
-		        new String[] { "i", "" + c_id }, new String[] { "s", "" + id });
-		isNotFriends = con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
-		        new String[] { "i", "" + c_id }, new String[] { "s", "" + id });
-		if(isNotFriends) {
-			con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + id },
-			        new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(Function.timestamp()) });
-			return 1;
-		} else return 2;
-
+		if((isNotFriends == con.check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
+				new String[] { "i", "" + id }, new String[] { "s", "" + c_id }))||
+				(isNotFriends == con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
+						new String[] { "i", "" + c_id }, new String[] { "s", "" + id }))){
+				con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + id },
+						new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(Function.timestamp()) });
+				return 1;
+			
+		}else return 2;
 	}
 
 }

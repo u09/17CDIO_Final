@@ -94,7 +94,7 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 					passSuccess.setHeaderText("Din venneanmodning er sendt");
 					passSuccess.setContentText("Du har nu sendt en venneanmodning til " + inUsername.getText());
 					passSuccess.show();
-				} else {
+				} else if(i == 2){
 					Alert passSuccess = new Alert(AlertType.INFORMATION);
 					passSuccess.setTitle(myStage.getTitle());
 					passSuccess.setHeaderText("Du har allerede sendt en venneanmodning");
