@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import SceneBuild_JavaFX.friendsWindow;
+
 public class FunctionUser {
 	private static Connector con = Function.mysql();
 
@@ -109,15 +111,19 @@ public class FunctionUser {
 
 		}
 		boolean isNotFriends = false;
+		boolean friendRequest = false; 
 		if((isNotFriends == con.check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
-				new String[] { "i", "" + id }, new String[] { "s", "" + c_id }))||
-				(isNotFriends == con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
-						new String[] { "i", "" + c_id }, new String[] { "s", "" + id }))){
-				con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + id },
-						new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(Function.timestamp()) });
-				return 1;
-			
-		}else return 2;
+			new String[] { "i", "" + id }, new String[] { "s", "" + c_id }))||
+			(isNotFriends == con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
+			new String[] { "i", "" + c_id }, new String[] { "s", "" + id }))){
+			con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + id },
+					new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(Function.timestamp()) });
+			if(friendRequest == con.check("select contact_id from contacts where user_id in(select user_id from users where username in(select username from users where status=0))",new String[] { "i", "" + c_id })){
+				
+			}
+			return 1;
+		}
+		else return 2;
 	}
 
 }
