@@ -42,38 +42,28 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class chatWindow implements EventHandler<ActionEvent>{
-	
-	public static Stage myStage;
+public class chatWindow implements EventHandler<ActionEvent> {
+
+	private Stage myStage;
 	private Scene myScene;
 	private BorderPane chatFrame;
-	FXMLLoader loader;
 	static Thread th;
-	URL url;
-	@FXML
-	MenuBar menuBar;
-	@FXML
-	MenuItem about, close, settings, signOut, fullScreen, exitFullScreen;
-	@FXML
-	ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
-	@FXML
-	TitledPane titledPane, onlinePane, offlinePane;
-	@FXML
-	TextArea textArea;
-	@FXML
-	TextField inMessage;
-	@FXML
-	Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend;
-	@FXML
-	HBox hBoxMessage;
-	@FXML
-	ColorPicker colorPick;
-	User user;
+	@FXML private MenuBar menuBar;
+	@FXML private MenuItem about, close, settings, signOut, fullScreen, exitFullScreen;
+	@FXML private ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
+	@FXML private TitledPane titledPane, onlinePane, offlinePane;
+	@FXML private TextArea textArea;
+	@FXML private TextField inMessage;
+	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend;
+	@FXML private HBox hBoxMessage;
+	@FXML private ColorPicker colorPick;
+	private User user;
 
 	public void start(Stage stage, User user) throws SQLException {
 		this.user = user;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + user.Username);
+		
 		showChatFrame();
 		FunctionUser.activateUser(user.UserID);
 		FunctionUser.setOnlineUser(user.UserID);
@@ -81,7 +71,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 
 		File file = new File("QuickConnectCSS/StandardLayout.css");
 		try {
-			url = file.toURI().toURL();
+			URL url = file.toURI().toURL();
 			myScene.getStylesheets().add(url.toExternalForm());
 		} catch(MalformedURLException e) {
 			e.printStackTrace();
@@ -89,36 +79,36 @@ public class chatWindow implements EventHandler<ActionEvent>{
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-		
+
 		Task<Void> task = new Task<Void>() {
-			  @Override
-			  public Void call() throws Exception {
-			    while (true) {
-			      Platform.runLater(new Runnable() {
-			        @Override
-			        public void run() {
-			        	try {
-							getListsContents();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-			        }
-			      });
-			      Thread.sleep(5000);
-			    }
-			  }
-			};
-			th = new Thread(task);
-			th.setDaemon(true);
-			th.start();
-		
+			@Override
+			public Void call() throws Exception {
+				while(true) {
+					Platform.runLater(new Runnable() {
+			            @Override
+			            public void run() {
+				            try {
+					            getListsContents();
+				            } catch(SQLException e) {
+					            e.printStackTrace();
+				            }
+			            }
+		            });
+					Thread.sleep(5000);
+				}
+			}
+		};
+		th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
+
 		Runnable r = new Threads(user);
 		new Thread(r).start();
 	}
 
 	public void showChatFrame() throws SQLException {
-		
-		loader = new FXMLLoader();
+
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(chatWindow.class.getResource("ChatFrame.fxml"));
 		loader.setController(this);
 		try {
@@ -126,7 +116,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		titledPane.setText("Chat system");
 		HBox.setHgrow(inMessage, Priority.ALWAYS);
 		bSearchRecent.setId("bSearch");
@@ -134,12 +124,13 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddFriend");
-		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>(){
+		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if(event.getCode().equals(KeyCode.ENTER)) {
 					String msg = inMessage.getText();
-//					FunctionUser.sendMessage(msg, user.UserID, titledPane.getText());
+					// FunctionUser.sendMessage(msg, user.UserID,
+		            // titledPane.getText());
 					try {
 						textArea.appendText(FunctionUser.getNickName(user.UserID) + ":\n" + msg + "\n");
 					} catch(SQLException e) {
@@ -176,20 +167,19 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		String[] rec = { "Recent1", "Recent2" };
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
-		
+
 		String[] onl = Function.showOnlineUsers(user.UserID);
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
-		onlinePane.setText("Online ("+onlineItems.size()+" venner)");
+		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
 
 		String[] off = Function.showOfflineUsers(user.UserID);
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
-		offlinePane.setText("Offline ("+offlineItems.size()+" venner)");
-		
+		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 
 		String[] gro = Function.showGroups(user.UserID);// {"Group1",
-		                                                    // "Group2"};
+		                                                // "Group2"};
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
 
@@ -202,7 +192,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = recentList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				if (name != null && !name.isEmpty()) titledPane.setText(name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 
@@ -212,7 +203,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				if (name != null && !name.isEmpty()) titledPane.setText(name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 
@@ -222,7 +214,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				if (name != null && !name.isEmpty()) titledPane.setText(name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 
@@ -232,7 +225,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			public void handle(MouseEvent event) {
 				String name = groupsList.getSelectionModel().getSelectedItem();
 				System.out.println("clicked on " + name);
-				if (name != null && !name.isEmpty()) titledPane.setText(name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 	}
@@ -241,7 +235,8 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	public void handle(ActionEvent event) {
 		if(event.getSource() == about) {
 			ButtonType close = new ButtonType("Luk", ButtonData.OK_DONE);
-			Alert aboutInfo = new Alert(AlertType.NONE, "Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadrer enhver der laver rav.", close);
+			Alert aboutInfo = new Alert(AlertType.NONE,
+			        "Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadrer enhver der laver rav.", close);
 			aboutInfo.initOwner(myStage);
 			aboutInfo.setTitle("Om QuickConnect");
 			aboutInfo.setHeaderText("QuickConnect™\nVersion 1.0 (2016)");
@@ -250,7 +245,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		}
 		if(event.getSource() == close) {
 			closeChatWindow();
-			
+
 		}
 		if(event.getSource() == settings) {
 			Stage stage = new Stage();
@@ -262,7 +257,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			}
 		}
 		if(event.getSource() == signOut) {
-			
+
 			ButtonType bSignOut = new ButtonType("Log ud", ButtonData.OK_DONE);
 			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
 			bCancel.getButtonData().isCancelButton();
@@ -271,7 +266,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 			confirmSignOut.setTitle("Log ud");
 			confirmSignOut.setHeaderText("Du er ved at logge ud af QuickConnect");
 			confirmSignOut.setContentText("Er du sikker på at du vil logge ud?");
-			
+
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
 			if(result.get() == bSignOut) {
 				System.out.println("Trykket på Log ud");
@@ -291,7 +286,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 		if(event.getSource() == colorPick) {
 			System.out.println(colorPick.getValue().toString());
 		}
-		if(event.getSource() == bAddFriend){
+		if(event.getSource() == bAddFriend) {
 			Stage stage = new Stage();
 			friendsWindow fW = new friendsWindow();
 			try {
@@ -310,7 +305,7 @@ public class chatWindow implements EventHandler<ActionEvent>{
 	public void closeChatWindow() {
 		try {
 			FunctionUser.setOfflineUser(user.UserID);
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		System.exit(0);

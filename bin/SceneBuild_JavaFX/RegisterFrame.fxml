@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="lTitle" text="Quick Connect registrering" />
       <Label fx:id="lUser" text="Indtast ønsket brugernavn:" />
-      <TextField fx:id="inUser" promptText="Brugernavn" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" />
+      <TextField fx:id="inUser" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Brugernavn" />
       <Label fx:id="lPass" text="Indtast dit password:" />
-      <PasswordField fx:id="inPass" promptText="Password" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" />
+      <PasswordField fx:id="inPass" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
       <Label fx:id="lNewPass" text="Gentag dit password:" />
-      <PasswordField fx:id="inNewPass" promptText="Password" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" />
+      <PasswordField fx:id="inNewPass" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
       <Label fx:id="lMail" text="Indtast din E-mail:" />
-      <TextField fx:id="inMail" promptText="E-mail" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" />
+      <TextField fx:id="inMail" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="E-mail" />
       <Label fx:id="lRegister" text="Registrer her:" />
       <Button fx:id="bRegister" mnemonicParsing="false" text="Registrer" />
       <Button fx:id="bBack" mnemonicParsing="false" text="Tilbage" />

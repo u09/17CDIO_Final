@@ -27,16 +27,14 @@ import javafx.stage.Stage;
 
 public class settingsWindow implements EventHandler<ActionEvent> {
 
-	Stage myStage;
-	Scene myScene;
-	AnchorPane settingsFrame;
-	FXMLLoader loader;
-	@FXML TextField inNickname;
-	@FXML
-	PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
-	@FXML Button bSaveNickname, bSavePass, bDeleteUser;
-	User user;
-	chatWindow cW;
+	private Stage myStage;
+	private Scene myScene;
+	private AnchorPane settingsFrame;
+	@FXML private TextField inNickname;
+	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
+	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
+	private User user;
+	private chatWindow cW;
 
 	public void start(Stage stage, User user) throws Exception {
 		this.user = user;
@@ -64,7 +62,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 
 	private void showSettingsFrame() {
 
-		loader = new FXMLLoader();
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(settingsWindow.class.getResource("SettingsFrame.fxml"));
 		loader.setController(this);
 		try {
@@ -78,24 +76,29 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void setButtonFunctions() {
-		EventHandler<KeyEvent> haha = new EventHandler<KeyEvent>() {
+		EventHandler<KeyEvent> keyEvent = new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getSource() == inNickname && event.getCode().equals(KeyCode.ENTER)) bSaveNickname.fire();
-				if(event.getSource() == inCurrentPass && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
-				if(event.getSource() == inNewPass && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
-				if(event.getSource() == inNewPass2 && event.getCode().equals(KeyCode.ENTER)) bSavePass.fire();
-				if(event.getSource() == inCurrentPass2 && event.getCode().equals(KeyCode.ENTER)) bDeleteUser.fire();
+				if(event.getSource() == inNickname && event.getCode().equals(KeyCode.ENTER))
+					bSaveNickname.fire();
+				if(event.getSource() == inCurrentPass && event.getCode().equals(KeyCode.ENTER))
+					bSavePass.fire();
+				if(event.getSource() == inNewPass && event.getCode().equals(KeyCode.ENTER))
+					bSavePass.fire();
+				if(event.getSource() == inNewPass2 && event.getCode().equals(KeyCode.ENTER))
+					bSavePass.fire();
+				if(event.getSource() == inCurrentPass2 && event.getCode().equals(KeyCode.ENTER))
+					bDeleteUser.fire();
 			}
 		};
-		
-		inNickname.setOnKeyPressed(haha);
+
+		inNickname.setOnKeyPressed(keyEvent);
 		bSaveNickname.setOnAction(this);
-		inCurrentPass.setOnKeyPressed(haha);
-		inNewPass.setOnKeyPressed(haha);
-		inNewPass2.setOnKeyPressed(haha);
+		inCurrentPass.setOnKeyPressed(keyEvent);
+		inNewPass.setOnKeyPressed(keyEvent);
+		inNewPass2.setOnKeyPressed(keyEvent);
 		bSavePass.setOnAction(this);
-		inCurrentPass2.setOnKeyPressed(haha);
+		inCurrentPass2.setOnKeyPressed(keyEvent);
 		bDeleteUser.setOnAction(this);
 
 	}
@@ -105,20 +108,20 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bSaveNickname) {
 			int changeNicknameAnswer = 0;
 			changeNicknameAnswer = FunctionUser.changeNickname(inNickname.getText(), user.UserID);
-			
+
 			if(changeNicknameAnswer == 0) {
-//				System.out.println(FunctionUser.getNickName(user.UserID));
+				// System.out.println(FunctionUser.getNickName(user.UserID));
 				Alert nicknameSucces = new Alert(AlertType.INFORMATION);
 				nicknameSucces.setTitle(myStage.getTitle());
 				nicknameSucces.setHeaderText("Nickname blev sat!");
 				nicknameSucces.setContentText("Dit nickname er blevet ændret til: " + inNickname.getText());
 				nicknameSucces.show();
-			}
-			else {
+			} else {
 				Alert nicknameFail = new Alert(AlertType.ERROR);
 				nicknameFail.setTitle(myStage.getTitle());
 				nicknameFail.setHeaderText("Nickname blev ikke sat!");
-				nicknameFail.setContentText("Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
+				nicknameFail.setContentText(
+				        "Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
 				nicknameFail.show();
 			}
 		}
@@ -145,7 +148,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 					message = "Passwordet skal være mellem 8-24 tegn.";
 				else if(changePassAnswer == 3)
 					message = "Passwordet skal mindst indeholde \n1 stort bogstav, 1 lille bogstav og 1 tal.";
-				else if(changePassAnswer == 4) 
+				else if(changePassAnswer == 4)
 					message = "Det nuværende password er ikke korrekt";
 				else message = "Passwordet må kun indeholde tal, bogstaver og følgende tegn: \n <h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
 				Alert passFail = new Alert(AlertType.ERROR);
@@ -155,15 +158,14 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				passFail.show();
 			}
 		}
-		if(event.getSource() == bDeleteUser){
+		if(event.getSource() == bDeleteUser) {
 			int deactivateUserAnswer = 0;
-			try{
-				deactivateUserAnswer = FunctionUser.deactivateUser(user.UserID,inCurrentPass2.getText());
-			}
-			catch(SQLException | NoSuchAlgorithmException e) {
+			try {
+				deactivateUserAnswer = FunctionUser.deactivateUser(user.UserID, inCurrentPass2.getText());
+			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-			if(deactivateUserAnswer == 0){
+			if(deactivateUserAnswer == 0) {
 				Alert deactivateSuccess = new Alert(AlertType.INFORMATION);
 				deactivateSuccess.setTitle(myStage.getTitle());
 				deactivateSuccess.setHeaderText("Deaktivering af bruger lykkedes");
@@ -171,8 +173,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				deactivateSuccess.show();
 				((Node) event.getSource()).getScene().getWindow().hide();
 				cW.closeChatWindow();
-			}
-			else if(deactivateUserAnswer == 1){
+			} else if(deactivateUserAnswer == 1) {
 				Alert deactivateFail = new Alert(AlertType.INFORMATION);
 				deactivateFail.setHeaderText("Deaktivering af bruger mislykkedes");
 				deactivateFail.setContentText("Forkert password");

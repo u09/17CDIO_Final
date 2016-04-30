@@ -33,15 +33,10 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	private Stage myStage;
 	private Scene myScene;
 	private VBox LoginFrame;
-	FXMLLoader loader;
-	@FXML
-	Label lTitle, lUser, lPass, lNoUser, lRegister;
-	@FXML
-	Button bLogin, bRegister;
-	@FXML
-	TextField inUser;
-	@FXML
-	PasswordField inPass;
+	@FXML private Label lTitle, lUser, lPass, lNoUser, lRegister;
+	@FXML private Button bLogin, bRegister;
+	@FXML private TextField inUser;
+	@FXML private PasswordField inPass;
 
 	@Override
 	public void start(Stage stage) {
@@ -50,9 +45,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		this.myStage.setResizable(false);
 
 		showLoginFrame();
-		
 		this.myScene = new Scene(LoginFrame);
-		
+
 		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
 		try {
@@ -61,14 +55,13 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		} catch(MalformedURLException e) {
 			e.printStackTrace();
 		}
-
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}
 
 	private void showLoginFrame() {
-		
-		loader = new FXMLLoader();
+
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(loginWindow.class.getResource("LoginFrame.fxml"));
 		loader.setController(this);
 		try {
@@ -80,7 +73,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		bLogin.setDefaultButton(true);
 		bRegister.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
-		byte[] emojiBytes = new byte[]{(byte)0xF0, (byte)0x9F, (byte)0x98, (byte)0x81};
+		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
 		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
 		inUser.setText(emojiAsString);
 	}
@@ -94,33 +87,31 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			Connector con = Function.mysql();
 			boolean bool = false;
 			try {
-				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
+				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+				        userIn, Function.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 
-			if(bool==true) {
-				User user = null;	
+			if(bool == true) {
+				User user = null;
 				try {
-					ResultSet sql=con.select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",userIn,Function.md5(passIn));
+					ResultSet sql = con.select(
+					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+					        userIn, Function.md5(passIn));
 					sql.next();
-					user = new User(
-							sql.getInt("user_ID"),
-							sql.getString("username"),
-							sql.getString("email"),
-							sql.getString("nickname"),
-							sql.getInt("age"),
-							sql.getInt("user_created"));
-				} catch (NoSuchAlgorithmException | SQLException e1) {
+					user = new User(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"),
+					        sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
+				} catch(NoSuchAlgorithmException | SQLException e1) {
 					e1.printStackTrace();
 				}
-				
+
 				Stage stage = new Stage();
 				chatWindow cW = new chatWindow();
 
 				try {
-					cW.start(stage,user);
+					cW.start(stage, user);
 				} catch(Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

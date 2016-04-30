@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
-import javafx.application.Application;
+import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,31 +25,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class registerWindow extends Application implements EventHandler<ActionEvent> {
+public class registerWindow implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
 	private Scene myScene;
 	private VBox RegisterFrame;
-	FXMLLoader loader;
-	@FXML
-	Label lTitle, lUser, lPass, lNewPass, lMail, lRegister;
-	@FXML
-	Button bRegister, bBack;
-	@FXML
-	TextField inUser, inMail;
-	@FXML
-	PasswordField inPass, inNewPass;
+	@FXML private Label lTitle, lUser, lPass, lNewPass, lMail, lRegister;
+	@FXML private Button bRegister, bBack;
+	@FXML private TextField inUser, inMail;
+	@FXML private PasswordField inPass, inNewPass;
 
-	@Override
 	public void start(Stage stage) {
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Registering");
 		this.myStage.setResizable(false);
 
 		showRegisterFrame();
-		
+
 		myScene = new Scene(RegisterFrame);
-		
+
 		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
 		try {
@@ -64,8 +58,8 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 	}
 
 	private void showRegisterFrame() {
-		
-		loader = new FXMLLoader();
+
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(registerWindow.class.getResource("RegisterFrame.fxml"));
 		loader.setController(this);
 		try {
@@ -73,7 +67,7 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		bRegister.setOnAction(this);
 		bBack.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
@@ -102,25 +96,34 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 
 			int check = 0;
 			try {
-				check = checkRegister(cuser, cpass1, cpass2, cemail);
+				check = Function.checkRegister(cuser, cpass1, cpass2, cemail);
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
 			String msg;
-			if(check == 0) msg = "Uforventet fejl";
-			else if(check == 1) msg = "Brugernavnet skal være 4-24 tegn";
-			else if(check == 2) msg = "Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: -,_";
-			else if(check == 3) msg = "Begge passwords skal være ens";
-			else if(check == 4) msg = "Passwordet skal være mellem 8-24 tegn";
-			else if(check == 5) msg = "Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
-			else if(check == 6) msg = "Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
-			else if(check == 7) msg = "Ugyldigt email";
-			else if(check == 8) msg = "Brugeren eksisterer allerede i systemet";
+			if(check == 0)
+				msg = "Uforventet fejl";
+			else if(check == 1)
+				msg = "Brugernavnet skal være 4-24 tegn";
+			else if(check == 2)
+				msg = "Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: -,_";
+			else if(check == 3)
+				msg = "Begge passwords skal være ens";
+			else if(check == 4)
+				msg = "Passwordet skal være mellem 8-24 tegn";
+			else if(check == 5)
+				msg = "Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
+			else if(check == 6)
+				msg = "Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
+			else if(check == 7)
+				msg = "Ugyldigt email";
+			else if(check == 8)
+				msg = "Brugeren eksisterer allerede i systemet";
 			else msg = "Du er registreret";
 
 			if(check == 9) {
 				try {
-					boolean bool = addUser(cuser, cpass1, cemail);
+					boolean bool = FunctionUser.addUser(cuser, cpass1, cemail);
 				} catch(SQLException | NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}
@@ -145,39 +148,4 @@ public class registerWindow extends Application implements EventHandler<ActionEv
 			}
 		}
 	}
-
-	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
-		Connector con = Function.mysql();
-		con.update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
-		        new String[] { "s", Function.md5(pass) }, new String[] { "s", email },
-		        new String[] { "l", Long.toString(Function.timestamp()) });
-		return false;
-	}
-
-	public int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
-		Connector con = Function.mysql();
-		boolean bool;
-		int in;
-		in = Function.checkUsername(user);
-		if(in == 1)
-			return 1;
-		else if(in == 2)
-			return 2;
-		if(!pass1.equals(pass2))
-			return 3;
-		in = Function.checkPassword(pass1);
-		if(in == 1)
-			return 4;
-		else if(in == 2)
-			return 5;
-		else if(in == 3)
-			return 6;
-		if(!Function.checkEmail(email))
-			return 7;
-		bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
-		if(bool)
-			return 8;
-		else return 9;
-	}
-
 }

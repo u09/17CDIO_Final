@@ -9,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 public class Function {
 	private static Connector con = Function.mysql();
 	
@@ -89,7 +86,32 @@ public class Function {
 		}	
 		return true;
 	}
-
+	
+	public static int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
+		Connector con = Function.mysql();
+		boolean bool;
+		int in;
+		in = Function.checkUsername(user);
+		if(in == 1)
+			return 1;
+		else if(in == 2)
+			return 2;
+		if(!pass1.equals(pass2))
+			return 3;
+		in = Function.checkPassword(pass1);
+		if(in == 1)
+			return 4;
+		else if(in == 2)
+			return 5;
+		else if(in == 3)
+			return 6;
+		if(!Function.checkEmail(email))
+			return 7;
+		bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
+		if(bool)
+			return 8;
+		else return 9;
+	}
 	
 	public static String[] showOnlineUsers(int id) throws SQLException{
 		ArrayList <String> onlineUsers= new ArrayList<String>();
