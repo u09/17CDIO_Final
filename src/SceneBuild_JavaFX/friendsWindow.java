@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,6 +33,7 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 	@FXML private TextField inUsername;
 	@FXML private Button bAdd, bAccept, bReject;
 	@FXML private ListView<String> sentList, receivedList;
+	ObservableList<String> recReqItems;
 	private User user;
 
 	public void start(Stage stage, User user) throws Exception {
@@ -67,6 +70,9 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 			e.printStackTrace();
 		}
 		setButtonFunctions();
+		// String[] receivedRequests = Function.showReceivedRequests();
+		recReqItems = FXCollections.observableArrayList("Tolga", "Samil", "Ibrahim");
+		receivedList.setItems(recReqItems);
 
 	}
 
@@ -81,6 +87,8 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 
 		inUsername.setOnKeyPressed(keyEvent);
 		bAdd.setOnAction(this);
+		bAccept.setOnAction(this);
+		bReject.setOnAction(this);
 	}
 
 	@Override
@@ -108,6 +116,14 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 				passSuccess.setContentText("Venligst indtast et gyldigt brugernavn");
 				passSuccess.show();
 			}
+		}
+		if(event.getSource() == bAccept) {
+			int requestIndex = receivedList.getSelectionModel().getSelectedIndex();
+			recReqItems.remove(requestIndex);
+		}
+		if(event.getSource() == bReject) {
+			int requestIndex = receivedList.getSelectionModel().getSelectedIndex();
+			recReqItems.remove(requestIndex);
 		}
 	}
 }

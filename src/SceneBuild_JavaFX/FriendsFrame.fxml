@@ -10,66 +10,69 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="299.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="284.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="299.0" prefWidth="491.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <TitledPane animated="false" collapsible="false" prefHeight="299.0" prefWidth="491.0" text="Anmodninger">
+      <TabPane prefHeight="284.0" prefWidth="446.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab text="Tilføj venner">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="410.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="338.0">
                      <children>
-                        <TabPane layoutX="-2.0" layoutY="-1.0" prefHeight="270.0" prefWidth="446.0" tabClosingPolicy="UNAVAILABLE">
-                           <tabs>
-                              <Tab text="Tilføj venner">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="338.0">
-                                       <children>
-                                          <GridPane alignment="BOTTOM_CENTER" hgap="30.0" layoutX="100.0" layoutY="60.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                          </GridPane>
-                                          <Button fx:id="bAdd" layoutX="180.0" layoutY="95.0" mnemonicParsing="false" text="Tilføj ven" />
-                                          <Label layoutX="100.0" layoutY="36.0" text="Tilføj ven:" />
-                                          <TextField fx:id="inUsername" layoutX="175.0" layoutY="31.0" promptText="Brugernavn" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                              <Tab text="Sendte anmodninger">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="412.0">
-                                       <children>
-                                          <ListView fx:id="sentList" layoutX="111.0" layoutY="27.0" prefHeight="235.0" prefWidth="464.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                              <Tab text="Venneanmodninger">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="261.0" prefWidth="464.0">
-                                       <children>
-                                          <ListView fx:id="receivedList" prefHeight="191.0" prefWidth="446.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <Button fx:id="bAccept" layoutX="131.0" layoutY="191.0" mnemonicParsing="false" text="Accepter" />
-                                          <Button fx:id="bReject" layoutX="234.0" layoutY="191.0" mnemonicParsing="false" text="Afvis" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                           </tabs>
-                        </TabPane>
+                        <GridPane alignment="CENTER" hgap="20.0" layoutX="96.0" layoutY="68.0" prefHeight="81.0" prefWidth="253.0" vgap="30.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="63.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="178.0" minWidth="10.0" prefWidth="168.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="20.0" minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="20.0" minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <TextField fx:id="inUsername" prefHeight="50.0" prefWidth="168.0" promptText="Brugernavn" GridPane.columnIndex="1" />
+                              <Label text="Tilføj ven:" />
+                              <Button fx:id="bAdd" mnemonicParsing="false" text="Tilføj ven" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
                      </children>
                   </AnchorPane>
                </content>
-            </TitledPane>
-         </children>
-      </VBox>
+            </Tab>
+            <Tab text="Sendte anmodninger">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="412.0">
+                     <children>
+                        <ListView fx:id="sentList" layoutX="48.0" layoutY="102.0" prefHeight="237.0" prefWidth="446.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Venneanmodninger">
+               <content>
+                  <AnchorPane prefHeight="136.0" prefWidth="446.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" prefHeight="251.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="444.0">
+                                 <children>
+                                    <HBox layoutX="129.0" layoutY="171.0" spacing="40.0">
+                                       <children>
+                                          <Button fx:id="bAccept" mnemonicParsing="false" text="Accepter" />
+                                          <Button fx:id="bReject" mnemonicParsing="false" prefWidth="74.0" text="Afvis" />
+                                       </children>
+                                    </HBox>
+                                    <ListView fx:id="receivedList" layoutX="21.4" layoutY="20.4" prefHeight="152.0" prefWidth="423.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </TitledPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </children>
 </AnchorPane>
