@@ -34,10 +34,10 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bAdd, bAccept, bReject;
 	@FXML private ListView<String> sentList, receivedList;
 	ObservableList<String> recReqItems;
-	private User user;
+	private FunctionUser fu;
 
-	public void start(Stage stage, User user) throws Exception {
-		this.user = user;
+	public void start(Stage stage, FunctionUser fu) throws Exception {
+		this.fu=fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Anmodninger");
 		this.myStage.setResizable(false);
@@ -95,7 +95,7 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		if(event.getSource() == bAdd) {
 			try {
-				int i = FunctionUser.addFriend(user.UserID, inUsername.getText());
+				int i = fu.addFriend(inUsername.getText());
 				if(i == 1) {
 					Alert passSuccess = new Alert(AlertType.INFORMATION);
 					passSuccess.setTitle(myStage.getTitle());

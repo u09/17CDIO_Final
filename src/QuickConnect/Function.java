@@ -5,19 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Function {
-	private static Connector con = Function.mysql();
+	private Connector con;
+	private User user;
 	
-	public static long timestamp(){
-		long unixTime = System.currentTimeMillis() / 1000L;
-		return unixTime;
+	public Function(User user) {
+		this.user=user;
+		con=mysql();
 	}
-
-	public static Connector mysql(){
+	
+	private Connector mysql(){
 		BufferedReader br = null;
 		try{
 			String host,db,un,pw;
@@ -39,7 +38,12 @@ public class Function {
 		return null;
 	}
 
-	public static String md5(String str) throws NoSuchAlgorithmException{
+	public long timestamp(){
+		long unixTime = System.currentTimeMillis() / 1000L;
+		return unixTime;
+	}
+
+	public String md5(String str) throws NoSuchAlgorithmException{
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(str.getBytes());
 		byte[] digest = md.digest();
@@ -50,7 +54,7 @@ public class Function {
 		return sb.toString();
 	}
 
-	public static int checkUsername(String user) {
+	public int checkUsername(String user) {
 		char c;
 		if(user.length() <4 || user.length() > 24) return 1;
 		for(int i = 0; i<user.length(); i++){
@@ -60,7 +64,7 @@ public class Function {
 		return 0;
 	}
 
-	public static int checkPassword(String pass) {
+	public int checkPassword(String pass) {
 		String num   = ".*[0-9].*";
 		String bl = ".*[A-Z].*";
 		String sl = ".*[a-z].*";
@@ -74,7 +78,7 @@ public class Function {
 		return 0;
 	}
 
-	public static boolean checkEmail(String email) {
+	public boolean checkEmail(String email) {
 		boolean b = email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"); 
 		if (b == false) {
 //			Alert advarsel = new Alert(AlertType.INFORMATION);
@@ -87,58 +91,45 @@ public class Function {
 		return true;
 	}
 	
-	public static int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
-		Connector con = Function.mysql();
+	public int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
 		boolean bool;
 		int in;
-		in = Function.checkUsername(user);
+		in = checkUsername(user);
 		if(in == 1)
 			return 1;
 		else if(in == 2)
 			return 2;
 		if(!pass1.equals(pass2))
 			return 3;
-		in = Function.checkPassword(pass1);
+		in = checkPassword(pass1);
 		if(in == 1)
 			return 4;
 		else if(in == 2)
 			return 5;
 		else if(in == 3)
 			return 6;
-		if(!Function.checkEmail(email))
+		if(!checkEmail(email))
 			return 7;
-		bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
+		bool = con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
 		if(bool)
 			return 8;
 		else return 9;
 	}
 	
-	public static String[] showOnlineUsers(int id) throws SQLException{
-		ArrayList <String> onlineUsers= new ArrayList<String>();
-		ResultSet rs = con.select("SELECT user_ID,nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = ? AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = ? AND status= 1))  AND online=1;",new String[]{"i",""+id},new String[]{"i",""+id});
-		while(rs.next()){
-			int uid=rs.getInt("user_ID");
-			System.out.println(Function.timestamp()-10);
-			System.out.println((int)(Function.timestamp()-10));
-			boolean chk=con.check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(Function.timestamp()-10));
-			if(chk) con.update("UPDATE users SET online=0 WHERE user_ID="+uid);
-			else onlineUsers.add(rs.getString("nickname"));
-		}
-		return onlineUsers.toArray(new String[onlineUsers.size()]);
+	public void updateUser(int id, String username, String email, String nickname, int age, int user_created) {
+		user.setUserID(id);
+		user.setUsername(username);
+		user.setEmail(email);
+		user.setNickname(nickname);
+		user.setAge(age);
+		user.setCreated(user_created);
 	}
 	
-	public static String[] showOfflineUsers(int id) throws SQLException{
-		ArrayList <String> offlineUsers= new ArrayList<String>();
-		ResultSet rs = con.select("select nickname from users  where (user_id = any(select user_id from contacts where contact_id = ? AND status= 1) OR user_id = any(select contact_id from contacts where user_id = ? AND status= 1))  and online=0;",new String[]{"i",""+id},new String[]{"i",""+id});
-		while(rs.next())
-		offlineUsers.add(rs.getString("nickname"));
-		return offlineUsers.toArray(new String[offlineUsers.size()]);
+	public Connector con(){
+		return con;
 	}
-	
-	public static String[] showGroups(int id) throws SQLException{
-		ArrayList<String> groups=new ArrayList<String>();
-		ResultSet rs=con.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id=?)",new String[][]{{"i",""+id}});
-		while(rs.next()) groups.add(rs.getString("group_name"));
-		return groups.toArray(new String[groups.size()]);
+
+	public User user() {
+		return this.user;
 	}
 }

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import QuickConnect.Connector;
 import QuickConnect.Function;
+import QuickConnect.FunctionUser;
 import QuickConnect.User;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -37,9 +38,13 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	@FXML private Button bLogin, bRegister;
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
+	private FunctionUser fu;
 
 	@Override
 	public void start(Stage stage) {
+		User user=new User();
+		Function f=new Function(user);
+		this.fu=new FunctionUser(f);
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect");
 		this.myStage.setResizable(false);
@@ -84,11 +89,10 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		if(event.getSource() == bLogin) {
 			String userIn = inUser.getText();
 			String passIn = inPass.getText();
-			Connector con = Function.mysql();
 			boolean bool = false;
 			try {
-				bool = con.check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-				        userIn, Function.md5(passIn));
+				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+				        userIn, fu.f.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -97,12 +101,10 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			if(bool == true) {
 				User user = null;
 				try {
-					ResultSet sql = con.select(
-					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-					        userIn, Function.md5(passIn));
+					ResultSet sql = fu.con().select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+							userIn, fu.f.md5(passIn));
 					sql.next();
-					user = new User(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"),
-					        sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
+					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"), sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
 				} catch(NoSuchAlgorithmException | SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -111,9 +113,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				chatWindow cW = new chatWindow();
 
 				try {
-					cW.start(stage, user);
+					cW.start(stage,fu);
 				} catch(Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -134,7 +135,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			Stage stage = new Stage();
 			registerWindow Rf = new registerWindow();
 			try {
-				Rf.start(stage);
+				Rf.start(stage,fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

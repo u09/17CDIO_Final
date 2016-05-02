@@ -3,34 +3,36 @@ package QuickConnect;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import SceneBuild_JavaFX.friendsWindow;
+import java.util.ArrayList;
 
 public class FunctionUser {
-	private static Connector con = Function.mysql();
-
-	public static boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
-		Connector con = Function.mysql();
-		con.update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
-				new String[] { "s", Function.md5(pass) }, new String[] { "s", email },
-				new String[] { "l", Long.toString(Function.timestamp()) });
+	public Function f;
+	
+	public FunctionUser(Function f) {
+		this.f=f;
+	}
+	
+	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
+		con().update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
+				new String[] { "s", f.md5(pass) }, new String[] { "s", email },
+				new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
 	}
 
-	public static int changeNickname(String nickname, int id) {
-		if(nickname.length() == 0 || nickname.equals(" "))
+	public int changeNickname() {
+		if(user().getNickname().length() == 0 || user().getNickname().equals(" "))
 			return 2;
 		try {
-			con.update("UPDATE users set nickname=? WHERE user_id=?", new String[] { "s", nickname },
-					new String[] { "i", "" + id });
+			con().update("UPDATE users set nickname=? WHERE user_id=?", new String[] { "s", user().getNickname() },
+					new String[] { "i", "" + user().getUserID() });
 			return 0;
 		} catch(SQLException e) {
 			return 1;
 		}
 	}
 
-	public static String getNickName(int id) throws SQLException {
-		ResultSet rs = con.select("SELECT nickname FROM users WHERE user_id=?", new String[][] { { "i", "" + id } });
+	public String getNickName() throws SQLException {
+		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id="+user().getUserID());
 		String nickname = null;
 		while(rs.next()) {
 			String em = rs.getString("nickname");
@@ -38,31 +40,31 @@ public class FunctionUser {
 		}
 		return nickname;
 	}
-
-	public static int changePassword(int id, String oldPass, String newPass, String newPass2)
+	
+	public int changePassword(String oldPass, String newPass, String newPass2)
 			throws SQLException, NoSuchAlgorithmException {
-		ResultSet rs = con.select("SELECT password from users where user_id=?", new String[][] { { "i", "" + id } });
+		ResultSet rs = con().select("SELECT password from users where user_id=?", new String[][] { { "i", "" + user().getUserID() } });
 		String arr = null;
 		while(rs.next()) {
 			String em = rs.getString("password");
 			arr = em.replace("\n", ",");
 		}
 		System.out.println(arr);
-		System.out.println(Function.md5(oldPass));
-		if(Function.checkPassword(newPass) == 0 && newPass.equals(newPass2) && Function.md5(oldPass).equals(arr)) {
-			con.update("update users set password=? where user_id =?", new String[] { "s", Function.md5(newPass) },
-					new String[] { "i", "" + id });
+		System.out.println(f.md5(oldPass));
+		if(f.checkPassword(newPass) == 0 && newPass.equals(newPass2) && f.md5(oldPass).equals(arr)) {
+			con().update("update users set password=? where user_id =?", new String[] { "s", f.md5(newPass) },
+					new String[] { "i", "" + user().getUserID() });
 			return 0;
 		} else if(!newPass.equals(newPass2)) {
 			// newPass stemmer ikke med med newPass2 stemmer ikke
 			return 1;
-		} else if(Function.checkPassword(newPass) == 1) {
+		} else if(f.checkPassword(newPass) == 1) {
 			// Password skal være 8-24
 			return 2;
-		} else if(Function.checkPassword(newPass) == 2) {
+		} else if(f.checkPassword(newPass) == 2) {
 			// Password skal indeholde et tal, stort og et lille bogstav
 			return 3;
-		} else if(!Function.md5(oldPass).equals(arr)) {
+		} else if(!f.md5(oldPass).equals(arr)) {
 			// oldPass er ikke det rigtige
 			return 4;
 		} else {
@@ -71,36 +73,36 @@ public class FunctionUser {
 		}
 	}
 
-	public static int deactivateUser(int id, String password) throws SQLException, NoSuchAlgorithmException {
+	public int deactivateUser(String password) throws SQLException, NoSuchAlgorithmException {
 		boolean bool = false;
-		bool = con.check("SELECT user_id FROM users WHERE user_ID=? AND password=?", new String[] { "i", "" + id },
-				new String[] { "s", Function.md5(password) });
+		bool = con().check("SELECT user_id FROM users WHERE user_ID=? AND password=?", new String[] { "i", "" + user().getUserID() },
+				new String[] { "s", f.md5(password) });
 		if(bool) {
-			con.update("update users set user_deleted=1 WHERE user_ID=?", new String[][] { { "i", "" + id } });
+			con().update("update users set user_deleted=1 WHERE user_ID=?", new String[][] { { "i", "" + user().getUserID() } });
 			return 0;
 		} else {
 			return 1;
 		}
 	}
 
-	public static void activateUser(int id) throws SQLException {
-		con.update("update users set user_deleted=0 WHERE user_ID=?", new String[][] { { "i", "" + id } });
+	public void activateUser() throws SQLException {
+		con().update("update users set user_deleted=0 WHERE user_ID="+user().getUserID());
 	}
 
-	public static void setOnlineUser(int id) throws SQLException {
-		con.update("UPDATE users set online=1 WHERE user_ID=" + id);
+	public void setOnlineUser() throws SQLException {
+		con().update("UPDATE users set online=1 WHERE user_ID="+user().getUserID());
 	}
 
-	public static void setOfflineUser(int id) throws SQLException {
-		con.update("UPDATE users set online=0 WHERE user_ID=" + id);
+	public void setOfflineUser() throws SQLException {
+		con().update("UPDATE users set online=0 WHERE user_ID="+user().getUserID());
 	}
 
-	public static void sendMessage(String msg, int send_id, int receive_id) {
+	public void sendMessage(String msg, int send_id, int receive_id) {
 
 	}
 
-	public static int addFriend(int id, String username) throws SQLException {
-		ResultSet rs = con.select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
+	public int addFriend(String username) throws SQLException {
+		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 				new String[][] { { "s", "" + username } });
 		String contact_id = null;
 		int c_id = 0;
@@ -112,18 +114,56 @@ public class FunctionUser {
 		}
 		boolean isNotFriends = false;
 		boolean friendRequest = false; 
-		if((isNotFriends == con.check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
-			new String[] { "i", "" + id }, new String[] { "s", "" + c_id }))||
-			(isNotFriends == con.check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
-			new String[] { "i", "" + c_id }, new String[] { "s", "" + id }))){
-			con.update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + id },
-					new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(Function.timestamp()) });
-			if(friendRequest == con.check("select contact_id from contacts where user_id in(select user_id from users where username in(select username from users where status=0))",new String[] { "i", "" + c_id })){
+		if((isNotFriends == con().check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
+			new String[] { "i", "" + user().getUserID() }, new String[] { "s", "" + c_id }))||
+			(isNotFriends == con().check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
+			new String[] { "i", "" + c_id }, new String[] { "s", "" + user().getUserID() }))){
+			con().update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + user().getUserID() },
+					new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(f.timestamp()) });
+			if(friendRequest == con().check("select contact_id from contacts where user_id in(select user_id from users where username in(select username from users where status=0))",new String[] { "i", "" + c_id })){
 				
 			}
 			return 1;
 		}
 		else return 2;
 	}
-
+	
+	public String[] showOnlineUsers() throws SQLException{
+		ArrayList <String> onlineUsers= new ArrayList<String>();
+		ResultSet rs = con().select("SELECT user_ID,nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "+user().getUserID()+" AND status= 1))  AND online=1");
+		while(rs.next()){
+			int uid=rs.getInt("user_ID");
+			boolean chk=con().check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(f.timestamp()-10));
+			if(chk) con().update("UPDATE users SET online=0 WHERE user_ID="+uid);
+			else onlineUsers.add(rs.getString("nickname"));
+		}
+		return onlineUsers.toArray(new String[onlineUsers.size()]);
+	}
+	
+	public String[] showOfflineUsers() throws SQLException{
+		ArrayList <String> offlineUsers= new ArrayList<String>();
+		ResultSet rs = con().select("select nickname from users  where (user_id = any(select user_id from contacts where contact_id = "+user().getUserID()+" AND status= 1) OR user_id = any(select contact_id from contacts where user_id = "+user().getUserID()+" AND status= 1))  AND online=0");
+		while(rs.next())
+		offlineUsers.add(rs.getString("nickname"));
+		return offlineUsers.toArray(new String[offlineUsers.size()]);
+	}
+	
+	public String[] showGroups() throws SQLException{
+		ArrayList<String> groups=new ArrayList<String>();
+		ResultSet rs=con().select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="+user().getUserID()+")");
+		while(rs.next()) groups.add(rs.getString("group_name"));
+		return groups.toArray(new String[groups.size()]);
+	}
+	
+	public Connector con(){
+		return f.con();
+	}
+	
+	public void updateUser(int id, String username, String email, String nickname, int age, int user_created){
+		f.updateUser(id,username,email,nickname,age,user_created);
+	}
+	
+	public User user(){
+		return f.user();
+	}
 }

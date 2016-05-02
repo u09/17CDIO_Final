@@ -33,11 +33,11 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	@FXML private TextField inNickname;
 	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
-	private User user;
+	private FunctionUser fu;
 	private chatWindow cW;
 
-	public void start(Stage stage, User user) throws Exception {
-		this.user = user;
+	public void start(Stage stage, FunctionUser fu) throws Exception {
+		this.fu = fu;
 		this.cW = null;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Settings");
@@ -107,7 +107,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		if(event.getSource() == bSaveNickname) {
 			int changeNicknameAnswer = 0;
-			changeNicknameAnswer = FunctionUser.changeNickname(inNickname.getText(), user.UserID);
+			changeNicknameAnswer = fu.changeNickname();
 
 			if(changeNicknameAnswer == 0) {
 				// System.out.println(FunctionUser.getNickName(user.UserID));
@@ -128,8 +128,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bSavePass) {
 			int changePassAnswer = 0;
 			try {
-				changePassAnswer = FunctionUser.changePassword(user.UserID, inCurrentPass.getText(),
-				        inNewPass.getText(), inNewPass2.getText());
+				changePassAnswer = fu.changePassword(inCurrentPass.getText(),inNewPass.getText(),inNewPass2.getText());
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
@@ -161,7 +160,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bDeleteUser) {
 			int deactivateUserAnswer = 0;
 			try {
-				deactivateUserAnswer = FunctionUser.deactivateUser(user.UserID, inCurrentPass2.getText());
+				deactivateUserAnswer = fu.deactivateUser(inCurrentPass2.getText());
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}

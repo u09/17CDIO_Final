@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-
 import QuickConnect.Connector;
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
@@ -34,8 +33,10 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bRegister, bBack;
 	@FXML private TextField inUser, inMail;
 	@FXML private PasswordField inPass, inNewPass;
+	private FunctionUser fu;
 
-	public void start(Stage stage) {
+	public void start(Stage stage, FunctionUser fu) {
+		this.fu=fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Registering");
 		this.myStage.setResizable(false);
@@ -96,7 +97,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 
 			int check = 0;
 			try {
-				check = Function.checkRegister(cuser, cpass1, cpass2, cemail);
+				check = fu.f.checkRegister(cuser, cpass1, cpass2, cemail);
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -123,7 +124,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 
 			if(check == 9) {
 				try {
-					boolean bool = FunctionUser.addUser(cuser, cpass1, cemail);
+					boolean bool = fu.addUser(cuser, cpass1, cemail);
 				} catch(SQLException | NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}

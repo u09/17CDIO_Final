@@ -57,16 +57,16 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend;
 	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
-	private User user;
+	private FunctionUser fu;
 
-	public void start(Stage stage, User user) throws SQLException {
-		this.user = user;
+	public void start(Stage stage, FunctionUser fu) throws SQLException {
+		this.fu = fu;
 		this.myStage = stage;
-		this.myStage.setTitle("QuickConnect - user: " + user.Username);
+		this.myStage.setTitle("QuickConnect - user: "+fu.user().getUsername());
 		
 		showChatFrame();
-		FunctionUser.activateUser(user.UserID);
-		FunctionUser.setOnlineUser(user.UserID);
+		fu.activateUser();
+		fu.setOnlineUser();
 		myScene = new Scene(chatFrame);
 
 		File file = new File("QuickConnectCSS/StandardLayout.css");
@@ -102,7 +102,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		th.setDaemon(true);
 		th.start();
 
-		Runnable r = new Threads(user);
+		Runnable r = new Threads(fu);
 		new Thread(r).start();
 	}
 
@@ -132,7 +132,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					// FunctionUser.sendMessage(msg, user.UserID,
 		            // titledPane.getText());
 					try {
-						textArea.appendText(FunctionUser.getNickName(user.UserID) + ":\n" + msg + "\n");
+						textArea.appendText(fu.getNickName() + ":\n" + msg + "\n");
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
@@ -168,17 +168,17 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
 
-		String[] onl = Function.showOnlineUsers(user.UserID);
+		String[] onl = fu.showOnlineUsers();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(onl);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
 
-		String[] off = Function.showOfflineUsers(user.UserID);
+		String[] off = fu.showOfflineUsers();
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 
-		String[] gro = Function.showGroups(user.UserID);// {"Group1",
+		String[] gro = fu.showGroups();// {"Group1",
 		                                                // "Group2"};
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
@@ -251,7 +251,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			Stage stage = new Stage();
 			settingsWindow sF = new settingsWindow();
 			try {
-				sF.start(stage, user);
+				sF.start(stage,fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -290,7 +290,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			Stage stage = new Stage();
 			friendsWindow fW = new friendsWindow();
 			try {
-				fW.start(stage, user);
+				fW.start(stage,fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -304,7 +304,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 	public void closeChatWindow() {
 		try {
-			FunctionUser.setOfflineUser(user.UserID);
+			fu.setOfflineUser();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}

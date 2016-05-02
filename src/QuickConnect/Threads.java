@@ -3,17 +3,16 @@ package QuickConnect;
 import java.sql.SQLException;
 
 public class Threads implements Runnable {
-	private User user;
-	private Connector sql=Function.mysql();
-	public Threads(User user) {
-		this.user=user;
+	private FunctionUser fu;
+	public Threads(FunctionUser fu) {
+		this.fu=fu;
 	}
 
 	@Override
 	public void run() {
 		while(true){
 			try {
-				sql.update("UPDATE users SET last_on='"+Function.timestamp()+"' WHERE user_ID='"+user.UserID+"'");
+				fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -9,7 +9,6 @@ import javafx.application.Application;
 
 public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
-	Application.launch(loginWindow.class, args);
-		
+		new Controller().start();
 	}
 }
