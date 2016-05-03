@@ -7,7 +7,6 @@ import java.net.URL;
 import java.sql.SQLException;
 
 import QuickConnect.FunctionUser;
-import QuickConnect.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,7 +24,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class friendsWindow implements EventHandler<ActionEvent> {
+public class friendsWindow extends chatWindow implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
 	private Scene myScene;
@@ -36,8 +35,8 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 	ObservableList<String> recReqItems;
 	private FunctionUser fu;
 
-	public void start(Stage stage, FunctionUser fu) throws Exception {
-		this.fu=fu;
+	public void start(Stage stage, FunctionUser fu) {
+		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Anmodninger");
 		this.myStage.setResizable(false);
@@ -102,7 +101,7 @@ public class friendsWindow implements EventHandler<ActionEvent> {
 					passSuccess.setHeaderText("Din venneanmodning er sendt");
 					passSuccess.setContentText("Du har nu sendt en venneanmodning til " + inUsername.getText());
 					passSuccess.show();
-				} else if(i == 2){
+				} else if(i == 2) {
 					Alert passSuccess = new Alert(AlertType.INFORMATION);
 					passSuccess.setTitle(myStage.getTitle());
 					passSuccess.setHeaderText("Du har allerede sendt en venneanmodning");

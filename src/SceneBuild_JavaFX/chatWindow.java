@@ -7,10 +7,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
-import QuickConnect.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,8 +60,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	public void start(Stage stage, FunctionUser fu) throws SQLException {
 		this.fu = fu;
 		this.myStage = stage;
-		this.myStage.setTitle("QuickConnect - user: "+fu.user().getUsername());
-		
+		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
+
 		showChatFrame();
 		fu.activateUser();
 		fu.setOnlineUser();
@@ -178,8 +176,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 
-		String[] gro = fu.showGroups();// {"Group1",
-		                                                // "Group2"};
+		String[] gro = fu.showGroups();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
 
@@ -244,14 +241,28 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			aboutInfo.show();
 		}
 		if(event.getSource() == close) {
-			closeChatWindow();
+			ButtonType bClose = new ButtonType("Luk", ButtonData.OK_DONE);
+			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
+			Alert confirmClose = new Alert(AlertType.CONFIRMATION, null, bClose, bCancel);
+			confirmClose.initOwner(myStage);
+			confirmClose.setTitle("Luk QuickConnect");
+			confirmClose.setHeaderText("Du er ved at logge ud og lukke QuickConnect");
+			confirmClose.setContentText("Er du sikker på at du vil fortsætte?");
 
+			Optional<ButtonType> result = confirmClose.showAndWait();
+			
+			if(result.get() == bClose) {
+				closeChatWindow();
+			} else {
+				confirmClose.close();
+			}
 		}
 		if(event.getSource() == settings) {
 			Stage stage = new Stage();
-			settingsWindow sF = new settingsWindow();
+			stage.initOwner(menuBar.getScene().getWindow());
+			settingsWindow sW = new settingsWindow();
 			try {
-				sF.start(stage,fu);
+				sW.start(stage, fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -260,7 +271,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 			ButtonType bSignOut = new ButtonType("Log ud", ButtonData.OK_DONE);
 			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
-			bCancel.getButtonData().isCancelButton();
 			Alert confirmSignOut = new Alert(AlertType.CONFIRMATION, null, bSignOut, bCancel);
 			confirmSignOut.initOwner(myStage);
 			confirmSignOut.setTitle("Log ud");
@@ -268,9 +278,24 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			confirmSignOut.setContentText("Er du sikker på at du vil logge ud?");
 
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
+			
 			if(result.get() == bSignOut) {
-				System.out.println("Trykket på Log ud");
-				closeChatWindow();
+				th.interrupt();// Threaden stopper ikke når denne kodes køres, resten virker
+				try {
+					fu.setOfflineUser();
+				} catch(SQLException e1) {
+					e1.printStackTrace();
+				}
+				myStage.close();
+				Stage stage = new Stage();
+				loginWindow lW = new loginWindow();
+
+				try {
+					lW.start(stage);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+
 			} else {
 				confirmSignOut.close();
 			}
@@ -288,9 +313,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 		if(event.getSource() == bAddFriend) {
 			Stage stage = new Stage();
+			stage.initOwner(bAddFriend.getScene().getWindow());
 			friendsWindow fW = new friendsWindow();
 			try {
-				fW.start(stage,fu);
+				fW.start(stage, fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -309,6 +335,5 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			e.printStackTrace();
 		}
 		System.exit(0);
-		th.interrupt();
 	}
 }

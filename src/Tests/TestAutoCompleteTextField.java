@@ -28,7 +28,9 @@ public class TestAutoCompleteTextField extends Application {
 	}
 
 	public static void main(String[] args) {
-		Application.launch(TestAutoCompleteTextField.class, args);
+//		WriteToFile.write();
+		ReadFromFile.read();
+//		Application.launch(TestAutoCompleteTextField.class, args);
 	}
 	
 }

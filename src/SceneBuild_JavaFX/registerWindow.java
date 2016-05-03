@@ -6,8 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import QuickConnect.Connector;
-import QuickConnect.Function;
+
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,11 +31,11 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	@FXML private Label lTitle, lUser, lPass, lNewPass, lMail, lRegister;
 	@FXML private Button bRegister, bBack;
 	@FXML private TextField inUser, inMail;
-	@FXML private PasswordField inPass, inNewPass;
+	@FXML private PasswordField inPass1, inPass2;
 	private FunctionUser fu;
 
 	public void start(Stage stage, FunctionUser fu) {
-		this.fu=fu;
+		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Registering");
 		this.myStage.setResizable(false);
@@ -70,7 +69,9 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		}
 
 		bRegister.setOnAction(this);
+		bRegister.setDefaultButton(true);
 		bBack.setOnAction(this);
+		bBack.setCancelButton(true);
 		lTitle.getStyleClass().add("titles");
 	}
 
@@ -78,21 +79,21 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		// handle for bBack
 		if(event.getSource() == bBack) {
+			myStage.close();
 			Stage stage = new Stage();
-			loginWindow sF = new loginWindow();
+			loginWindow lW = new loginWindow();
 			try {
-				sF.start(stage);
+				lW.start(stage);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			((Node) (event.getSource())).getScene().getWindow().hide();
 		}
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
 
 			String cuser = inUser.getText();
-			String cpass1 = inPass.getText();
-			String cpass2 = inNewPass.getText();
+			String cpass1 = inPass1.getText();
+			String cpass2 = inPass2.getText();
 			String cemail = inMail.getText();
 
 			int check = 0;
@@ -128,23 +129,28 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				} catch(SQLException | NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}
-
+				Alert registerSuccess = new Alert(AlertType.INFORMATION);
+				registerSuccess.setTitle(this.myStage.getTitle());
+				registerSuccess.setHeaderText("Du er nu registreret!");
+				registerSuccess.setContentText("Tryk OK for at gå til login siden.");
+				registerSuccess.showAndWait();
+				myStage.close();
 				Stage stage = new Stage();
-				loginWindow Sf = new loginWindow();
+				loginWindow lW = new loginWindow();
 				try {
-					Sf.start(stage);
+					lW.start(stage);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
-				((Node) (event.getSource())).getScene().getWindow().hide();
 			} else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle(this.myStage.getTitle());
-				alert.setHeaderText("Registrering mislykkedes!");
-				alert.setContentText(msg);
-				alert.show();
-				inPass.setText("");
-				inNewPass.setText("");
+				Alert registerFail = new Alert(AlertType.WARNING);
+				registerFail.setTitle(this.myStage.getTitle());
+				registerFail.setHeaderText("Registrering mislykkedes!");
+				registerFail.setContentText(msg);
+				registerFail.showAndWait();
+				inPass1.clear();
+				inPass2.clear();
+				inMail.clear();
 				inUser.requestFocus();
 			}
 		}

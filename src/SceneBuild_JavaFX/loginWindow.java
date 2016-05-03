@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import QuickConnect.Connector;
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
@@ -18,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,17 +36,16 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	@FXML private Button bLogin, bRegister;
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
-	private FunctionUser fu;
+	FunctionUser fu;
 
 	@Override
 	public void start(Stage stage) {
-		User user=new User();
-		Function f=new Function(user);
-		this.fu=new FunctionUser(f);
+		User user = new User();
+		Function f = new Function(user);
+		this.fu = new FunctionUser(f);
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect");
 		this.myStage.setResizable(false);
-
 		showLoginFrame();
 		this.myScene = new Scene(LoginFrame);
 
@@ -91,8 +88,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			String passIn = inPass.getText();
 			boolean bool = false;
 			try {
-				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-				        userIn, fu.f.md5(passIn));
+				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -101,45 +97,41 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			if(bool == true) {
 				User user = null;
 				try {
-					ResultSet sql = fu.con().select("SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-							userIn, fu.f.md5(passIn));
+					ResultSet sql = fu.con().select(
+					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
 					sql.next();
 					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"), sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
 				} catch(NoSuchAlgorithmException | SQLException e1) {
 					e1.printStackTrace();
 				}
-
+				myStage.close();
 				Stage stage = new Stage();
 				chatWindow cW = new chatWindow();
-
 				try {
-					cW.start(stage,fu);
+					cW.start(stage, fu);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
-
-				((Node) (event.getSource())).getScene().getWindow().hide();
 			} else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle(this.myStage.getTitle());
-				alert.setHeaderText("Login mislykkedes!");
-				alert.setContentText("Venligst indtast dit kodeord og brugernavn igen");
-
-				alert.showAndWait();
-				inPass.setText("");
+				Alert loginFail = new Alert(AlertType.ERROR);
+				loginFail.setTitle(this.myStage.getTitle());
+				loginFail.setHeaderText("Login mislykkedes!");
+				loginFail.setContentText("Venligst indtast dit brugernavn og password igen");
+				loginFail.showAndWait();
+				inPass.clear();
 				inUser.requestFocus();
 			}
 		}
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
 			Stage stage = new Stage();
-			registerWindow Rf = new registerWindow();
+			registerWindow rW = new registerWindow();
+			myStage.close();
 			try {
-				Rf.start(stage,fu);
+				rW.start(stage, fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			((Node) (event.getSource())).getScene().getWindow().hide();
 		}
 
 	}

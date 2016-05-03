@@ -7,9 +7,9 @@ public class User {
 	private String Nickname;
 	private int Age;
 	private int Created;
-	
-	public User(){
-		
+
+	public User() {
+
 	}
 
 	public int getUserID() {

@@ -6,18 +6,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import QuickConnect.FunctionUser;
-import QuickConnect.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -25,7 +26,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class settingsWindow implements EventHandler<ActionEvent> {
+public class settingsWindow extends chatWindow implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
 	private Scene myScene;
@@ -34,11 +35,9 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
 	private FunctionUser fu;
-	private chatWindow cW;
 
-	public void start(Stage stage, FunctionUser fu) throws Exception {
+	public void start(Stage stage, FunctionUser fu) {
 		this.fu = fu;
-		this.cW = null;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Settings");
 		this.myStage.setResizable(false);
@@ -54,10 +53,8 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 		} catch(MalformedURLException e) {
 			e.printStackTrace();
 		}
-
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-
 	}
 
 	private void showSettingsFrame() {
@@ -107,7 +104,7 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		if(event.getSource() == bSaveNickname) {
 			int changeNicknameAnswer = 0;
-			changeNicknameAnswer = fu.changeNickname();
+			changeNicknameAnswer = fu.changeNickname(inNickname.getText());
 
 			if(changeNicknameAnswer == 0) {
 				// System.out.println(FunctionUser.getNickName(user.UserID));
@@ -120,15 +117,14 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				Alert nicknameFail = new Alert(AlertType.ERROR);
 				nicknameFail.setTitle(myStage.getTitle());
 				nicknameFail.setHeaderText("Nickname blev ikke sat!");
-				nicknameFail.setContentText(
-				        "Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
+				nicknameFail.setContentText("Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
 				nicknameFail.show();
 			}
 		}
 		if(event.getSource() == bSavePass) {
 			int changePassAnswer = 0;
 			try {
-				changePassAnswer = fu.changePassword(inCurrentPass.getText(),inNewPass.getText(),inNewPass2.getText());
+				changePassAnswer = fu.changePassword(inCurrentPass.getText(), inNewPass.getText(), inNewPass2.getText());
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
@@ -165,18 +161,50 @@ public class settingsWindow implements EventHandler<ActionEvent> {
 				e.printStackTrace();
 			}
 			if(deactivateUserAnswer == 0) {
-				Alert deactivateSuccess = new Alert(AlertType.INFORMATION);
-				deactivateSuccess.setTitle(myStage.getTitle());
-				deactivateSuccess.setHeaderText("Deaktivering af bruger lykkedes");
-				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på");
-				deactivateSuccess.show();
-				((Node) event.getSource()).getScene().getWindow().hide();
-				cW.closeChatWindow();
+				
+				ButtonType bLogW = new ButtonType("Login", ButtonData.OK_DONE);
+				ButtonType bClose = new ButtonType("Luk", ButtonData.NO);
+				Alert deactivateSuccess = new Alert(AlertType.CONFIRMATION, null, bLogW, bClose);
+				deactivateSuccess.initOwner(myStage);
+				deactivateSuccess.setTitle("QuickConnect - Deaktivering");
+				deactivateSuccess.setHeaderText("Deaktivering lykkedes!");
+				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på.\nVil du gå til loginsiden eller lukke QuickConnect.");
+
+				Optional<ButtonType> result = deactivateSuccess.showAndWait();
+				
+				if(result.get() == bLogW) {
+				th.interrupt(); // Threaden stopper ikke når denne kodes køres, resten virker
+				try {
+					fu.setOfflineUser();
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+				myStage.close();
+				myStage.getOwner().hide();
+				
+				Stage stage = new Stage();
+				loginWindow lW = new loginWindow();
+				try {
+					lW.start(stage);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				}
+				else {
+					try {
+						fu.setOfflineUser();
+					} catch(SQLException e1) {
+						e1.printStackTrace();
+					}
+					System.exit(0);;
+				}
 			} else if(deactivateUserAnswer == 1) {
-				Alert deactivateFail = new Alert(AlertType.INFORMATION);
-				deactivateFail.setHeaderText("Deaktivering af bruger mislykkedes");
-				deactivateFail.setContentText("Forkert password");
-				deactivateFail.show();
+				Alert deactivateFail = new Alert(AlertType.ERROR);
+				deactivateFail.setHeaderText("Deaktivering mislykkedes!");
+				deactivateFail.setContentText("Forkert password.\nIndtast dit password igen.");
+				deactivateFail.showAndWait();
+				inCurrentPass2.clear();
+				inCurrentPass2.requestFocus();
 			}
 		}
 	}
