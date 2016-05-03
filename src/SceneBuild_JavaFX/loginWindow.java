@@ -8,7 +8,10 @@ import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
@@ -36,8 +39,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	@FXML private Button bLogin, bRegister;
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
-	FunctionUser fu;
-
+	private FunctionUser fu;
+	
 	@Override
 	public void start(Stage stage) {
 		User user = new User();
