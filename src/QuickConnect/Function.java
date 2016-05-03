@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Function {
 	private Connector con;
@@ -36,6 +37,16 @@ public class Function {
 			}
 		}
 		return null;
+	}
+	
+	public int[] convertIntegers(ArrayList<Integer> integers)
+	{
+		int[] ret = new int[integers.size()];
+		for (int i=0; i < ret.length; i++)
+		{
+			ret[i] = integers.get(i).intValue();
+		}
+		return ret;
 	}
 
 	public long timestamp(){
