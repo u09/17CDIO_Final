@@ -97,17 +97,21 @@ public class FunctionUser {
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException {
-		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'"+user().getUserID()+"','"+f.timestamp()+"','"+receive_id+"')",msg);
+		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'" + user().getUserID()
+		        + "','" + f.timestamp() + "','" + receive_id + "')", msg);
 	}
-	
-	public void getMessages(ArrayList<ArrayList<String>> msg) throws SQLException{
-		ResultSet rs = con().select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='"+user().getUserID()+"' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"+user().getUserID()+"')");
-		while(rs.next()){
-			if(!messages.contains(rs.getInt("user_ID"))){
+
+	public void getMessages(ArrayList<ArrayList<String>> msg) throws SQLException {
+		ResultSet rs = con()
+		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
+		                + "' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
+		                + user().getUserID() + "')");
+		while(rs.next()) {
+			if(!messages.contains(rs.getInt("user_ID"))) {
 				messages.add(rs.getInt("user_ID"));
 				msg.add(new ArrayList<String>());
 			}
-			int index=messages.indexOf(rs.getInt("user_ID"));
+			int index = messages.indexOf(rs.getInt("user_ID"));
 			msg.get(index).add(rs.getString("message"));
 		}
 		f.printArrayList(msg);
@@ -132,63 +136,86 @@ public class FunctionUser {
 		                new String[] { "i", "" + c_id }, new String[] { "s", "" + user().getUserID() }))) {
 			con().update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + user().getUserID() },
 			        new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(f.timestamp()) });
-			if(friendRequest == con().check(
-			        "SELECT contact_id FROM contacts WHERE user_id in("
-			        + "SELECT user_id FROM users WHERE username IN("
-			        + "SELECT username FROM users WHERE status=0))",
+			if(friendRequest == con().check("SELECT contact_id FROM contacts WHERE user_id in("
+			        + "SELECT user_id FROM users WHERE username IN(" + "SELECT username FROM users WHERE status=0))",
 			        new String[] { "i", "" + c_id })) {
 
 			}
 			return 1;
 		} else return 2;
 	}
-	
-	public String[] OnlineUsersNickname() throws SQLException{
-		ArrayList <String> onlineUsers= new ArrayList<String>();
-		ResultSet rs = con().select("SELECT nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "+user().getUserID()+" AND status= 1))  AND online=1");
-		while(rs.next()){
-			int uid=rs.getInt("user_ID");
-			boolean chk=con().check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(f.timestamp()-10));
-			if(chk) con().update("UPDATE users SET online=0 WHERE user_ID="+uid);
+
+	public String[] OnlineUsersNickname() throws SQLException {
+		ArrayList<String> onlineUsers = new ArrayList<String>();
+		ResultSet rs = con()
+		        .select("SELECT user_ID, nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		                + user().getUserID()
+		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
+		                + user().getUserID() + " AND status= 1))  AND online=1");
+		while(rs.next()) {
+			int uid = rs.getInt("user_ID");
+			boolean chk = con()
+			        .check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
+			if(chk)
+				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
 			else onlineUsers.add(rs.getString("nickname"));
 		}
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
-	
-	public int[] OnlineUsersId() throws SQLException{
-		ArrayList <Integer> onlineUsers= new ArrayList<Integer>();
-		ResultSet rs = con().select("SELECT user_ID FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "+user().getUserID()+" AND status= 1))  AND online=1");
-		while(rs.next()){
-			int uid=rs.getInt("user_ID");
-			boolean chk=con().check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(f.timestamp()-10));
-			if(chk) con().update("UPDATE users SET online=0 WHERE user_ID="+uid);
+
+	public int[] OnlineUsersId() throws SQLException {
+		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
+		ResultSet rs = con()
+		        .select("SELECT user_ID FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		                + user().getUserID()
+		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
+		                + user().getUserID() + " AND status= 1))  AND online=1");
+		while(rs.next()) {
+			int uid = rs.getInt("user_ID");
+			boolean chk = con()
+			        .check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
+			if(chk)
+				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
 			else onlineUsers.add(rs.getInt("user_ID"));
 		}
 		return f.convertIntegers(onlineUsers);
 	}
-	
-	public String[] offlineUsersNickname() throws SQLException{
-		ArrayList <String> offlineUsers=new ArrayList<String>();
-		ResultSet rs = con().select("SELECT nickname FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "+user().getUserID()+" AND status= 1))  AND online=0");
-		while(rs.next()) offlineUsers.add(rs.getString("nickname"));
+
+	public String[] offlineUsersNickname() throws SQLException {
+		ArrayList<String> offlineUsers = new ArrayList<String>();
+		ResultSet rs = con()
+		        .select("SELECT nickname FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "
+		                + user().getUserID()
+		                + " AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "
+		                + user().getUserID() + " AND status= 1))  AND online=0");
+		while(rs.next())
+			offlineUsers.add(rs.getString("nickname"));
 		return offlineUsers.toArray(new String[offlineUsers.size()]);
 	}
-	
-	public int[] offlineUsersId() throws SQLException{
-		ArrayList <Integer> offlineUsers=new ArrayList<Integer>();
-		ResultSet rs = con().select("SELECT user_ID FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "+user().getUserID()+" AND status= 1))  AND online=0");
-		while(rs.next()) offlineUsers.add(rs.getInt("user_ID"));
+
+	public int[] offlineUsersId() throws SQLException {
+		ArrayList<Integer> offlineUsers = new ArrayList<Integer>();
+		ResultSet rs = con()
+		        .select("SELECT user_ID FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "
+		                + user().getUserID()
+		                + " AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "
+		                + user().getUserID() + " AND status= 1))  AND online=0");
+		while(rs.next())
+			offlineUsers.add(rs.getInt("user_ID"));
 		return f.convertIntegers(offlineUsers);
 	}
-            
-	public String[] showGroups() throws SQLException{
-		ArrayList<String> groups=new ArrayList<String>();
-		ResultSet rs=con().select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="+user().getUserID()+")");
-		while(rs.next()) groups.add(rs.getString("group_name"));
+
+	public String[] showGroups() throws SQLException {
+		ArrayList<String> groups = new ArrayList<String>();
+		ResultSet rs = con()
+		        .select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="
+		                + user().getUserID() + ")");
+		while(rs.next())
+			groups.add(rs.getString("group_name"));
 		return groups.toArray(new String[groups.size()]);
 	}
-	
-	public Connector con(){
+
+	public Connector con() {
 		return f.con();
 	}
 
@@ -200,7 +227,7 @@ public class FunctionUser {
 		ResultSet rs = con().select("SELECT word FROM banned_words WHERE word_id = 1");
 		return rs.getString("word");
 	}
-	
+
 	public User user() {
 		return f.user();
 	}
