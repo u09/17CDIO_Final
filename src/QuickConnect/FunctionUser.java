@@ -134,21 +134,6 @@ public class FunctionUser {
 			return 1;
 		} else return 2;
 	}
-
-	public String[] showOnlineUsers() throws SQLException {
-		ArrayList<String> onlineUsers = new ArrayList<String>();
-		ResultSet rs = con()
-		        .select("SELECT user_ID,nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
-		                + user().getUserID()
-		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
-		                + user().getUserID() + " AND status= 1))  AND online=1");
-		while(rs.next()) {
-			int uid = rs.getInt("user_ID");
-			boolean chk = con()
-			        .check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
-			if(chk)
-				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
-    }
 	
 	public String[] OnlineUsersNickname() throws SQLException{
 		ArrayList <String> onlineUsers= new ArrayList<String>();

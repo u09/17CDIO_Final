@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
-
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
@@ -108,7 +107,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	public void showChatFrame() throws SQLException {
-
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(chatWindow.class.getResource("ChatFrame.fxml"));
 		loader.setController(this);
@@ -134,6 +132,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		            // titledPane.getText());
 					try {
 						textArea.appendText(fu.getNickName() + ":\n" + msg + "\n\n");
+						
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
@@ -146,7 +145,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		getListsContents();
 		setListsFunctions();
 	}
-
+	
 	private void setMenuBarFunctions() {
 		menuBar.setUseSystemMenuBar(true);
 		about.setOnAction(this);

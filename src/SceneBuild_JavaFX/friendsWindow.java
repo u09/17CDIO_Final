@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
-
 import QuickConnect.FunctionUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
