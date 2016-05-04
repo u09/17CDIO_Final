@@ -91,9 +91,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			            @Override
 			            public void run() {
 				            try {
-				            	getListsContents();
-				            	fu.getMessages(messages);
-				            	fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
+					            getListsContents();
+					            fu.getMessages(messages);
+					            fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
+		                                + fu.user().getUserID() + "'");
 				            } catch(SQLException e) {
 					            e.printStackTrace();
 				            }
@@ -140,10 +141,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
-					
+
 					try {
-						fu.sendMessage(msg,activeUser);
-					} catch (SQLException e) {
+						fu.sendMessage(msg, activeUser);
+					} catch(SQLException e) {
 						e.printStackTrace();
 					}
 					inMessage.clear();
@@ -154,7 +155,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		getListsContents();
 		setListsFunctions();
 	}
-	
+
 	private void setMenuBarFunctions() {
 		menuBar.setUseSystemMenuBar(true);
 		about.setOnAction(this);
@@ -176,14 +177,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		String[] rec = { "Recent1", "Recent2" };
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
-		
-		this.onlineFriends=fu.OnlineUsersId();
-		String[] on=fu.OnlineUsersNickname();
+
+		this.onlineFriends = fu.OnlineUsersId();
+		String[] on = fu.OnlineUsersNickname();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
-		
-		this.offlineFriends=fu.offlineUsersId();
+
+		this.offlineFriends = fu.offlineUsersId();
 		String[] off = fu.offlineUsersNickname();
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
@@ -207,25 +208,23 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 		});
 
-		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				int id = friendsOnlineList.getSelectionModel().getSelectedIndex();
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
-				activeUser=onlineFriends[id];
-				System.out.println("clicked on "+onlineFriends[id]);
-				if(name != null && !name.isEmpty()) titledPane.setText(name);
+				System.out.println("clicked on " + name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 
-		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
-				activeUser=offlineFriends[id];
-				System.out.println("clicked on "+offlineFriends[id]);
-				if(name != null && !name.isEmpty()) titledPane.setText(name);
+				System.out.println("clicked on " + name);
+				if(name != null && !name.isEmpty())
+					titledPane.setText(name);
 			}
 		});
 
@@ -263,7 +262,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			confirmClose.setContentText("Er du sikker på at du vil fortsætte?");
 
 			Optional<ButtonType> result = confirmClose.showAndWait();
-			
+
 			if(result.get() == bClose) {
 				closeChatWindow();
 			} else {
@@ -291,9 +290,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			confirmSignOut.setContentText("Er du sikker på at du vil logge ud?");
 
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
-			
+
 			if(result.get() == bSignOut) {
-				th.interrupt();// Threaden stopper ikke når denne kodes køres, resten virker
+				th.interrupt();// Threaden stopper ikke når denne kodes køres,
+				               // resten virker
 				try {
 					fu.setOfflineUser();
 				} catch(SQLException e1) {
