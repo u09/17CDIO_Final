@@ -142,4 +142,19 @@ public class Function {
 	public User user() {
 		return this.user;
 	}
+
+	public void printArrayList(ArrayList<ArrayList<String>> msg) {
+		System.out.println("[");
+		if(msg!=null){
+			for(int i=1;i<=msg.size();i++){
+				System.out.print("\t[\n\t\t{");
+				for(int t=1;i<=msg.get(i-1).size();t++){
+					if(t==1) System.out.print(msg.get(i-1).get(t-1));
+					System.out.print(", "+msg.get(i-1).get(t-1));
+				}
+				System.out.print("}\n\t]\n");
+			}
+		}
+		System.out.println("]");
+	}
 }

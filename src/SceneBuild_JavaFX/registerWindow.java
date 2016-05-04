@@ -88,7 +88,6 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		}
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
-
 			String cuser = inUser.getText();
 			String cpass1 = inPass1.getText();
 			String cpass2 = inPass2.getText();

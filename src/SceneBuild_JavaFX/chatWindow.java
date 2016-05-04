@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
@@ -58,6 +59,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private int[] offlineFriends;
 	private int[] onlineFriends;
 	private int activeUser;
+	private ArrayList<ArrayList<String>> messages;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException {
 		this.fu = fu;
@@ -88,7 +90,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			            @Override
 			            public void run() {
 				            try {
-					            getListsContents();
+				            	getListsContents();
+				            	fu.getMessages(messages);
+				            	fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
 				            } catch(SQLException e) {
 					            e.printStackTrace();
 				            }
@@ -132,11 +136,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		            // titledPane.getText());
 					try {
 						textArea.appendText(fu.getNickName() + ":\n" + msg + "\n\n");
-						
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
-					fu.sendMessage(msg,fu.user().getUserID(),activeUser);
+					
+					try {
+						fu.sendMessage(msg,activeUser);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 					inMessage.clear();
 				}
 			}
@@ -161,7 +169,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		exitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
 		colorPick.setOnAction(this);
 		bAddFriend.setOnAction(this);
-
 	}
 
 	private void getListsContents() throws SQLException {
@@ -199,26 +206,25 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 		});
 
-		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
+		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				int id = friendsOnlineList.getSelectionModel().getSelectedIndex();
+				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
+				activeUser=onlineFriends[id];
 				System.out.println("clicked on "+onlineFriends[id]);
-//				if(name != null && !name.isEmpty())
-//					titledPane.setText(name);
+				if(name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 
-		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
+		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
+				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				activeUser=offlineFriends[id];
 				System.out.println("clicked on "+offlineFriends[id]);
-//				if(name != null && !name.isEmpty())
-//					titledPane.setText(name);
+				if(name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class FunctionUser {
 	public Function f;
+	private ArrayList<Integer> messages;
 
 	public FunctionUser(Function f) {
 		this.f = f;
@@ -33,12 +34,6 @@ public class FunctionUser {
 	}
 
 	public String getNickName() throws SQLException {
-//		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id=" + user().getUserID());
-//		String nickname = null;
-//		while(rs.next()) {
-//			String em = rs.getString("nickname");
-//			nickname = em.replace("\n", ",");
-//		}
 		return user().getNickname();
 	}
 
@@ -101,8 +96,21 @@ public class FunctionUser {
 		con().update("UPDATE users SET online=0 WHERE user_ID=" + user().getUserID());
 	}
 
-	public void sendMessage(String msg, int send_id, int receive_id) {
-
+	public void sendMessage(String msg, int receive_id) throws SQLException {
+		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'"+user().getUserID()+"','"+f.timestamp()+"','"+receive_id+"')",msg);
+	}
+	
+	public void getMessages(ArrayList<ArrayList<String>> msg) throws SQLException{
+		ResultSet rs = con().select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='"+user().getUserID()+"' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"+user().getUserID()+"')");
+		while(rs.next()){
+			if(!messages.contains(rs.getInt("user_ID"))){
+				messages.add(rs.getInt("user_ID"));
+				msg.add(new ArrayList<String>());
+			}
+			int index=messages.indexOf(rs.getInt("user_ID"));
+			msg.get(index).add(rs.getString("message"));
+		}
+		f.printArrayList(msg);
 	}
 
 	public int addFriend(String username) throws SQLException {
@@ -178,12 +186,6 @@ public class FunctionUser {
 		ResultSet rs=con().select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="+user().getUserID()+")");
 		while(rs.next()) groups.add(rs.getString("group_name"));
 		return groups.toArray(new String[groups.size()]);
-	}
-	
-	public String[][] newMessages() throws SQLException{
-		ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
-		ResultSet rs = con().select("SELECT user_ID FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "+user().getUserID()+" AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "+user().getUserID()+" AND status= 1))  AND online=0");
-		return null;
 	}
 	
 	public Connector con(){
