@@ -65,10 +65,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
-
-		showChatFrame();
 		fu.activateUser();
 		fu.setOnlineUser();
+
+		showChatFrame();
 		myScene = new Scene(chatFrame);
 
 		File file = new File("QuickConnectCSS/StandardLayout.css");

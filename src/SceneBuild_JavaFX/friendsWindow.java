@@ -68,8 +68,13 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		setButtonFunctions();
-		// String[] receivedRequests = Function.showReceivedRequests();
-		recReqItems = FXCollections.observableArrayList("Tolga", "Samil", "Ibrahim");
+		String[] receivedRequests = null;
+		try {
+			receivedRequests = fu.getFriendsRequests();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		recReqItems = FXCollections.observableArrayList(receivedRequests);
 		receivedList.setItems(recReqItems);
 
 	}
