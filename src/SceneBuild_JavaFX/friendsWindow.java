@@ -68,6 +68,11 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		setButtonFunctions();
+		getRequestsContent();
+
+	}
+
+	private void getRequestsContent() {
 		String[] receivedRequests = null;
 		try {
 			receivedRequests = fu.getFriendsRequests();
@@ -75,8 +80,9 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		recReqItems = FXCollections.observableArrayList(receivedRequests);
-		receivedList.setItems(recReqItems);
-
+		if(recReqItems != null) receivedList.setItems(recReqItems);
+		else;
+		
 	}
 
 	private void setButtonFunctions() {

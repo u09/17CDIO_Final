@@ -217,7 +217,7 @@ public class FunctionUser {
 
 	public String[] getFriendsRequests() throws SQLException {
 		ArrayList<String> requests = new ArrayList<String>();
-		ResultSet rs = f.con().select("SELECT username FROM contacts WHERE contact_id='"+user().getUserID()+"' AND status=0");
+		ResultSet rs = con().select("SELECT username FROM contacts NATURAL JOIN users WHERE contact_id='"+user().getUserID()+"' AND status=0");
 		while(rs.next())
 			requests.add(rs.getString("username"));
 		return requests.toArray(new String[requests.size()]);
