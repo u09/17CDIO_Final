@@ -7,6 +7,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Optional;
+
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +36,7 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
 	private FunctionUser fu;
 
+	@Override
 	public void start(Stage stage, FunctionUser fu) {
 		this.fu = fu;
 		this.myStage = stage;

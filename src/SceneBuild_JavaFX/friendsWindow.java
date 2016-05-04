@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+
 import QuickConnect.FunctionUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +35,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 	ObservableList<String> recReqItems;
 	private FunctionUser fu;
 
+	@Override
 	public void start(Stage stage, FunctionUser fu) {
 		this.fu = fu;
 		this.myStage = stage;
@@ -127,8 +129,13 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			}
 		}
 		if(event.getSource() == bAccept) {
-			int requestIndex = receivedList.getSelectionModel().getSelectedIndex();
-			recReqItems.remove(requestIndex);
+			String requestName = receivedList.getSelectionModel().getSelectedItem();
+			try {
+				fu.acceptFriend(requestName);
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			recReqItems.remove(requestName);
 		}
 		if(event.getSource() == bReject) {
 			int requestIndex = receivedList.getSelectionModel().getSelectedIndex();

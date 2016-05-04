@@ -135,7 +135,7 @@ public class FunctionUser {
 		        || (isNotFriends == con().check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
 		                new String[] { "i", "" + c_id }, new String[] { "s", "" + user().getUserID() }))) {
 			con().update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + user().getUserID() },
-			        new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(f.timestamp()) });
+			        new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(0) });
 			if(friendRequest == con().check("SELECT contact_id FROM contacts WHERE user_id in("
 			        + "SELECT user_id FROM users WHERE username IN(" + "SELECT username FROM users WHERE status=0))",
 			        new String[] { "i", "" + c_id })) {
@@ -221,6 +221,18 @@ public class FunctionUser {
 		while(rs.next())
 			requests.add(rs.getString("username"));
 		return requests.toArray(new String[requests.size()]);
+	}
+	
+	public void acceptFriend(String requestName) throws SQLException {
+		ResultSet rs = con().select("SELECT user_ID FROM users where username='"+requestName+"'");
+		String uid = null;
+		int user_id = 0;
+		while(rs.next()) {
+			String em = rs.getString("user_id");
+			uid = em.replace("\n", ",");
+			user_id = Integer.parseInt(uid);
+		}
+		con().update("UPDATE contacts SET status=1, friends_since=? WHERE user_id='" + user_id + "' AND contact_id='"+ user().getUserID()+"'", new String[] { "l", Long.toString(f.timestamp()) });
 	}
 	
 	public Connector con() {
