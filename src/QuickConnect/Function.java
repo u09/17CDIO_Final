@@ -39,12 +39,10 @@ public class Function {
 		}
 		return null;
 	}
-	
-	public int[] convertIntegers(ArrayList<Integer> integers)
-	{
+
+	public int[] convertIntegers(ArrayList<Integer> integers) {
 		int[] ret = new int[integers.size()];
-		for (int i=0; i < ret.length; i++)
-		{
+		for(int i = 0; i < ret.length; i++) {
 			ret[i] = integers.get(i).intValue();
 		}
 		return ret;
@@ -96,8 +94,10 @@ public class Function {
 	}
 
 	public boolean checkEmail(String email) {
-		boolean b = email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
-		if(b == false) return false;
+		boolean b = email
+		        .matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+		if(b == false)
+			return false;
 		return true;
 	}
 
@@ -145,12 +145,13 @@ public class Function {
 
 	public void printArrayList(ArrayList<ArrayList<String>> msg) {
 		System.out.println("[");
-		if(msg!=null){
-			for(int i=1;i<=msg.size();i++){
+		if(msg != null) {
+			for(int i = 1; i <= msg.size(); i++) {
 				System.out.print("\t[\n\t\t{");
-				for(int t=1;i<=msg.get(i-1).size();t++){
-					if(t==1) System.out.print(msg.get(i-1).get(t-1));
-					System.out.print(", "+msg.get(i-1).get(t-1));
+				for(int t = 1; i <= msg.get(i - 1).size(); t++) {
+					if(t == 1)
+						System.out.print(msg.get(i - 1).get(t - 1));
+					System.out.print(", " + msg.get(i - 1).get(t - 1));
 				}
 				System.out.print("}\n\t]\n");
 			}
