@@ -44,7 +44,20 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="412.0">
                      <children>
-                        <ListView fx:id="sentList" layoutX="48.0" layoutY="102.0" prefHeight="237.0" prefWidth="446.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <TitledPane fx:id="sentRequestsPane" collapsible="false" prefHeight="251.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="444.0">
+                                 <children>
+                                    <HBox layoutX="181.0" layoutY="175.0" spacing="40.0">
+                                       <children>
+                                          <Button fx:id="bCancel" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Annullér" />
+                                       </children>
+                                    </HBox>
+                                    <ListView fx:id="sentList" prefHeight="237.0" prefWidth="446.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
                      </children>
                   </AnchorPane>
                </content>
@@ -53,17 +66,17 @@
                <content>
                   <AnchorPane prefHeight="136.0" prefWidth="446.0">
                      <children>
-                        <TitledPane animated="false" collapsible="false" prefHeight="251.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TitledPane fx:id="recRequestsPane" animated="false" collapsible="false" prefHeight="251.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="444.0">
                                  <children>
-                                    <HBox layoutX="129.0" layoutY="171.0" spacing="40.0">
+                                    <HBox layoutX="129.0" layoutY="175.0" spacing="40.0">
                                        <children>
                                           <Button fx:id="bAccept" mnemonicParsing="false" text="Accepter" />
                                           <Button fx:id="bReject" mnemonicParsing="false" prefWidth="74.0" text="Afvis" />
                                        </children>
                                     </HBox>
-                                    <ListView fx:id="receivedList" layoutX="21.4" layoutY="20.4" prefHeight="152.0" prefWidth="423.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                    <ListView fx:id="receivedList" layoutX="21.4" layoutY="20.4" prefHeight="152.0" prefWidth="423.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                  </children>
                               </AnchorPane>
                           </content>

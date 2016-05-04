@@ -118,6 +118,7 @@ public class FunctionUser {
 	}
 
 	public int addFriend(String username) throws SQLException {
+		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
 		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 		        new String[][] { { "s", "" + username } });
 		String contact_id = null;
@@ -215,16 +216,31 @@ public class FunctionUser {
 		return groups.toArray(new String[groups.size()]);
 	}
 
+	public String[] getSentRequests() throws SQLException {
+		ArrayList<String> requests = new ArrayList<String>();
+		ResultSet rs = con().select("SELECT contact_id FROM contacts NATURAL JOIN users WHERE user_id='"
+		        + user().getUserID() + "' AND status=0");
+		ResultSet rs1;
+		while(rs.next()) {
+			rs1 = con().select("SELECT username FROM users WHERE user_id='" + rs.getInt("contact_id") + "'");
+			while(rs1.next()) {
+				requests.add(rs1.getString("username"));
+			}
+		}
+		return requests.toArray(new String[requests.size()]);
+	}
+
 	public String[] getFriendsRequests() throws SQLException {
 		ArrayList<String> requests = new ArrayList<String>();
-		ResultSet rs = con().select("SELECT username FROM contacts NATURAL JOIN users WHERE contact_id='"+user().getUserID()+"' AND status=0");
+		ResultSet rs = con().select("SELECT username FROM contacts NATURAL JOIN users WHERE contact_id='"
+		        + user().getUserID() + "' AND status=0");
 		while(rs.next())
 			requests.add(rs.getString("username"));
 		return requests.toArray(new String[requests.size()]);
 	}
-	
+
 	public void acceptFriend(String requestName) throws SQLException {
-		ResultSet rs = con().select("SELECT user_ID FROM users where username='"+requestName+"'");
+		ResultSet rs = con().select("SELECT user_ID FROM users where username='" + requestName + "'");
 		String uid = null;
 		int user_id = 0;
 		while(rs.next()) {
@@ -232,7 +248,34 @@ public class FunctionUser {
 			uid = em.replace("\n", ",");
 			user_id = Integer.parseInt(uid);
 		}
-		con().update("UPDATE contacts SET status=1, friends_since=? WHERE user_id='" + user_id + "' AND contact_id='"+ user().getUserID()+"'", new String[][] {{ "l",""+ Long.toString(f.timestamp()) }});
+		con().update("UPDATE contacts SET status=1, friends_since=? WHERE user_id='" + user_id + "' AND contact_id='"
+		        + user().getUserID() + "'", new String[][] { { "l", "" + Long.toString(f.timestamp()) } });
+	}
+
+	public void rejectFriend(String requestName) throws SQLException {
+		ResultSet rs = con().select("SELECT user_ID FROM users where username='" + requestName + "'");
+		String uid = null;
+		int user_id = 0;
+		while(rs.next()) {
+			String em = rs.getString("user_id");
+			uid = em.replace("\n", ",");
+			user_id = Integer.parseInt(uid);
+		}
+		con().update(
+		        "DELETE FROM contacts WHERE user_ID='" + user_id + "' AND contact_ID ='" + user().getUserID() + "'");
+	}
+
+	public void cancelRequest(String sentName) throws SQLException {
+		ResultSet rs = con().select("SELECT user_ID FROM users where username='" + sentName + "'");
+		String uid = null;
+		int contact_id = 0;
+		while(rs.next()) {
+			String em = rs.getString("user_id");
+			uid = em.replace("\n", ",");
+			contact_id = Integer.parseInt(uid);
+		}
+		con().update(
+		        "DELETE FROM contacts WHERE user_ID='" + user().getUserID() + "' AND contact_ID ='" + contact_id + "'");
 	}
 	
 	public Connector con() {
@@ -251,4 +294,5 @@ public class FunctionUser {
 	public User user() {
 		return f.user();
 	}
+
 }
