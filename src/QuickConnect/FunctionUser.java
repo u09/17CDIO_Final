@@ -232,7 +232,7 @@ public class FunctionUser {
 			uid = em.replace("\n", ",");
 			user_id = Integer.parseInt(uid);
 		}
-		con().update("UPDATE contacts SET status=1, friends_since=? WHERE user_id='" + user_id + "' AND contact_id='"+ user().getUserID()+"'", new String[] { "l", Long.toString(f.timestamp()) });
+		con().update("UPDATE contacts SET status=1, friends_since=? WHERE user_id='" + user_id + "' AND contact_id='"+ user().getUserID()+"'", new String[][] {{ "l",""+ Long.toString(f.timestamp()) }});
 	}
 	
 	public Connector con() {
