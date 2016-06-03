@@ -97,26 +97,36 @@ public class FunctionUser {
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException {
+		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
+		        + "','" + f.timestamp() + "','" + receive_id + "')");
 		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'" + user().getUserID()
-		        + "','" + f.timestamp() + "','" + receive_id + "')", msg);
+		        + "','" + f.timestamp() + "','" + receive_id + "')",msg);
 	}
-
-	public void getMessages(ArrayList<ArrayList<String>> msg) throws SQLException {
-		ResultSet rs = con()
-		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
+	
+	public void getMessages(ArrayList<ArrayList<String>> msg, ArrayList<Integer> users) throws SQLException {
+		ResultSet rs = con().select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
 		                + "' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
 		                + user().getUserID() + "')");
+		int index;
 		while(rs.next()) {
-			if(!messages.contains(rs.getInt("user_ID"))) {
-				messages.add(rs.getInt("user_ID"));
-				msg.add(new ArrayList<String>());
+			Integer ID=rs.getInt("user_ID");
+			if(users.contains(ID))
+			{
+				index = users.indexOf(ID);
 			}
-			int index = messages.indexOf(rs.getInt("user_ID"));
+			else
+			{
+				users.add(ID);
+				msg.add(new ArrayList<String>());
+				index = users.indexOf(ID);
+//				messages.add(rs.getInt("user_ID"));
+//				msg.add(new ArrayList<String>());
+			}
 			msg.get(index).add(rs.getString("message"));
 		}
 		f.printArrayList(msg);
 	}
-
+	
 	public int addFriend(String username) throws SQLException {
 		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
 		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",

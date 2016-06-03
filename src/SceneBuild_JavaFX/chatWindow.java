@@ -7,7 +7,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
@@ -60,7 +59,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private int[] offlineFriends;
 	private int[] onlineFriends;
 	private int activeUser;
-	private ArrayList<ArrayList<String>> messages;
+	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
+	private ArrayList<Integer> users=new ArrayList<Integer>();
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException {
 		this.fu = fu;
@@ -92,7 +92,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			            public void run() {
 				            try {
 				            	getListsContents();
-//				            	fu.getMessages(messages);
+				            	fu.getMessages(messages,users);
 				            	fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
 				            } catch(SQLException e) {
 					            e.printStackTrace();
