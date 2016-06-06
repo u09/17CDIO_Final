@@ -310,4 +310,10 @@ public class FunctionUser {
 	public void activateUserMail(String username) throws SQLException{
 		con().update("UPDATE users SET activated=1 WHERE username='"+username+"'");
 	}
+
+	public String getEmail(String userIn) throws SQLException {
+		ResultSet rs=con().select("SELECT email FROM users WHERE username='"+userIn+"'");
+		rs.next();
+		return rs.getString("email");
+	}
 }

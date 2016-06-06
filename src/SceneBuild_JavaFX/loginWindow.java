@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import QuickConnect.EmailVal;
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
@@ -37,7 +38,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
 	private FunctionUser fu;
-	
+	private EmailVal eVal = new EmailVal();
+
 	@Override
 	public void start(Stage stage) {
 		User user = new User();
@@ -87,6 +89,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			String userIn = inUser.getText();
 			String passIn = inPass.getText();
 			boolean bool = false;
+			boolean act = false;
 			try {
 				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
 				System.out.println(bool);
@@ -95,22 +98,47 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			}
 
 			if(bool == true) {
-				User user = null;
 				try {
-					ResultSet sql = fu.con().select(
-					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
-					sql.next();
-					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"), sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
-				} catch(NoSuchAlgorithmException | SQLException e1) {
-					e1.printStackTrace();
+					act = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND activated=1",userIn);
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
-				myStage.close();
-				Stage stage = new Stage();
-				chatWindow cW = new chatWindow();
-				try {
-					cW.start(stage, fu);
-				} catch(Exception e) {
-					e.printStackTrace();
+				if(act == false){
+					myStage.close();
+					Stage stage = new Stage();
+					EmailWindow eW = new EmailWindow();
+					String mail = null;
+					try {
+						mail = fu.getEmail(userIn);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						eW.start(stage, mail, userIn);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					User user = null;
+					try {
+						ResultSet sql = fu.con().select(
+								"SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
+						sql.next();
+						fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"), sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
+					} catch(NoSuchAlgorithmException | SQLException e1) {
+						e1.printStackTrace();
+					}
+					myStage.close();
+					Stage stage = new Stage();
+					chatWindow cW = new chatWindow();
+					try {
+						cW.start(stage, fu);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 				}
 			} else {
 				Alert loginFail = new Alert(AlertType.ERROR);
