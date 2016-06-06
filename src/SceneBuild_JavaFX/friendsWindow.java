@@ -146,7 +146,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			String requestName = receivedList.getSelectionModel().getSelectedItem();
 			try {
 				fu.acceptFriend(requestName);
-			} catch(SQLException e) {
+			} catch(SQLException | IOException e) {
 				e.printStackTrace();
 			}
 			reqItems.remove(requestName);

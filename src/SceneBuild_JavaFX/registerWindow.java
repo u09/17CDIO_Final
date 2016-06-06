@@ -124,7 +124,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 			if(check == 9) {
 				try {
 					boolean bool = fu.addUser(cuser, cpass1, cemail);
-				} catch(SQLException | NoSuchAlgorithmException e) {
+				} catch(SQLException | NoSuchAlgorithmException | IOException e) {
 					e.printStackTrace();
 				}
 				Alert registerSuccess = new Alert(AlertType.INFORMATION);
