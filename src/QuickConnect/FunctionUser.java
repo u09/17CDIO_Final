@@ -1,5 +1,6 @@
 package QuickConnect;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ public class FunctionUser {
 		this.f = f;
 	}
 
-	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException {
+	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException, IOException {
 		con().update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
 		        new String[] { "s", f.md5(pass) }, new String[] { "s", email },
 		        new String[] { "l", Long.toString(f.timestamp()) });
@@ -96,7 +97,7 @@ public class FunctionUser {
 		con().update("UPDATE users SET online=0 WHERE user_ID=" + user().getUserID());
 	}
 
-	public void sendMessage(String msg, int receive_id) throws SQLException {
+	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {
 		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
 		        + "','" + f.timestamp() + "','" + receive_id + "')");
 		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'" + user().getUserID()
@@ -110,21 +111,17 @@ public class FunctionUser {
 		int index;
 		while(rs.next()) {
 			Integer ID=rs.getInt("user_ID");
-			if(users.contains(ID))
-			{
-				index = users.indexOf(ID);
-			}
+			if(users.contains(ID)) index = users.indexOf(ID);
 			else
 			{
 				users.add(ID);
 				msg.add(new ArrayList<String>());
 				index = users.indexOf(ID);
-//				messages.add(rs.getInt("user_ID"));
-//				msg.add(new ArrayList<String>());
 			}
 			msg.get(index).add(rs.getString("message"));
 		}
-		f.printArrayList(msg);
+		f.printArrayListMulti(msg);
+		f.printArrayList(users);
 	}
 	
 	public int addFriend(String username) throws SQLException {
@@ -156,7 +153,7 @@ public class FunctionUser {
 		} else return 2;
 	}
 
-	public String[] OnlineUsersNickname() throws SQLException {
+	public String[] OnlineUsersNickname() throws SQLException, IOException {
 		ArrayList<String> onlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
 		        .select("SELECT user_ID, nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -174,7 +171,7 @@ public class FunctionUser {
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
 
-	public int[] OnlineUsersId() throws SQLException {
+	public int[] OnlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
 		ResultSet rs = con()
 		        .select("SELECT user_ID FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -249,7 +246,7 @@ public class FunctionUser {
 		return requests.toArray(new String[requests.size()]);
 	}
 
-	public void acceptFriend(String requestName) throws SQLException {
+	public void acceptFriend(String requestName) throws SQLException, IOException {
 		ResultSet rs = con().select("SELECT user_ID FROM users where username='" + requestName + "'");
 		String uid = null;
 		int user_id = 0;

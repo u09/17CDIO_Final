@@ -1,5 +1,6 @@
 package QuickConnect;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Threads implements Runnable {
@@ -11,15 +12,14 @@ public class Threads implements Runnable {
 	@Override
 	public void run() {
 		while(true){
+			fu.f.timestampInc();
 			try {
-				fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
-			} catch (SQLException e) {
+				System.out.println(fu.f.timestamp());
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			System.out.println("Thread successfully run");
 			try {
-			    Thread.sleep(5000);
+			    Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 			    Thread.currentThread().interrupt();
 			}

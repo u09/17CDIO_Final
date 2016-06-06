@@ -1,16 +1,24 @@
 package QuickConnect;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sun.misc.IOUtils;
+
 public class Function {
 	private Connector con;
 	private User user;
+	private long timestamp=0;
 
 	public Function(User user) {
 		this.user = user;
@@ -48,9 +56,26 @@ public class Function {
 		return ret;
 	}
 
-	public long timestamp() {
-		long unixTime = System.currentTimeMillis() / 1000L;
-		return unixTime;
+	public long timestamp() throws IOException {
+		if(timestamp==0)
+		{
+			URL url = new URL("http://s8dev.org/timestamp.php");
+			URLConnection con = url.openConnection();
+			InputStream in = con.getInputStream();
+			String encoding = con.getContentEncoding();
+			encoding = encoding == null ? "UTF-8" : encoding;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buf = new byte[8192];
+			int len = 0;
+			while ((len = in.read(buf)) != -1) {
+			    baos.write(buf, 0, len);
+			}
+			String body = new String(baos.toByteArray(), encoding);
+			timestamp=Long.parseLong(body);
+			System.out.println(timestamp);
+			return timestamp;
+		}
+		return timestamp;
 	}
 
 	public String md5(String str) throws NoSuchAlgorithmException {
@@ -143,7 +168,7 @@ public class Function {
 		return this.user;
 	}
 
-	public void printArrayList(ArrayList<ArrayList<String>> msg) {
+	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
 		System.out.println("[");
 		if(msg != null) {
 			for(int i = 1; i <= msg.size(); i++) {
@@ -157,5 +182,19 @@ public class Function {
 			}
 		}
 		System.out.println("]");
+	}
+	
+	public void printArrayList(ArrayList<?> msg) {
+		System.out.println("[");
+		if(msg != null) {
+			for(int i = 1; i <= msg.size(); i++) {
+				System.out.print(", " + msg.get(i-1));
+			}
+		}
+		System.out.println("]");
+	}
+
+	public void timestampInc() {
+		timestamp++;
 	}
 }

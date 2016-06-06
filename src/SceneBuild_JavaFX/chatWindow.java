@@ -62,7 +62,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
 
-	public void start(Stage stage, FunctionUser fu) throws SQLException {
+	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
 		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
@@ -93,8 +93,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				            try {
 				            	getListsContents();
 				            	fu.getMessages(messages,users);
+				            	
+				            	messages.clear();
+				            	users.clear();
 				            	fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
-				            } catch(SQLException e) {
+				            } catch(SQLException | IOException e) {
 					            e.printStackTrace();
 				            }
 			            }
@@ -111,7 +114,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		new Thread(r).start();
 	}
 
-	public void showChatFrame() throws SQLException {
+	public void showChatFrame() throws SQLException, IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(chatWindow.class.getResource("ChatFrame.fxml"));
 		loader.setController(this);
@@ -143,7 +146,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					
 					try {
 						fu.sendMessage(msg,activeUser);
-					} catch (SQLException e) {
+					} catch (SQLException | IOException e) {
 						e.printStackTrace();
 					}
 					inMessage.clear();
@@ -172,7 +175,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bAddFriend.setOnAction(this);
 	}
 
-	private void getListsContents() throws SQLException {
+	private void getListsContents() throws SQLException, IOException {
 		String[] rec = { "Recent1", "Recent2" };
 		ObservableList<String> items = FXCollections.observableArrayList(rec);
 		recentList.setItems(items);
