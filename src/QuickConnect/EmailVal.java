@@ -5,13 +5,9 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailVal {
-
-    private static String USER_NAME = "samilesma";  // GMail user name (just the part before "@gmail.com")
-    private static String PASSWORD = "ze65ahpx42"; // GMail password
-    private static String RECIPIENT = "samilesma@gmail.com";
     
 //    public static void main(String[] args){
-//    	sendFromGMail("samilesma", "ze65ahpx42", "samilesma@gmail.com", "Sa","Sa");
+//    	sendFromGMail("samilesma", Kode, "samilesma@gmail.com", "Sa","Sa");
 //    }
 
     public String getCode() {

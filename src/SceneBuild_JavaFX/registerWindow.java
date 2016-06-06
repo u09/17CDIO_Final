@@ -134,9 +134,9 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				registerSuccess.showAndWait();
 				myStage.close();
 				Stage stage = new Stage();
-				loginWindow lW = new loginWindow();
+				EmailWindow eW = new EmailWindow();
 				try {
-					lW.start(stage);
+					eW.start(stage, cemail);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
