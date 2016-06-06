@@ -129,8 +129,8 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				}
 				Alert registerSuccess = new Alert(AlertType.INFORMATION);
 				registerSuccess.setTitle(this.myStage.getTitle());
-				registerSuccess.setHeaderText("Du er nu registreret!");
-				registerSuccess.setContentText("Tryk OK for at gå til login siden.");
+				registerSuccess.setHeaderText("Du er nu registreret i databasen!");
+				registerSuccess.setContentText("Venligst godkend din email adresse");
 				registerSuccess.showAndWait();
 				myStage.close();
 				Stage stage = new Stage();
