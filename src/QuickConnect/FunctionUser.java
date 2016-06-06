@@ -156,7 +156,7 @@ public class FunctionUser {
 	public String[] OnlineUsersNickname() throws SQLException, IOException {
 		ArrayList<String> onlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
-		        .select("SELECT user_ID, nickname FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		        .select("SELECT user_ID, nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
 		                + user().getUserID()
 		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
 		                + user().getUserID() + " AND status= 1))  AND online=1");
@@ -174,7 +174,7 @@ public class FunctionUser {
 	public int[] OnlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
 		ResultSet rs = con()
-		        .select("SELECT user_ID FROM users  WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		        .select("SELECT user_ID FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
 		                + user().getUserID()
 		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
 		                + user().getUserID() + " AND status= 1))  AND online=1");
@@ -301,5 +301,10 @@ public class FunctionUser {
 	public User user() {
 		return f.user();
 	}
-
+	
+	public String id2nick(int id) throws SQLException{
+		ResultSet rs=con().select("SELECT nickname FROM users WHERE user_ID="+id);
+		rs.next();
+		return rs.getString("nickname");
+	}
 }

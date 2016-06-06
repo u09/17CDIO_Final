@@ -94,6 +94,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				            	getListsContents();
 				            	fu.getMessages(messages,users);
 				            	
+				            	for(int i=1;i<=messages.size();i++){
+				            		for(int t=1;t<=messages.get(i-1).size();t++) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+				            	}
+				            	
 				            	messages.clear();
 				            	users.clear();
 				            	fu.con().update("UPDATE users SET last_on='"+fu.f.timestamp()+"' WHERE user_ID='"+fu.user().getUserID()+"'");
