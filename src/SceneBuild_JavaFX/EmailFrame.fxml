@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="lCode" layoutX="129.0" layoutY="28.0" text="Indtast kode fra mail:" />
+      <TextField fx:id="inCode" layoutX="108.0" layoutY="57.0" promptText="Kode:" />
+      <Button fx:id="bAccept" layoutX="108.0" layoutY="113.0" mnemonicParsing="false" text="Godkend" />
+      <Button fx:id="bSend" layoutX="207.0" layoutY="113.0" mnemonicParsing="false" text="Send Igen" />
+   </children>
+</Pane>
