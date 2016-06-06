@@ -15,7 +15,7 @@ public class FunctionUser {
 	}
 
 	public boolean addUser(String user, String pass, String email) throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0)", new String[] { "s", user },
+		con().update("INSERT INTO users VALUES (0,?,?,?,'',0,0,?,0,0,0)", new String[] { "s", user },
 		        new String[] { "s", f.md5(pass) }, new String[] { "s", email },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
