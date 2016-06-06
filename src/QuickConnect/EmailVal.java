@@ -21,7 +21,7 @@ public class EmailVal {
 
     public void sendFromGMail(String from, String pass, String to, String subject, String body) {
         Properties props = System.getProperties();
-        String host = "smtp.gmail.com";
+        String host = "smtp.gigahost.dk";
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.user", from);
@@ -51,6 +51,13 @@ public class EmailVal {
         catch (MessagingException me) {
             me.printStackTrace();
         }
+    }
+    
+    public String getMail(){
+    	return mail;
+    }
+    public String getPass(){
+    	return pass;
     }
 }
 

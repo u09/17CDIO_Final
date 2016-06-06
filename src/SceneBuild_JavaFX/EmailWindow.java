@@ -29,6 +29,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 	private Stage myStage;
 	private Scene myScene;
 	private Pane EmailFrame;
+	private String HostMail;
+	private String HostPass;
 	private String code;
 	private String eMail;
 	private String userName;
@@ -39,6 +41,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 	private EmailVal eVal = new EmailVal();
 
 	public void start(Stage stage, String email, String username) {
+		this.HostMail = eVal.getMail();
+		this.HostPass = eVal.getPass();
 		this.eMail=email;
 		this.userName=username;
 		User user = new User();
@@ -61,7 +65,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 		code = eVal.getCode();
-		eVal.sendFromGMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+		eVal.sendFromGMail(this.HostMail,this.HostPass, this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
 
 	}
 
@@ -85,7 +89,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bSend) {
 			System.out.println("Send");
 			code = eVal.getCode();
-			eVal.sendFromGMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+			eVal.sendFromGMail(this.HostMail,this.HostPass, this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Ny kode sendt");
 			alert.setHeaderText(null);
