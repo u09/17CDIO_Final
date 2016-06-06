@@ -169,8 +169,8 @@ public class Function {
 	}
 
 	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
-		System.out.println("[");
 		if(msg != null) {
+			if(msg.size()!=0) System.out.println("[");
 			for(int i = 1; i <= msg.size(); i++) {
 				System.out.print("\t[\n\t\t{");
 				for(int t = 1; t <= msg.get(i - 1).size(); t++) {
@@ -180,21 +180,22 @@ public class Function {
 				}
 				System.out.print("}\n\t]\n");
 			}
+			if(msg.size()!=0) System.out.println("]");
 		}
-		System.out.println("]");
 	}
 	
 	public void printArrayList(ArrayList<?> msg) {
-		System.out.println("[");
 		if(msg != null) {
+			if(msg.size()!=0) System.out.println("[");
 			for(int i = 1; i <= msg.size(); i++) {
 				System.out.print(", " + msg.get(i-1));
 			}
+			if(msg.size()!=0) System.out.println("]");
 		}
-		System.out.println("]");
 	}
 
-	public void timestampInc() {
-		timestamp++;
+	public void timestampInc() throws IOException {
+		if(timestamp!=0) timestamp++;
+		else timestamp();
 	}
 }

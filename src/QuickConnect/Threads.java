@@ -12,12 +12,13 @@ public class Threads implements Runnable {
 	@Override
 	public void run() {
 		while(true){
-			fu.f.timestampInc();
 			try {
+				fu.f.timestampInc();
 				System.out.println(fu.f.timestamp());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 			try {
 			    Thread.sleep(1000);
 			} catch(InterruptedException ex) {
