@@ -109,8 +109,9 @@ public class FunctionUser {
 		                + "' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
 		                + user().getUserID() + "')");
 		int index;
+		Integer ID;
 		while(rs.next()) {
-			Integer ID=rs.getInt("user_ID");
+			ID=rs.getInt("user_ID");
 			if(users.contains(ID)) index = users.indexOf(ID);
 			else
 			{

@@ -186,11 +186,11 @@ public class Function {
 	
 	public void printArrayList(ArrayList<?> msg) {
 		if(msg != null) {
-			if(msg.size()!=0) System.out.println("[");
+			if(msg.size()!=0) System.out.print("[\n\t");
 			for(int i = 1; i <= msg.size(); i++) {
 				System.out.print(", " + msg.get(i-1));
 			}
-			if(msg.size()!=0) System.out.println("]");
+			if(msg.size()!=0) System.out.println("\n]");
 		}
 	}
 
