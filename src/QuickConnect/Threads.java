@@ -14,7 +14,6 @@ public class Threads implements Runnable {
 		while(true){
 			try {
 				fu.f.timestampInc();
-				System.out.println(fu.f.timestamp());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

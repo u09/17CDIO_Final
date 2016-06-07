@@ -8,6 +8,24 @@
 	/*-fx-background-image: url("bg.jpg");*/
 }
 
+#friendsOfflineList {
+	-fx-text-color:red;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: white;
+}
+
+.list-cell:odd { /* <=== changed to even */
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
 .titles {
 	-fx-font-size: 22px;
 	-fx-font-weight: bold;
@@ -98,4 +116,8 @@
 	-fx-background-insets: 0, 1, 2;
 	-fx-text-fill: black;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.unread {
+	-fx-color:red;
 }
