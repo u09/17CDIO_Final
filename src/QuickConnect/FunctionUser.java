@@ -316,6 +316,9 @@ public class FunctionUser {
 		con().update("DELETE FROM contacts WHERE (user_ID='"+ID+"' AND contact_ID='"+user().getUserID()+"') "
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
+	public void blockContact (int ID) throws SQLException, IOException {
+		con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+ID+"','"+user().getUserID()+"','"+f.timestamp()+"')");
+	}
 
 
 	public String getEmail(String userIn) throws SQLException {
