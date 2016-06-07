@@ -1,7 +1,6 @@
 package QuickConnect;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Threads implements Runnable {
 	private FunctionUser fu;

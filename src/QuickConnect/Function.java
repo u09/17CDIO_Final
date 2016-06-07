@@ -1,20 +1,16 @@
 package QuickConnect;
 
-import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import sun.misc.IOUtils;
 
 public class Function {
 	private Connector con;

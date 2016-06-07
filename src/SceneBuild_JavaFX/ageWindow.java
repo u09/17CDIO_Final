@@ -1,6 +1,5 @@
 package SceneBuild_JavaFX;
 
-import javafx.scene.control.Button;
 import java.awt.TextField;
 import java.io.File;
 import java.io.IOException;
@@ -8,13 +7,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 
+import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -70,7 +70,7 @@ public class ageWindow implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		
 		if(event.getSource() == bAge){
-			if(fu.f.isNumeric(inAge.getText())){
+			if(Function.isNumeric(inAge.getText())){
 				int age = Integer.parseInt(inAge.getText());
 				try {
 					fu.setAge(age);
