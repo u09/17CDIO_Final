@@ -1,15 +1,37 @@
 package QuickConnect;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailVal {
-    
-//    public static void main(String[] args){
-//    	sendFromGMail("samilesma", Kode, "samilesma@gmail.com", "Sa","Sa");
-//    }
 
+	private String mail;
+	private String pass;
+	
+	private String server(int i) {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader("mail.txt"));
+			mail = br.readLine();
+			pass = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(br != null)
+					br.close();
+			} catch(IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		if(i==0) return mail;
+		else return pass;
+	}
+	
     public String getCode() {
     	int digit1 = (int) ((Math.random()*10));
     	int digit2 = (int) ((Math.random()*10));
@@ -54,10 +76,10 @@ public class EmailVal {
     }
     
     public String getMail(){
-    	return mail;
+    	return server(0);
     }
     public String getPass(){
-    	return pass;
+    	return server(1);
     }
 }
 
