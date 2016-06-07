@@ -129,29 +129,16 @@ public class FunctionUser {
 		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
 		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 				new String[][] { { "s", "" + username } });
-		String contact_id = null;
-		int c_id = 0;
-		while(rs.next()) {
-			String em = rs.getString("user_id");
-			contact_id = em.replace("\n", ",");
-			c_id = Integer.parseInt(contact_id);
-
+		rs.next();
+		int id = rs.getInt("user_id");
+		if(con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE (user_id='"+id+"' AND blocked_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND blocked_id='"+id+"')")) return 1;
+		else if(con().check("SELECT user_id FROM contacts WHERE (user_id='"+id+"' AND contact_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND contact_id='"+id+"')")) {
+			if(con().check("SELECT user_id FROM contacts WHERE ((user_id='"+id+"' AND contact_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND contact_id='"+id+"')) AND status=1")) return 2;
+			else if(con().check("SELECT user_id FROM contacts WHERE ((user_id='"+id+"' AND contact_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND contact_id='"+id+"')) AND status=0")) return 3;
 		}
-		boolean isNotFriends = false;
-		boolean friendRequest = false;
-		if((isNotFriends == con().check("SELECT user_id FROM contacts WHERE user_ID=? AND contact_id=?",
-				new String[] { "i", "" + user().getUserID() }, new String[] { "s", "" + c_id }))
-				|| (isNotFriends == con().check("SELECT user_id FROM contacts WHERE contact_id=? AND user_id=?",
-						new String[] { "i", "" + c_id }, new String[] { "s", "" + user().getUserID() }))) {
-			con().update("INSERT INTO contacts VALUES(?,?,0,?)", new String[] { "i", "" + user().getUserID() },
-					new String[] { "i", "" + c_id }, new String[] { "l", Long.toString(0) });
-			if(friendRequest == con().check("SELECT contact_id FROM contacts WHERE user_id in("
-					+ "SELECT user_id FROM users WHERE username IN(" + "SELECT username FROM users WHERE status=0))",
-					new String[] { "i", "" + c_id })) {
-
-			}
-			return 1;
-		} else return 2;
+		con().update("INSERT INTO contacts VALUES(?,?,0,?)",new String[]{"i",""+user().getUserID()},
+					new String[]{"i",""+id},new String[]{"l",Long.toString(0)});
+		return 0;
 	}
 
 	public String[] OnlineUsersNickname() throws SQLException, IOException {
@@ -321,7 +308,7 @@ public class FunctionUser {
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
 			deleteFriend(ID);
 		}
-		
+
 	}
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
