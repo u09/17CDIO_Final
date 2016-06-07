@@ -310,4 +310,8 @@ public class FunctionUser {
 	public void activateUserMail(String username) throws SQLException{
 		con().update("UPDATE users SET activated=1 WHERE username='"+username+"'");
 	}
+	public void deleteFriend (int ID) throws SQLException {
+		con().update("DELETE FROM contacts WHERE (user_ID='"+ID+"' AND contact_ID='"+user().getUserID()+"') "
+				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
+	}
 }
