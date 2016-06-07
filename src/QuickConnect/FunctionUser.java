@@ -333,4 +333,7 @@ public class FunctionUser {
 		rs.next();
 		return rs.getString("email");
 	}
+	public void setAge(int age) throws SQLException{
+		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
+	}
 }

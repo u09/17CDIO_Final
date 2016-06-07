@@ -1,11 +1,12 @@
 package SceneBuild_JavaFX;
 
-import java.awt.Button;
+import javafx.scene.control.Button;
 import java.awt.TextField;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
@@ -62,12 +63,27 @@ public class ageWindow implements EventHandler<ActionEvent> {
 		}
 		
 		bAge.setOnAction(this);
+		bAge.setDefaultButton(true);
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-
 		
+		if(event.getSource() == bAge){
+			if(fu.f.isNumeric(inAge.getText())){
+				int age = Integer.parseInt(inAge.getText());
+				try {
+					fu.setAge(age);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else{
+				
+			}
+		}
+	
 	}
 	
 	
