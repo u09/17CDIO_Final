@@ -317,7 +317,7 @@ public class FunctionUser {
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
 	public void blockContact (int ID) throws SQLException, IOException {
-		if(!con().check("SELECT user_id,blocked_id,blocked_time FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
+		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+ID+"','"+user().getUserID()+"','"+f.timestamp()+"')");
 		}
 	}
