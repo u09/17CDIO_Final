@@ -318,8 +318,13 @@ public class FunctionUser {
 	}
 	public void blockContact (int ID) throws SQLException, IOException {
 		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
-			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+ID+"','"+user().getUserID()+"','"+f.timestamp()+"')");
+			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
+			deleteFriend(ID);
 		}
+		
+	}
+	public void unBlockContact (int ID) throws SQLException {
+		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
 
 
