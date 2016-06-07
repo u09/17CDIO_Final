@@ -120,19 +120,19 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		if(event.getSource() == bAdd) {
 			try {
 				int i = fu.addFriend(inUsername.getText());
-				if(i == 1) {
-					Alert passSuccess = new Alert(AlertType.INFORMATION);
-					passSuccess.setTitle(myStage.getTitle());
-					passSuccess.setHeaderText("Din venneanmodning er sendt");
-					passSuccess.setContentText("Du har nu sendt en venneanmodning til " + inUsername.getText());
-					passSuccess.show();
-				} else if(i == 2) {
-					Alert passSuccess = new Alert(AlertType.INFORMATION);
-					passSuccess.setTitle(myStage.getTitle());
-					passSuccess.setHeaderText("Du har allerede sendt en venneanmodning");
-					passSuccess.setContentText("Venligst tjek dine kontakter eller vent til at personen accepterer");
-					passSuccess.show();
+				Alert passSuccess = new Alert(AlertType.INFORMATION);
+				passSuccess.setTitle(myStage.getTitle());
+				if(i>0) {
+					passSuccess.setHeaderText("Din venneanmodning blev ikke sendt");
+					if(i==1) passSuccess.setContentText("Du eller personen du prøver at tilføje har blokeret hinanden");
+					else if(i==2) passSuccess.setContentText("Du er allerede venner med personen");
+					else if(i==3) passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
 				}
+				else if(i==0) {
+					passSuccess.setHeaderText("Din venneanmodning blev sendt");
+					passSuccess.setContentText("Du har nu sendt en venneanmodning til " + inUsername.getText());
+				}
+				passSuccess.show();
 			} catch(SQLException e) {
 //				Alert passSuccess = new Alert(AlertType.INFORMATION);
 //				passSuccess.setTitle(myStage.getTitle());

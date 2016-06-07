@@ -1,5 +1,6 @@
 package QuickConnect;
 
+import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
@@ -199,16 +200,14 @@ public class Function {
 		else timestamp();
 	}
 	
-	public static boolean isNumeric(String str)
-	{
-		try
-		{
-			int d = Integer.parseInt(str);
+	public static boolean isNumeric(String str) {
+		  try {
+		    int nr = Integer.parseInt(str); 
+
+		  } catch (NumberFormatException nfe) {
+			  return false;
+		  }
+		  return true;
 		}
-		catch(NumberFormatException nfe)
-		{
-			return false;
-		}
-		return true;
-	}
+>>>>>>> origin/master
 }
