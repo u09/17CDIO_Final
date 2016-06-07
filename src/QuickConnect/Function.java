@@ -198,4 +198,17 @@ public class Function {
 		if(timestamp!=0) timestamp++;
 		else timestamp();
 	}
+	
+	public static boolean isNumeric(String str)
+	{
+		try
+		{
+			int d = Integer.parseInt(str);
+		}
+		catch(NumberFormatException nfe)
+		{
+			return false;
+		}
+		return true;
+	}
 }
