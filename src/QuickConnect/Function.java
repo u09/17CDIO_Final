@@ -69,7 +69,7 @@ public class Function {
 			byte[] buf = new byte[8192];
 			int len = 0;
 			while ((len = in.read(buf)) != -1) {
-			    baos.write(buf, 0, len);
+				baos.write(buf, 0, len);
 			}
 			String body = new String(baos.toByteArray(), encoding);
 			timestamp=Long.parseLong(body);
@@ -121,7 +121,7 @@ public class Function {
 
 	public boolean checkEmail(String email) {
 		boolean b = email
-		        .matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+				.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
 		if(b == false)
 			return false;
 		return true;
@@ -184,7 +184,7 @@ public class Function {
 			if(msg.size()!=0) System.out.println("]");
 		}
 	}
-	
+
 	public void printArrayList(ArrayList<?> msg) {
 		if(msg != null) {
 			if(msg.size()!=0) System.out.print("[\n\t");
@@ -199,15 +199,14 @@ public class Function {
 		if(timestamp!=0) timestamp++;
 		else timestamp();
 	}
-	
-	public static boolean isNumeric(String str) {
-		  try {
-		    int nr = Integer.parseInt(str); 
 
-		  } catch (NumberFormatException nfe) {
-			  return false;
-		  }
-		  return true;
+	public static boolean isNumeric(String str) {
+		try {
+			int nr = Integer.parseInt(str); 
+
+		} catch (NumberFormatException nfe) {
+			return false;
 		}
->>>>>>> origin/master
+		return true;
+	}
 }
