@@ -22,24 +22,6 @@
    <left>
       <TabPane prefHeight="371.0" prefWidth="227.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab closable="false" text="Seneste">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="338.0" prefWidth="267.0">
-                     <children>
-                        <ListView fx:id="recentList" focusTraversable="false" layoutY="46.0" prefHeight="292.0" prefWidth="227.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0" />
-                        <HBox layoutX="5.0" layoutY="5.0" spacing="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0">
-                           <children>
-                              <TextField fx:id="inSearchRecent" minHeight="-Infinity" prefHeight="27.0" prefWidth="187.0" promptText="Søg i seneste" />
-                              <Button fx:id="bSearchRecent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
-            </content>
-               <tooltip>
-                  <Tooltip text="Vis seneste aktivitet" />
-               </tooltip>
-          </Tab>
           <Tab closable="false" text="Venner">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -48,11 +30,11 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <TitledPane fx:id="onlinePane" animated="false" prefHeight="181.0" prefWidth="225.0" text="Online" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0">
+                                    <TitledPane fx:id="onlinePane" animated="false" collapsible="false" prefHeight="181.0" prefWidth="225.0" text="Online" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="36.0">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <ListView fx:id="friendsOnlineList" prefHeight="153.0" prefWidth="223.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <ListView fx:id="friendsOnlineList" prefHeight="221.0" prefWidth="223.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                       </content>
@@ -61,7 +43,7 @@
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <TitledPane fx:id="offlinePane" animated="false" prefHeight="176.0" prefWidth="225.0" text="Offline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TitledPane fx:id="offlinePane" animated="false" collapsible="false" prefHeight="176.0" prefWidth="225.0" text="Offline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>

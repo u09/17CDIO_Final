@@ -25,8 +25,10 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ListViewBuilder;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -48,7 +50,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	static Thread th;
 	@FXML private MenuBar menuBar;
 	@FXML private MenuItem about, close, settings, signOut, fullScreen, exitFullScreen;
-	@FXML private ListView<String> recentList, friendsOnlineList, friendsOfflineList, groupsList;
+	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea textArea;
 	@FXML private TextField inMessage;
@@ -130,7 +132,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 		titledPane.setText("Chat system");
 		HBox.setHgrow(inMessage, Priority.ALWAYS);
-		bSearchRecent.setId("bSearch");
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
@@ -180,15 +181,13 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-		String[] rec = { "Recent1", "Recent2" };
-		ObservableList<String> items = FXCollections.observableArrayList(rec);
-		recentList.setItems(items);
-		
+
 		this.onlineFriends=fu.OnlineUsersId();
 		String[] on=fu.OnlineUsersNickname();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
+		
 		
 		this.offlineFriends=fu.offlineUsersId();
 		String[] off = fu.offlineUsersNickname();
@@ -203,16 +202,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void setListsFunctions() {
-		recentList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				String name = recentList.getSelectionModel().getSelectedItem();
-				System.out.println("clicked on " + name);
-				if(name != null && !name.isEmpty())
-					titledPane.setText(name);
-			}
-		});
 
 		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
