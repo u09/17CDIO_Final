@@ -60,7 +60,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 		code = eVal.getCode();
-		eVal.sendFromGMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+		eVal.sendMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
 
 	}
 
@@ -84,7 +84,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bSend) {
 			System.out.println("Send");
 			code = eVal.getCode();
-			eVal.sendFromGMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+			eVal.sendMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Ny kode sendt");
 			alert.setHeaderText(null);

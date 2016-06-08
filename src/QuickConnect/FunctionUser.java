@@ -336,9 +336,11 @@ public class FunctionUser {
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
 	
-	public String[] showAllUserName() throws SQLException{
-		ResultSet  rs = con().select("select username from users where user_id  NOT IN( select user_id from blocked_contact where blocked_id="
-	+ user().getUserID()+ ") AND user_id!=" + user().getUserID() +";");
+	public String[] showSearchAddFriends(String inUser) throws SQLException{
+		inUser = inUser.toLowerCase();
+		ResultSet  rs = con().select("select username from users where user_id  NOT IN( select user_id from blocked_contact where blocked_id="+user().getUserID()+
+				") AND user_id!="+user().getUserID()+" AND (user_id not in((SELECT user_id FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id ="
+				+user().getUserID()+" ) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id ="+user().getUserID()+" ))))) AND LOWER(username) LIKE '%"+inUser+"%'");
 		ArrayList <String> allUserName = new ArrayList<String>();
 		
 		while(rs.next()){
@@ -348,9 +350,7 @@ public class FunctionUser {
 			System.out.println(allUserName.get(i));
 			
 		}
-		return allUserName.toArray(new String[allUserName.size()]);
-		
-		
+		return allUserName.toArray(new String[allUserName.size()]);	
 	}
 	
 	public void infoUser(int ID) throws SQLException{

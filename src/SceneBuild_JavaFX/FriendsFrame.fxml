@@ -28,6 +28,7 @@
                         <Button fx:id="bAdd" layoutX="273.0" layoutY="163.0" mnemonicParsing="false" text="Tilføj ven" />
                         <ListView fx:id="addFriendList" layoutX="116.0" layoutY="57.0" prefHeight="101.0" prefWidth="232.0" />
                         <Label layoutX="32.0" layoutY="32.0" text="Tilføj ven:" />
+                        <Button fx:id="bSearchFriends" layoutX="351.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                      </children>
                   </AnchorPane>
                </content>

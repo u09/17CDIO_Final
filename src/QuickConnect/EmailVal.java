@@ -47,7 +47,7 @@ public class EmailVal {
     	return code;
     }
 
-    public void sendFromGMail(String from, String pass, String to, String subject, String body) {
+    public void sendMail(String from, String pass, String to, String subject, String body) {
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");

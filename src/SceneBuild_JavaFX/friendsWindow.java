@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -32,7 +33,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 	private AnchorPane friendsFrame;
 	private TitledPane sentRequestsPane, recRequestsPane;
 	@FXML private TextField inUsername;
-	@FXML private Button bAdd, bAccept, bReject, bCancel;
+	@FXML private Button bAdd, bAccept, bReject, bCancel,bSearchFriends;
 	@FXML private ListView<String> sentList, receivedList,addFriendList;
 	private String[] userList;
 	ObservableList<String> sentItems, reqItems;
@@ -59,7 +60,6 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-
 	}
 
 	private void showFriendsFrame() throws SQLException {
@@ -72,16 +72,22 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		getAllUsers();
 		setButtonFunctions();
 		getRequestsContent();
 
 	}
 
 	private void getAllUsers() throws SQLException {
-		this.userList=fu.showAllUserName();
+		this.userList=fu.showSearchAddFriends(inUsername.getText());
 		ObservableList<String> UserItems = FXCollections.observableArrayList(this.userList);
 		addFriendList.setItems(UserItems);	
+		addFriendList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				String name = addFriendList.getSelectionModel().getSelectedItem();
+				inUsername.setText(name);
+			}
+		});
 	}
 
 	private void getRequestsContent() {
@@ -117,6 +123,8 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		};
 
 		inUsername.setOnKeyPressed(keyEvent);
+		bSearchFriends.setId("bSearch");
+		bSearchFriends.setOnAction(this);
 		bAdd.setOnAction(this);
 		bAccept.setOnAction(this);
 		bReject.setOnAction(this);
@@ -135,7 +143,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 					if(i==1) passSuccess.setContentText("Du eller personen du prï¿½ver at tilfï¿½je har blokeret hinanden");
 					else if(i==2) passSuccess.setContentText("Du er allerede venner med personen");
 					else if(i==3) passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
-					else if(i==4) passSuccess.setContentText("Brugernavnet eksistere desværre ikke. Kontrollere om du har stavet korrekt");
+					else if(i==4) passSuccess.setContentText("Brugernavnet eksistere desvï¿½rre ikke. Kontrollere om du har stavet korrekt");
 				}
 				else if(i==0) {
 					passSuccess.setHeaderText("Din venneanmodning blev sendt");
@@ -177,6 +185,14 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 				e.printStackTrace();
 			}
 			sentItems.remove(sentName);
+		}
+		if(event.getSource() == bSearchFriends){
+			try {
+				getAllUsers() ;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 		}
 	}
 }
