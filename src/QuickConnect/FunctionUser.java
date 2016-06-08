@@ -369,6 +369,12 @@ public class FunctionUser {
 		return allUserName.toArray(new String[allUserName.size()]);	
 	}
 	
+	public boolean createGroup(String groupOwner, String groupName ) throws SQLException, IOException{
+		
+		return false;
+		
+	}
+	
 	public void infoUser(int ID) throws SQLException{
 		ResultSet rs=con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='"+ID+"'");
 	}
