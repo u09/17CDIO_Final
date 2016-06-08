@@ -101,7 +101,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 								fu.getMessages(messages,users);
 
 								for(int i=1;i<=messages.size();i++){
-									for(int t=1;t<=messages.get(i-1).size();t++) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+									for(int t=1;t<=messages.get(i-1).size();t++){
+										if(users.get(i-1)==activeUser) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+									}
 								}
 
 								messages.clear();
@@ -213,6 +215,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				activeUser=onlineFriends[id];
 				System.out.println("clicked on "+onlineFriends[id]);
+				textArea.clear();
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -246,6 +249,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				activeUser=offlineFriends[id];
 				System.out.println("clicked on "+offlineFriends[id]);
+				textArea.clear();
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
