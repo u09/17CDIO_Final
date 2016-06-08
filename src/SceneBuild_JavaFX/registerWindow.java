@@ -7,6 +7,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.util.Date;
 
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
@@ -103,7 +108,13 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				String cpass1 = inPass1.getText();
 				String cpass2 = inPass2.getText();
 				String cemail = inMail.getText();
+				
+				LocalDate pickedDate = datePick.getValue();
+				int myYear = pickedDate.getYear();
 
+				LocalDate currDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				int currYear = currDate.getYear();
+				
 				int check = 0;
 				try {
 					check = fu.f.checkRegister(cuser, cpass1, cpass2, cemail);
@@ -178,7 +189,6 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				uri = url.toURI();
 				java.awt.Desktop.getDesktop().browse(uri);
 			} catch(URISyntaxException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
