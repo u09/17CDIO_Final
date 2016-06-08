@@ -128,8 +128,8 @@ public class FunctionUser {
 
 	public int addFriend(String username) throws SQLException {
 		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
-		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
-				new String[][] { { "s", "" + username } });
+		if(!con().check("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",new String[][] { { "s", "" + username } }))return 4;
+		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",new String[][] { { "s", "" + username } });
 		rs.next();
 		int id = rs.getInt("user_id");
 		if(con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE (user_id='"+id+"' AND blocked_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND blocked_id='"+id+"')")) return 1;
@@ -170,7 +170,7 @@ public class FunctionUser {
 		while(rs.next()) {
 			int uid = rs.getInt("user_ID");
 			boolean chk = con()
-					.check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
+					.check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(f.timestamp()-10));
 			if(chk)
 				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
 			else onlineUsers.add(rs.getInt("user_ID"));
@@ -296,6 +296,7 @@ public class FunctionUser {
 		rs.next();
 		return rs.getString("nickname");
 	}
+	
 	public void activateUserMail(String username) throws SQLException{
 		con().update("UPDATE users SET activated=1 WHERE username='"+username+"'");
 	}
@@ -304,6 +305,7 @@ public class FunctionUser {
 		con().update("DELETE FROM contacts WHERE (user_ID='"+ID+"' AND contact_ID='"+user().getUserID()+"') "
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
+	
 	public void blockContact (int ID) throws SQLException, IOException {
 		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
@@ -311,16 +313,17 @@ public class FunctionUser {
 		}
 
 	}
+	
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
-
 
 	public String getEmail(String userIn) throws SQLException {
 		ResultSet rs=con().select("SELECT email FROM users WHERE username='"+userIn+"'");
 		rs.next();
 		return rs.getString("email");
 	}
+	
 	public void setAge(int age) throws SQLException{
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
@@ -342,4 +345,7 @@ public class FunctionUser {
 		
 	}
 	
+	public void infoUser(int ID) throws SQLException{
+		ResultSet rs=con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='"+ID+"'");
+	}
 }

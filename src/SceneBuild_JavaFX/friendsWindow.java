@@ -135,6 +135,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 					if(i==1) passSuccess.setContentText("Du eller personen du prï¿½ver at tilfï¿½je har blokeret hinanden");
 					else if(i==2) passSuccess.setContentText("Du er allerede venner med personen");
 					else if(i==3) passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
+					else if(i==4) passSuccess.setContentText("Brugernavnet eksistere desværre ikke. Kontrollere om du har stavet korrekt");
 				}
 				else if(i==0) {
 					passSuccess.setHeaderText("Din venneanmodning blev sendt");

@@ -3,6 +3,7 @@ package SceneBuild_JavaFX;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -16,6 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -31,6 +35,9 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bRegister, bBack;
 	@FXML private TextField inUser, inMail;
 	@FXML private PasswordField inPass1, inPass2;
+	@FXML private DatePicker datePick;
+	@FXML private Hyperlink hyperlink;
+	@FXML private CheckBox checkBox;
 	private FunctionUser fu;
 
 	public void start(Stage stage, FunctionUser fu) {
@@ -71,6 +78,8 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		bRegister.setDefaultButton(true);
 		bBack.setOnAction(this);
 		bBack.setCancelButton(true);
+		hyperlink.setOnAction(this);
+		checkBox.setId("cb1");
 		lTitle.getStyleClass().add("titles");
 	}
 
@@ -89,67 +98,88 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		}
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
-			String cuser = inUser.getText();
-			String cpass1 = inPass1.getText();
-			String cpass2 = inPass2.getText();
-			String cemail = inMail.getText();
+			if(checkBox.isSelected()) {
+				String cuser = inUser.getText();
+				String cpass1 = inPass1.getText();
+				String cpass2 = inPass2.getText();
+				String cemail = inMail.getText();
 
-			int check = 0;
-			try {
-				check = fu.f.checkRegister(cuser, cpass1, cpass2, cemail);
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-			String msg;
-			if(check == 0)
-				msg = "Uforventet fejl";
-			else if(check == 1)
-				msg = "Brugernavnet skal være 4-24 tegn";
-			else if(check == 2)
-				msg = "Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: -,_";
-			else if(check == 3)
-				msg = "Begge passwords skal være ens";
-			else if(check == 4)
-				msg = "Passwordet skal være mellem 8-24 tegn";
-			else if(check == 5)
-				msg = "Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
-			else if(check == 6)
-				msg = "Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
-			else if(check == 7)
-				msg = "Ugyldigt email";
-			else if(check == 8)
-				msg = "Brugeren eksisterer allerede i systemet";
-			else msg = "Du er registreret";
-
-			if(check == 9) {
+				int check = 0;
 				try {
-					boolean bool = fu.addUser(cuser, cpass1, cemail);
-				} catch(SQLException | NoSuchAlgorithmException | IOException e) {
+					check = fu.f.checkRegister(cuser, cpass1, cpass2, cemail);
+				} catch(SQLException e) {
 					e.printStackTrace();
 				}
-				Alert registerSuccess = new Alert(AlertType.INFORMATION);
-				registerSuccess.setTitle(this.myStage.getTitle());
-				registerSuccess.setHeaderText("Du er nu registreret i databasen!");
-				registerSuccess.setContentText("Venligst godkend din email adresse");
-				registerSuccess.showAndWait();
-				myStage.close();
-				Stage stage = new Stage();
-				EmailWindow eW = new EmailWindow();
-				try {
-					eW.start(stage, cemail, cuser);
-				} catch(Exception e) {
-					e.printStackTrace();
+				String msg;
+				if(check == 0)
+					msg = "Uforventet fejl";
+				else if(check == 1)
+					msg = "Brugernavnet skal være 4-24 tegn";
+				else if(check == 2)
+					msg = "Brugernavnet må kun indeholde tal, bogstaver og følgende tegn: -,_";
+				else if(check == 3)
+					msg = "Begge passwords skal være ens";
+				else if(check == 4)
+					msg = "Passwordet skal være mellem 8-24 tegn";
+				else if(check == 5)
+					msg = "Passwordet skal mindst indeholde 1 stort bogstav, 1 lille bogstav og 1 tal";
+				else if(check == 6)
+					msg = "Passwordet må kun indeholde tal, bogstaver og følgende tegn:<br><h2>!\"#$%&'(,)*+-./:;<=>?@[\\]^_`{|}~</h2>";
+				else if(check == 7)
+					msg = "Ugyldigt email";
+				else if(check == 8)
+					msg = "Brugeren eksisterer allerede i systemet";
+				else msg = "Du er registreret";
+
+				if(check == 9) {
+					try {
+						boolean bool = fu.addUser(cuser, cpass1, cemail);
+					} catch(SQLException | NoSuchAlgorithmException | IOException e) {
+						e.printStackTrace();
+					}
+					Alert registerSuccess = new Alert(AlertType.INFORMATION);
+					registerSuccess.setTitle(this.myStage.getTitle());
+					registerSuccess.setHeaderText("Du er nu registreret i databasen!");
+					registerSuccess.setContentText("Venligst godkend din email adresse");
+					registerSuccess.showAndWait();
+					myStage.close();
+					Stage stage = new Stage();
+					EmailWindow eW = new EmailWindow();
+					try {
+						eW.start(stage, cemail, cuser);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					Alert registerFail = new Alert(AlertType.WARNING);
+					registerFail.setTitle(this.myStage.getTitle());
+					registerFail.setHeaderText("Registrering mislykkedes!");
+					registerFail.setContentText(msg);
+					registerFail.showAndWait();
+					inPass1.clear();
+					inPass2.clear();
+					inMail.clear();
+					inUser.requestFocus();
 				}
 			} else {
-				Alert registerFail = new Alert(AlertType.WARNING);
-				registerFail.setTitle(this.myStage.getTitle());
-				registerFail.setHeaderText("Registrering mislykkedes!");
-				registerFail.setContentText(msg);
-				registerFail.showAndWait();
-				inPass1.clear();
-				inPass2.clear();
-				inMail.clear();
-				inUser.requestFocus();
+				Alert terms = new Alert(AlertType.WARNING);
+				terms.setTitle(this.myStage.getTitle());
+				terms.setHeaderText("OBS!");
+				terms.setContentText("Du skal accepterer vilkår og betingelser");
+				terms.showAndWait();
+			}
+		}
+		if(event.getSource() == hyperlink) {
+			URL url = null;
+			java.net.URI uri = null;
+			try {
+				url = new URL("http://vignette3.wikia.nocookie.net/simpsons/images/e/e9/Nelson_Ha-Ha.jpg/revision/latest?cb=20121205194057");
+				// http://quickconnect.tk/termsandconditions.html
+				uri = url.toURI();
+				java.awt.Desktop.getDesktop().browse(uri);
+			} catch(URISyntaxException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
