@@ -15,14 +15,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ageWindow implements EventHandler<ActionEvent> {
+public class groupWindow implements EventHandler<ActionEvent> {
 	
 	private Stage myStage;
 	private Scene myScene; 
-	private VBox AgeFrame; 
+	private AnchorPane GroupFrame; 
 	@FXML private Button bAge; 
 	@FXML private TextField inAge;
 	private FunctionUser fu; 
@@ -33,9 +34,9 @@ public class ageWindow implements EventHandler<ActionEvent> {
 		this.myStage.setTitle("QuickConnect - Alder");
 		this.myStage.setResizable(false);
 		
-		showAgeFrame();
+		showGroupFrame();
 		
-		myScene = new Scene(AgeFrame);
+		myScene = new Scene(GroupFrame);
 		
 		File file = new File("QuickConnectCSS/StandardLayout.css");
 		URL url;
@@ -50,14 +51,14 @@ public class ageWindow implements EventHandler<ActionEvent> {
 		this.myStage.show();
 	}
 
-	private void showAgeFrame() {
+	private void showGroupFrame() {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(ageWindow.class.getResource("AgeFrame.fxml"));
+		loader.setLocation(groupWindow.class.getResource("GroupFrame.fxml"));
 		loader.setController(this);
 		
 		try {
-			AgeFrame = (VBox) loader.load();
+			GroupFrame = (AnchorPane) loader.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

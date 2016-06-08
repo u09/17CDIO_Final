@@ -11,6 +11,8 @@ import java.util.Optional;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -54,7 +56,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea textArea;
 	@FXML private TextField inMessage;
-	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend;
+	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
 	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
 	private FunctionUser fu;
@@ -143,8 +145,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
-		bAddFriend.setId("bAddFriend");
+		bAddFriend.setId("bAdd");
+		bAddGroup.setId("bAdd");
 		contextMenu.getItems().addAll(Slet, Bloker, Oplysninger);
+		addTextLimiter(inMessage, 900);
 		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -171,6 +175,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		getListsContents();
 		setListsFunctions();
 	}
+	
+	public static void addTextLimiter(final TextField tf, final int maxLength) {
+		tf.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+				if (tf.getText().length() > maxLength) {
+					String s = tf.getText().substring(0, maxLength);
+					tf.appendText(s);
+				}
+			}
+		});
+	}
 
 	private void setMenuBarFunctions() {
 		menuBar.setUseSystemMenuBar(true);
@@ -187,6 +203,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		exitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
 		colorPick.setOnAction(this);
 		bAddFriend.setOnAction(this);
+		bAddGroup.setOnAction(this);
 	}
 
 	private void getListsContents() throws SQLException, IOException {
@@ -399,6 +416,16 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			Stage stage = new Stage();
 			stage.initOwner(bAddFriend.getScene().getWindow());
 			friendsWindow fW = new friendsWindow();
+			try {
+				fW.start(stage, fu);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(event.getSource() == bAddGroup) {
+			Stage stage = new Stage();
+			stage.initOwner(bAddGroup.getScene().getWindow());
+			groupWindow fW = new groupWindow();
 			try {
 				fW.start(stage, fu);
 			} catch(Exception e) {
