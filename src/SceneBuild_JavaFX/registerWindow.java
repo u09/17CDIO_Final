@@ -176,7 +176,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				Alert terms = new Alert(AlertType.WARNING);
 				terms.setTitle(this.myStage.getTitle());
 				terms.setHeaderText("OBS!");
-				terms.setContentText("Du skal accepterer vilkår og betingelser(Der en i gruppen der FED)");
+				terms.setContentText("Du skal accepterer vilkår og betingelser");
 				terms.showAndWait();
 			}
 		}
