@@ -295,6 +295,7 @@ public class FunctionUser {
 		rs.next();
 		return rs.getString("nickname");
 	}
+	
 	public void activateUserMail(String username) throws SQLException{
 		con().update("UPDATE users SET activated=1 WHERE username='"+username+"'");
 	}
@@ -303,6 +304,7 @@ public class FunctionUser {
 		con().update("DELETE FROM contacts WHERE (user_ID='"+ID+"' AND contact_ID='"+user().getUserID()+"') "
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
+	
 	public void blockContact (int ID) throws SQLException, IOException {
 		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
@@ -310,16 +312,17 @@ public class FunctionUser {
 		}
 
 	}
+	
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
-
 
 	public String getEmail(String userIn) throws SQLException {
 		ResultSet rs=con().select("SELECT email FROM users WHERE username='"+userIn+"'");
 		rs.next();
 		return rs.getString("email");
 	}
+	
 	public void setAge(int age) throws SQLException{
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
