@@ -99,10 +99,21 @@ public class FunctionUser {
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {
-		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
-				+ "','" + f.timestamp() + "','" + receive_id + "')");
+		msg=cencorMessage(msg);
 		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'" + user().getUserID()
 				+ "','" + f.timestamp() + "','" + receive_id + "')",msg);
+		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
+				+ "','" + f.timestamp() + "','" + receive_id + "')");
+	}
+	
+	public String cencorMessage(String msg) throws SQLException{
+		ResultSet rs=con().select("SELECT * FROM banned_words WHERE MATCH (word) AGAINST ('"+msg+"' IN NATURAL LANGUAGE MODE)");
+		String badword;
+		while(rs.next()){
+			badword=rs.getString("word");
+			msg=msg.replace(badword,"****");
+		}
+		return msg;
 	}
 
 	public void getMessages(ArrayList<ArrayList<String>> msg, ArrayList<Integer> users) throws SQLException {
@@ -126,11 +137,16 @@ public class FunctionUser {
 		f.printArrayList(users);
 	}
 	
-	public ArrayList<String> getMessages(int id, long timestamp) throws SQLException {
-		ArrayList<String> messages=new ArrayList<String>();
-		ResultSet rs = con().select("SELECT message FROM messages WHERE receiver_id='"+user().getUserID()
-				+"' AND message_deleted=0 AND message_sent>="+timestamp+" AND user_ID="+id);
-		while(rs.next()) messages.add(rs.getString("message"));
+	public ArrayList<ArrayList<String>> getMessages(int id, long timestamp) throws SQLException {
+		ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
+		messages.add(new ArrayList<String>());
+		messages.add(new ArrayList<String>());
+		ResultSet rs = con().select("SELECT message,user_ID FROM messages WHERE ((receiver_id='"+user().getUserID()+"' AND user_ID="+id+") OR"
+				+" (receiver_id='"+id+"' AND user_ID="+user().getUserID()+")) AND message_deleted=0 AND message_sent>="+timestamp);
+		while(rs.next()){
+			messages.get(0).add(rs.getString("message"));
+			messages.get(1).add(id2nick(rs.getInt("user_ID")));
+		}
 		return messages;
 	}
 

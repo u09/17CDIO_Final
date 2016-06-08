@@ -214,11 +214,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			@Override
 			public void handle(MouseEvent event) {
 				int id = friendsOnlineList.getSelectionModel().getSelectedIndex();
+				if(id==-1) return;
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				activeUser=onlineFriends[id];
 				System.out.println("clicked on "+onlineFriends[id]);
 				textArea.clear();
-				ArrayList<String> msgs=new ArrayList<String>();
+				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
 					msgs=fu.getMessages(activeUser,loginTime);
 				} catch (SQLException e1) {
@@ -226,13 +227,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					e1.printStackTrace();
 				}
 				
-				for(int i=1;i<=msgs.size();i++)
-					try {
-						textArea.appendText(fu.id2nick(activeUser)+":\n"+msgs.get(i-1)+"\n\n");
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
 				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
@@ -264,11 +259,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			@Override
 			public void handle(MouseEvent event) {
 				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
+				if(id==-1) return;
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				activeUser=offlineFriends[id];
 				System.out.println("clicked on "+offlineFriends[id]);
 				textArea.clear();
-				ArrayList<String> msgs=new ArrayList<String>();
+				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
 					msgs=fu.getMessages(activeUser,loginTime);
 				} catch (SQLException e1) {
@@ -276,13 +272,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					e1.printStackTrace();
 				}
 				
-				for(int i=1;i<=msgs.size();i++)
-					try {
-						textArea.appendText(fu.id2nick(activeUser)+":\n"+msgs.get(i-1)+"\n\n");
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
 				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {

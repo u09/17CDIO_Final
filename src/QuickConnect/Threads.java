@@ -18,13 +18,6 @@ public class Threads implements Runnable {
 			}
 			
 			try {
-				System.out.println(fu.f.timestamp());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			try {
 			    Thread.sleep(1000);
 			} catch(InterruptedException ex) {
 			    Thread.currentThread().interrupt();
