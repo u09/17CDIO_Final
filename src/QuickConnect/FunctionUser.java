@@ -326,4 +326,7 @@ public class FunctionUser {
 	public void setAge(int age) throws SQLException{
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
+	public void infoUser(int ID) throws SQLException{
+		ResultSet rs=con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='"+ID+"'");
+	}
 }
