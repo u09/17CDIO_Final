@@ -67,11 +67,13 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private MenuItem Slet = new MenuItem("Slet");
 	private MenuItem Bloker = new MenuItem("Bloker");
 	private MenuItem Oplysninger = new MenuItem("Oplysninger");
+	private long loginTime;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
 		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
+		this.loginTime=fu.f.timestamp();
 		fu.activateUser();
 		fu.setOnlineUser();
 
@@ -201,7 +203,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 		friendsOfflineList.setContextMenu(contextMenu);
-
+		
 		String[] gro = fu.showGroups();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
@@ -216,6 +218,22 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				activeUser=onlineFriends[id];
 				System.out.println("clicked on "+onlineFriends[id]);
 				textArea.clear();
+				ArrayList<String> msgs=new ArrayList<String>();
+				try {
+					msgs=fu.getMessages(activeUser,loginTime);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				for(int i=1;i<=msgs.size();i++)
+					try {
+						textArea.appendText(fu.id2nick(activeUser)+":\n"+msgs.get(i-1)+"\n\n");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -250,6 +268,22 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				activeUser=offlineFriends[id];
 				System.out.println("clicked on "+offlineFriends[id]);
 				textArea.clear();
+				ArrayList<String> msgs=new ArrayList<String>();
+				try {
+					msgs=fu.getMessages(activeUser,loginTime);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				for(int i=1;i<=msgs.size();i++)
+					try {
+						textArea.appendText(fu.id2nick(activeUser)+":\n"+msgs.get(i-1)+"\n\n");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override

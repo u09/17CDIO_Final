@@ -125,6 +125,14 @@ public class FunctionUser {
 		f.printArrayListMulti(msg);
 		f.printArrayList(users);
 	}
+	
+	public ArrayList<String> getMessages(int id, long timestamp) throws SQLException {
+		ArrayList<String> messages=new ArrayList<String>();
+		ResultSet rs = con().select("SELECT message FROM messages WHERE receiver_id='"+user().getUserID()
+				+"' AND message_deleted=0 AND message_sent>="+timestamp+" AND user_ID="+id);
+		while(rs.next()) messages.add(rs.getString("message"));
+		return messages;
+	}
 
 	public int addFriend(String username) throws SQLException {
 		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
