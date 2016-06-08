@@ -118,7 +118,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			@Override
 			public void handle(KeyEvent event) {
 				if(event.getSource() == inUsername && event.getCode().equals(KeyCode.ENTER))
-					bAdd.fire();
+					bSearchFriends.fire();
 			}
 		};
 
