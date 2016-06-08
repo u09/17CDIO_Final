@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -33,7 +34,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	private Scene myScene;
 	private VBox LoginFrame;
 	@FXML private Label lTitle, lUser, lPass, lNoUser, lRegister;
-	@FXML private Button bLogin, bRegister;
+	@FXML private Button bLogin;
+	@FXML private Hyperlink bClickHere;
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
 	private FunctionUser fu;
@@ -73,7 +75,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		}
 		bLogin.setOnAction(this);
 		bLogin.setDefaultButton(true);
-		bRegister.setOnAction(this);
+		bClickHere.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
 		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
 		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
@@ -122,8 +124,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				inUser.requestFocus();
 			}
 		}
-		// handle for bRegister
-		if(event.getSource() == bRegister) {
+		// handle for bClickHere
+		if(event.getSource() == bClickHere) {
 			Stage stage = new Stage();
 			registerWindow rW = new registerWindow();
 			myStage.close();
