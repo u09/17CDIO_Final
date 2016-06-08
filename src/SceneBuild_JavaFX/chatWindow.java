@@ -7,7 +7,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
@@ -186,7 +185,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-
 		this.onlineFriends=fu.OnlineUsersId();
 		String[] on=fu.OnlineUsersNickname();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
@@ -204,11 +202,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		String[] gro = fu.showGroups();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
-
 	}
 
 	private void setListsFunctions() {
-
 		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {

@@ -198,8 +198,7 @@ public class Function {
 
 	public static boolean isNumeric(String str) {
 		try {
-			int nr = Integer.parseInt(str); 
-
+			int nr = Integer.parseInt(str);
 		} catch (NumberFormatException nfe) {
 			return false;
 		}

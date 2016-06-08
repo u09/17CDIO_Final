@@ -169,7 +169,7 @@ public class FunctionUser {
 		while(rs.next()) {
 			int uid = rs.getInt("user_ID");
 			boolean chk = con()
-					.check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
+					.check("SELECT user_ID FROM users WHERE user_ID="+uid+" AND last_on<"+(f.timestamp()-10));
 			if(chk)
 				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
 			else onlineUsers.add(rs.getInt("user_ID"));
