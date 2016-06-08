@@ -33,12 +33,13 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 	private TitledPane sentRequestsPane, recRequestsPane;
 	@FXML private TextField inUsername;
 	@FXML private Button bAdd, bAccept, bReject, bCancel;
-	@FXML private ListView<String> sentList, receivedList;
+	@FXML private ListView<String> sentList, receivedList,addFriendList;
+	private String[] userList;
 	ObservableList<String> sentItems, reqItems;
 	private FunctionUser fu;
-
+	
 	@Override
-	public void start(Stage stage, FunctionUser fu) {
+	public void start(Stage stage, FunctionUser fu) throws SQLException {
 		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Anmodninger");
@@ -61,7 +62,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 
 	}
 
-	private void showFriendsFrame() {
+	private void showFriendsFrame() throws SQLException {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(friendsWindow.class.getResource("FriendsFrame.fxml"));
@@ -71,9 +72,16 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		getAllUsers();
 		setButtonFunctions();
 		getRequestsContent();
 
+	}
+
+	private void getAllUsers() throws SQLException {
+		this.userList=fu.showAllUserName();
+		ObservableList<String> UserItems = FXCollections.observableArrayList(this.userList);
+		addFriendList.setItems(UserItems);	
 	}
 
 	private void getRequestsContent() {
@@ -124,7 +132,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 				passSuccess.setTitle(myStage.getTitle());
 				if(i>0) {
 					passSuccess.setHeaderText("Din venneanmodning blev ikke sendt");
-					if(i==1) passSuccess.setContentText("Du eller personen du prøver at tilføje har blokeret hinanden");
+					if(i==1) passSuccess.setContentText("Du eller personen du prï¿½ver at tilfï¿½je har blokeret hinanden");
 					else if(i==2) passSuccess.setContentText("Du er allerede venner med personen");
 					else if(i==3) passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
 				}

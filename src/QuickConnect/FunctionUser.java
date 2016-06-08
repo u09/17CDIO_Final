@@ -49,6 +49,7 @@ public class FunctionUser {
 		}
 		System.out.println(arr);
 		System.out.println(f.md5(oldPass));
+		
 		if(f.checkPassword(newPass) == 0 && newPass.equals(newPass2) && f.md5(oldPass).equals(arr)) {
 			con().update("UPDATE users SET password=? WHERE user_id =?", new String[] { "s", f.md5(newPass) },
 					new String[] { "i", "" + user().getUserID() });
@@ -323,4 +324,22 @@ public class FunctionUser {
 	public void setAge(int age) throws SQLException{
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
+	
+	public String[] showAllUserName() throws SQLException{
+		ResultSet  rs = con().select("select username from users where user_id  NOT IN( select user_id from blocked_contact where blocked_id="
+	+ user().getUserID()+ ") AND user_id!=" + user().getUserID() +";");
+		ArrayList <String> allUserName = new ArrayList<String>();
+		
+		while(rs.next()){
+			allUserName.add(rs.getString("username"));
+		}
+		for(int i = 0; i<allUserName.size(); i++){
+			System.out.println(allUserName.get(i));
+			
+		}
+		return allUserName.toArray(new String[allUserName.size()]);
+		
+		
+	}
+	
 }
