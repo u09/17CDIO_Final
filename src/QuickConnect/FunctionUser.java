@@ -127,9 +127,8 @@ public class FunctionUser {
 
 	public int addFriend(String username) throws SQLException {
 		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
-		if(!con().check("SELECT user_id FROM users WHERE username='"+username+"'"))return 4;
-		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
-				new String[][] { { "s", "" + username } });
+		if(!con().check("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",new String[][] { { "s", "" + username } }))return 4;
+		ResultSet rs = con().select("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",new String[][] { { "s", "" + username } });
 		rs.next();
 		int id = rs.getInt("user_id");
 		if(con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE (user_id='"+id+"' AND blocked_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND blocked_id='"+id+"')")) return 1;
