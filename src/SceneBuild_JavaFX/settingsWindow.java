@@ -18,7 +18,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -36,6 +38,8 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
 	@FXML private ListView blockedList;
+	@FXML private ContextMenu rightClick;
+	@FXML private MenuItem unBlock;
 	private String[] blocked;
 	private FunctionUser fu;
 
@@ -68,16 +72,32 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 		try {
 			blockedListView();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private void blockedListView() throws SQLException{	
 		this.blocked=fu.getBlockedFriendsList();
 		ObservableList<String> Items = FXCollections.observableArrayList(this.blocked);
 		blockedList.setItems(Items);	
+		String name = (String) blockedList.getSelectionModel().getSelectedItem();
+		int id = fu.usernameToID(name);
+		System.out.println(name);
+		unBlock.setText("Fjern blokeringen");
+		rightClick.getItems().add(unBlock);
+		unBlock.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					fu.unBlockContact(id);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void setButtonFunctions() {

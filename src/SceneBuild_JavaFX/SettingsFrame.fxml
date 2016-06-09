@@ -106,7 +106,14 @@
                <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="292.0" prefWidth="408.0">
                      <children>
-                        <ListView fx:id="blockedList" layoutX="21.4" layoutY="30.4" prefHeight="188.0" prefWidth="387.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
+                        <ListView fx:id="blockedList" layoutX="21.4" layoutY="30.4" prefHeight="188.0" prefWidth="387.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0">
+                           <contextMenu>
+                              <ContextMenu fx:id="rightClick">
+                                <items>
+                                  <MenuItem fx:id="unBlock" mnemonicParsing="false" text="Unspecified Action" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu></ListView>
                         <Label layoutX="14.0" layoutY="6.0" text="Blokerede kontaktpersoner:" />
                      </children>
                   </AnchorPane>

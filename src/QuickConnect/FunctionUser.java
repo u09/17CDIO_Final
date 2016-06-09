@@ -338,6 +338,12 @@ public class FunctionUser {
 
 	}
 	
+	public int usernameToID (String username) throws SQLException{
+		ResultSet rs = con().select("SELECT user_id FROM users WHERE username='"+username+"'");
+		rs.next();
+		return rs.getInt("user_id");
+	}
+	
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
