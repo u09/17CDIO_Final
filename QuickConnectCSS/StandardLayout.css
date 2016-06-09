@@ -1,10 +1,8 @@
 .root {
-	-fx-font-family: "Iowan Old Style";
+	-fx-font-family: "Times New Roman"; /* Iowan Old Style */
 	-fx-font-size: 14px;
 	-fx-font-weight: normal;
 	-fx-font-style: normal;
-	-fx-spacing:	 12;	 
-	-fx-alignment: center;	 
 	/*-fx-background-image: url("bg.jpg");*/
 }
 
@@ -30,20 +28,6 @@
 	-fx-font-size: 22px;
 	-fx-font-weight: bold;
 	-fx-font-style: italic;
-}
-
-.hbox {
-	-fx-background-color: linear-gradient(#93cede, #61a2b1);
-	-fx-spacing: 0;
-	-fx-padding: 0;
-	-fx-alignment: center;
-	-fx-fill-height: true;
-}
-
-.vbox {
-	-fx-spacing: 12;
-	-fx-alignment: center;
-	/*-fx-fill-width:;*/
 }
 
 .button {

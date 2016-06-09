@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane minHeight="50.0" minWidth="50.0" prefHeight="635.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane minHeight="50.0" minWidth="50.0" prefHeight="635.0" prefWidth="812.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <TabPane prefHeight="371.0" prefWidth="227.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -130,7 +130,10 @@
                            <bottom>
                               <HBox fx:id="hBoxMessage" alignment="CENTER" prefHeight="24.0" prefWidth="541.0" spacing="4.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <TextField fx:id="inMessage" minHeight="-Infinity" prefHeight="27.0" prefWidth="532.0" promptText="Indtast din besked" />
+                                    <TextField fx:id="inMessage" minHeight="-Infinity" prefHeight="27.0" prefWidth="532.0" promptText="Indtast din besked">
+                                       <cursor>
+                                          <Cursor fx:constant="TEXT" />
+                                       </cursor></TextField>
                                     <Button fx:id="bEmojis" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                                     <ColorPicker fx:id="colorPick" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="45.0" />
                                  </children>

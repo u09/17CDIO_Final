@@ -1,9 +1,6 @@
 package SceneBuild_JavaFX;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -50,15 +47,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		this.myStage.setResizable(false);
 		showLoginFrame();
 		this.myScene = new Scene(LoginFrame);
-
-		File file = new File("QuickConnectCSS/StandardLayout.css");
-		URL url;
-		try {
-			url = file.toURI().toURL();
-			myScene.getStylesheets().add(url.toExternalForm());
-		} catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
+		
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}

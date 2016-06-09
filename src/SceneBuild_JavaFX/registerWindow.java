@@ -1,15 +1,11 @@
 package SceneBuild_JavaFX;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -54,15 +50,6 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		showRegisterFrame();
 
 		myScene = new Scene(RegisterFrame);
-
-		File file = new File("QuickConnectCSS/StandardLayout.css");
-		URL url;
-		try {
-			url = file.toURI().toURL();
-			myScene.getStylesheets().add(url.toExternalForm());
-		} catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();

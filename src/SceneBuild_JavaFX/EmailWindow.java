@@ -1,9 +1,6 @@
 package SceneBuild_JavaFX;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 
 import QuickConnect.EmailVal;
@@ -49,14 +46,6 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		showEmailFrame();
 		this.myScene = new Scene(EmailFrame);
 
-		File file = new File("QuickConnectCSS/StandardLayout.css");
-		URL url;
-		try {
-			url = file.toURI().toURL();
-			myScene.getStylesheets().add(url.toExternalForm());
-		} catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 		code = eVal.getCode();

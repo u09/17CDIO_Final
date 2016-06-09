@@ -1,9 +1,6 @@
 package SceneBuild_JavaFX;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 
 import QuickConnect.FunctionUser;
@@ -48,15 +45,6 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		showFriendsFrame();
 
 		myScene = new Scene(friendsFrame);
-
-		File file = new File("QuickConnectCSS/StandardLayout.css");
-		URL url;
-		try {
-			url = file.toURI().toURL();
-			myScene.getStylesheets().add(url.toExternalForm());
-		} catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();

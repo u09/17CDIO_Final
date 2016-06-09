@@ -1,9 +1,6 @@
 package SceneBuild_JavaFX;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -81,14 +78,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 		showChatFrame();
 		myScene = new Scene(chatFrame);
-
-		File file = new File("QuickConnectCSS/StandardLayout.css");
-		try {
-			URL url = file.toURI().toURL();
-			myScene.getStylesheets().add(url.toExternalForm());
-		} catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
