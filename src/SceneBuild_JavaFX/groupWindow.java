@@ -34,7 +34,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		this.fu=fu; 
 		this.myStage=stage; 
 		this.myStage.setTitle("QuickConnect - Grupper");
-		
+		this.myStage.setResizable(false);
 		showGroupFrame();
 		
 		myScene = new Scene(GroupsFrame);
@@ -72,6 +72,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bAdd){
 			boolean listEmpty = allFriends.getItems().isEmpty();
 			if(!listEmpty){
+				groupMembers.getSelectionModel().clearSelection();
 				String selectedFriend = allFriends.getSelectionModel().getSelectedItem();
 				allFriends.getItems().remove(selectedFriend);
 				groupMembers.getItems().add(selectedFriend);			
@@ -79,8 +80,9 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		}
 		if(event.getSource() == bRemove){
 			boolean listEmpty = groupMembers.getItems().isEmpty();
-			
-			if(!listEmpty && allFriends.isFocused()) {
+			String selectedMember = groupMembers.getSelectionModel().getSelectedItem();
+			if(!listEmpty && selectedMember != null) {
+				allFriends.getSelectionModel().clearSelection();
 				String memberName = groupMembers.getSelectionModel().getSelectedItem();
 				groupMembers.getItems().remove(memberName);
 				allFriends.getItems().add(memberName);
