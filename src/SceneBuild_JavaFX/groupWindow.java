@@ -18,7 +18,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	
 	private Stage myStage;
 	private Scene myScene; 
-	private AnchorPane GroupFrame; 
+	private AnchorPane GroupsFrame; 
 	@FXML private TextField inGroupName;
 	@FXML private Button bAdd, bRemove, bCreate;
 	@FXML private ListView<String> allFriends, groupMembers, myGroups;
@@ -32,7 +32,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		
 		showGroupFrame();
 		
-		myScene = new Scene(GroupFrame);
+		myScene = new Scene(GroupsFrame);
 		
 		this.myStage.setScene(myScene);
 		this.myStage.show();
@@ -41,11 +41,11 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	private void showGroupFrame() {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(groupWindow.class.getResource("GroupFrame.fxml"));
+		loader.setLocation(groupWindow.class.getResource("GroupsFrame.fxml"));
 		loader.setController(this);
 		
 		try {
-			GroupFrame = (AnchorPane) loader.load();
+			GroupsFrame = (AnchorPane) loader.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
