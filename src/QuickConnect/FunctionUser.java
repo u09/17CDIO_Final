@@ -227,6 +227,7 @@ public class FunctionUser {
 	}
 
 	public String[] allFriendsUsername() throws SQLException {
+		// Ibrahim lugter og hans computer stinker
 		return null;
 	}
 	
