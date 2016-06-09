@@ -76,6 +76,8 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 				inUsername.setText(name);
 			}
 		});
+		this.userList=fu.showSearchAddFriends(inUsername.getText());
+		addFriendList.setItems(UserItems);	
 	}
 
 	private void getRequestsContent() {
