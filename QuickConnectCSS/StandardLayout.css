@@ -73,7 +73,7 @@
 	-fx-graphic: url(../Icons/emoticons-icon.png);
 }
 
-#bAdd {
+#bAddPlus {
 	-fx-graphic: url(../Icons/add.png);
 }
 .color-picker {

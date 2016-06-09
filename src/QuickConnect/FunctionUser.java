@@ -166,7 +166,7 @@ public class FunctionUser {
 		return 0;
 	}
 
-	public String[] OnlineUsersNickname() throws SQLException, IOException {
+	public String[] onlineUsersNickname() throws SQLException, IOException {
 		ArrayList<String> onlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
 				.select("SELECT user_ID, nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -184,7 +184,7 @@ public class FunctionUser {
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
 
-	public int[] OnlineUsersId() throws SQLException, IOException {
+	public int[] onlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
 		ResultSet rs = con()
 				.select("SELECT user_ID FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -226,6 +226,11 @@ public class FunctionUser {
 		return f.convertIntegers(offlineUsers);
 	}
 
+	public String[] allFriendsUsername() throws SQLException {
+		// Ibrahim lugter og hans computer stinker
+		return null;
+	}
+	
 	public String[] showGroups() throws SQLException {
 		ArrayList<String> groups = new ArrayList<String>();
 		ResultSet rs = con()
@@ -338,6 +343,12 @@ public class FunctionUser {
 
 	}
 	
+	public int usernameToID (String username) throws SQLException{
+		ResultSet rs = con().select("SELECT user_id FROM users WHERE username='"+username+"'");
+		rs.next();
+		return rs.getInt("user_id");
+	}
+	
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
@@ -385,9 +396,15 @@ public class FunctionUser {
 	}
 	
 
-	public boolean createGroup(String groupOwner, String groupName ) throws SQLException, IOException{
-		
-		return false;
+	public void createGroup(String groupOwner, String groupName, int... groupMembersID) throws SQLException, IOException{
+		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('"+groupOwner+"','"+groupName+"','"+f.timestamp()+"')");
+		ResultSet rs=con().select("SELECT group_id FROM groups WHERE owner_id='"+groupOwner+"' ORDER BY group_id DESC");
+		rs.next();
+		int group_id=rs.getInt("group_id");
+		for(int i=0;i<groupMembersID.length; i++){
+			con().update("INSERT INTO groupmembers(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+groupMembersID[i]+"','"+f.timestamp()+"')");
+			
+		}
 		
 	}
 	

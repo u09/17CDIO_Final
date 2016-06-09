@@ -18,7 +18,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -36,6 +38,8 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
 	@FXML private ListView blockedList;
+	@FXML private ContextMenu rightClick;
+	@FXML private MenuItem unBlock;
 	private String[] blocked;
 	private FunctionUser fu;
 
@@ -68,16 +72,59 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 		try {
 			blockedListView();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
+	@SuppressWarnings("unchecked")
 	private void blockedListView() throws SQLException{	
 		this.blocked=fu.getBlockedFriendsList();
 		ObservableList<String> Items = FXCollections.observableArrayList(this.blocked);
-		blockedList.setItems(Items);	
+		blockedList.setItems(Items);
+		unBlock.setText("Fjern blokeringen");
+		blockedList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				int id = blockedList.getSelectionModel().getSelectedIndex();
+				if(id==-1) return;
+				String name = (String) blockedList.getSelectionModel().getSelectedItem();
+				
+				unBlock.setOnAction(new EventHandler<ActionEvent>() {
+					
+				
+					@Override
+					public void handle(ActionEvent event){
+						
+						try {
+							fu.unBlockContact(fu.usernameToID(name));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Items.remove(blockedList.getSelectionModel().getSelectedItem());
+					}
+				});
+			}
+		});
+
+		//		System.out.println(blockedList.getSelectionModel().getSelectedItem());
+		//		String name = (String) blockedList.getSelectionModel().getSelectedItem();
+		//		System.out.println(name);
+		//		int id = fu.usernameToID(name);
+		//		System.out.println(name);
+		//		unBlock.setText("Fjern blokeringen");
+		//		unBlock.setOnAction(new EventHandler<ActionEvent>() {
+		//			@Override
+		//			public void handle(ActionEvent event) {
+		//				try {
+		//					fu.unBlockContact(id);
+		//				} catch (SQLException e) {
+		//					// TODO Auto-generated catch block
+		//					e.printStackTrace();
+		//				}
+		//			}
+		//		});
 	}
 
 	private void setButtonFunctions() {
@@ -169,7 +216,7 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				e.printStackTrace();
 			}
 			if(deactivateUserAnswer == 0) {
-				
+
 				ButtonType bLogW = new ButtonType("Login", ButtonData.OK_DONE);
 				ButtonType bClose = new ButtonType("Luk", ButtonData.NO);
 				Alert deactivateSuccess = new Alert(AlertType.CONFIRMATION, null, bLogW, bClose);
@@ -179,24 +226,24 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på.\nVil du gå til loginsiden eller lukke QuickConnect.");
 
 				Optional<ButtonType> result = deactivateSuccess.showAndWait();
-				
+
 				if(result.get() == bLogW) {
-				th.interrupt(); // Threaden stopper ikke når denne kodes køres, resten virker
-				try {
-					fu.setOfflineUser();
-				} catch(SQLException e) {
-					e.printStackTrace();
-				}
-				myStage.close();
-				myStage.getOwner().hide();
-				
-				Stage stage = new Stage();
-				loginWindow lW = new loginWindow();
-				try {
-					lW.start(stage);
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
+					th.interrupt(); // Threaden stopper ikke når denne kodes køres, resten virker
+					try {
+						fu.setOfflineUser();
+					} catch(SQLException e) {
+						e.printStackTrace();
+					}
+					myStage.close();
+					myStage.getOwner().hide();
+
+					Stage stage = new Stage();
+					loginWindow lW = new loginWindow();
+					try {
+						lW.start(stage);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 				}
 				else {
 					try {
