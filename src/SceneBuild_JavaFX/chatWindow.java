@@ -201,8 +201,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-		this.onlineFriends=fu.OnlineUsersId();
-		String[] on=fu.OnlineUsersNickname();
+		this.onlineFriends=fu.onlineUsersId();
+		String[] on=fu.onlineUsersNickname();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
@@ -373,9 +373,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bAddGroup) {
 			Stage stage = new Stage();
 			stage.initOwner(bAddGroup.getScene().getWindow());
-			groupWindow fW = new groupWindow();
+			groupWindow gW = new groupWindow();
 			try {
-				fW.start(stage, fu);
+				gW.start(stage, fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

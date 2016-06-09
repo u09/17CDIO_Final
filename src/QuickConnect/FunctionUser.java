@@ -166,7 +166,7 @@ public class FunctionUser {
 		return 0;
 	}
 
-	public String[] OnlineUsersNickname() throws SQLException, IOException {
+	public String[] onlineUsersNickname() throws SQLException, IOException {
 		ArrayList<String> onlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
 				.select("SELECT user_ID, nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -184,7 +184,7 @@ public class FunctionUser {
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
 
-	public int[] OnlineUsersId() throws SQLException, IOException {
+	public int[] onlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
 		ResultSet rs = con()
 				.select("SELECT user_ID FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -226,6 +226,10 @@ public class FunctionUser {
 		return f.convertIntegers(offlineUsers);
 	}
 
+	public String[] allFriendsUsername() throws SQLException {
+		return null;
+	}
+	
 	public String[] showGroups() throws SQLException {
 		ArrayList<String> groups = new ArrayList<String>();
 		ResultSet rs = con()

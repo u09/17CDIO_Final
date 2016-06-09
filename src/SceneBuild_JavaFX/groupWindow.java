@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -18,10 +20,11 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	
 	private Stage myStage;
 	private Scene myScene; 
-	private AnchorPane GroupsFrame; 
+	private TabPane GroupsFrame; 
 	@FXML private TextField inGroupName;
 	@FXML private Button bAdd, bRemove, bCreate;
-	@FXML private ListView<String> allFriends, groupMembers, myGroups;
+	@FXML private ListView<String> allFriends, groupMembers;
+	@FXML private TableView myGroups;
 	private FunctionUser fu; 
 	
 	public void start(Stage stage, FunctionUser fu){
@@ -45,7 +48,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		loader.setController(this);
 		
 		try {
-			GroupsFrame = (AnchorPane) loader.load();
+			GroupsFrame = (TabPane) loader.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -54,6 +57,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		bAdd.setDefaultButton(true);
 		bRemove.setOnAction(this);
 		bCreate.setOnAction(this);
+		
 	}
 
 	@Override
@@ -62,11 +66,21 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bAdd){
 			boolean listEmpty = allFriends.getItems().isEmpty();
 			if(listEmpty){
+				System.out.println("Listen er tom");
 			}
 			else{
+				System.out.println("Listen er ikke tom");
 			}
 		}
-	
+		if(event.getSource() == bRemove){
+			String memberName = groupMembers.getSelectionModel().getSelectedItem();
+			
+			System.out.println("Remove");
+		}
+		if(event.getSource() == bCreate){
+			System.out.println("Create");
+		}
+		
 	}
 	
 	
