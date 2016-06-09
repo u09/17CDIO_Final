@@ -2,8 +2,11 @@ package SceneBuild_JavaFX;
 
 import java.awt.TextField;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import QuickConnect.FunctionUser;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,11 +30,10 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	@FXML private TableView myGroups;
 	private FunctionUser fu; 
 	
-	public void start(Stage stage, FunctionUser fu){
+	public void start(Stage stage, FunctionUser fu) throws SQLException{
 		this.fu=fu; 
 		this.myStage=stage; 
 		this.myStage.setTitle("QuickConnect - Grupper");
-		this.myStage.setResizable(false);
 		
 		showGroupFrame();
 		
@@ -41,7 +43,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		this.myStage.show();
 	}
 
-	private void showGroupFrame() {
+	private void showGroupFrame() throws SQLException {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(groupWindow.class.getResource("GroupsFrame.fxml"));
@@ -52,6 +54,10 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		String[] allItems = fu.allFriendsUsername();
+		ObservableList<String> onlineItems = FXCollections.observableArrayList(allItems);
+		allFriends.setItems(onlineItems);
 		
 		bAdd.setOnAction(this);
 		bAdd.setDefaultButton(true);
@@ -65,20 +71,24 @@ public class groupWindow implements EventHandler<ActionEvent> {
 		
 		if(event.getSource() == bAdd){
 			boolean listEmpty = allFriends.getItems().isEmpty();
-			if(listEmpty){
-				System.out.println("Listen er tom");
-			}
-			else{
-				System.out.println("Listen er ikke tom");
+			if(!listEmpty){
+				String selectedFriend = allFriends.getSelectionModel().getSelectedItem();
+				allFriends.getItems().remove(selectedFriend);
+				groupMembers.getItems().add(selectedFriend);			
 			}
 		}
 		if(event.getSource() == bRemove){
-			String memberName = groupMembers.getSelectionModel().getSelectedItem();
+			boolean listEmpty = groupMembers.getItems().isEmpty();
 			
-			System.out.println("Remove");
+			if(!listEmpty && allFriends.isFocused()) {
+				String memberName = groupMembers.getSelectionModel().getSelectedItem();
+				groupMembers.getItems().remove(memberName);
+				allFriends.getItems().add(memberName);
+			}
 		}
 		if(event.getSource() == bCreate){
-			//fu.createGroup(""+fu.f.user().getUserID(), inGroupName.getText(), "");;
+//			groupMembers.getItems();
+//			fu.createGroup(""+fu.f.user().getUserID(), inGroupName.getText(), );
 		}
 		
 	}

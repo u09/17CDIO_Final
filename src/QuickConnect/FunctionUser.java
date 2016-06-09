@@ -227,8 +227,17 @@ public class FunctionUser {
 	}
 
 	public String[] allFriendsUsername() throws SQLException {
-		// Ibrahim lugter og hans computer stinker
-		return null;
+		ArrayList<String> allFriendsUsername = new ArrayList<String>();
+		ResultSet rs = con()
+				.select("SELECT nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+						+ user().getUserID()
+						+ " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
+						+ user().getUserID() + " AND status= 1))");
+		while(rs.next()) {
+			String uName = rs.getString("nickname");
+			allFriendsUsername.add(uName);
+		}
+		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 	
 	public String[] showGroups() throws SQLException {
