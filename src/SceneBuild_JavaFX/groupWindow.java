@@ -3,6 +3,7 @@ package SceneBuild_JavaFX;
 import java.awt.TextField;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import QuickConnect.FunctionUser;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -28,7 +30,8 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bAdd, bRemove, bCreate;
 	@FXML private ListView<String> allFriends, groupMembers;
 	@FXML private TableView myGroups;
-	private FunctionUser fu; 
+	private FunctionUser fu;
+	private ArrayList<Integer> allFriendsId1=new ArrayList<Integer>(),allFriendsId2=new ArrayList<Integer>();
 	
 	public void start(Stage stage, FunctionUser fu) throws SQLException{
 		this.fu=fu; 
@@ -55,9 +58,27 @@ public class groupWindow implements EventHandler<ActionEvent> {
 			e.printStackTrace();
 		}
 		
-		String[] allItems = fu.allFriendsUsername();
+		String[] allItems = fu.allFriendsNickname();
+		allFriendsId1 = fu.allFriendsId();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(allItems);
 		allFriends.setItems(onlineItems);
+		
+		allFriends.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				int index=allFriends.getSelectionModel().getSelectedIndex();
+				if(index==-1) return;
+				System.out.println(allFriendsId1.get(index));
+			}
+		});
+		groupMembers.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				int index=groupMembers.getSelectionModel().getSelectedIndex();
+				if(index==-1) return;
+				System.out.println(allFriendsId2.get(index));
+			}
+		});
 		
 		bAdd.setOnAction(this);
 		bAdd.setDefaultButton(true);
@@ -68,14 +89,16 @@ public class groupWindow implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		
 		if(event.getSource() == bAdd){
 			boolean listEmpty = allFriends.getItems().isEmpty();
 			if(!listEmpty){
 				groupMembers.getSelectionModel().clearSelection();
 				String selectedFriend = allFriends.getSelectionModel().getSelectedItem();
+				int index=allFriends.getSelectionModel().getSelectedIndex();
 				allFriends.getItems().remove(selectedFriend);
-				groupMembers.getItems().add(selectedFriend);			
+				groupMembers.getItems().add(selectedFriend);
+				allFriendsId2.add(allFriendsId1.get(index));
+				allFriendsId1.remove(index);
 			}
 		}
 		if(event.getSource() == bRemove){
@@ -84,17 +107,21 @@ public class groupWindow implements EventHandler<ActionEvent> {
 			if(!listEmpty && selectedMember != null) {
 				allFriends.getSelectionModel().clearSelection();
 				String memberName = groupMembers.getSelectionModel().getSelectedItem();
+				int index=groupMembers.getSelectionModel().getSelectedIndex();
 				groupMembers.getItems().remove(memberName);
 				allFriends.getItems().add(memberName);
+				allFriendsId1.add(allFriendsId2.get(index));
+				allFriendsId2.remove(index);
 			}
 		}
 		if(event.getSource() == bCreate){
-//			groupMembers.getItems();
-//			fu.createGroup(""+fu.f.user().getUserID(), inGroupName.getText(), );
+			System.out.println(fu.f.user().getUserID()+" "+inGroupName.getText());
+			try {
+				fu.createGroup(fu.f.user().getUserID(),inGroupName.getText(),allFriendsId2);
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
 	}
-	
-	
-
 }

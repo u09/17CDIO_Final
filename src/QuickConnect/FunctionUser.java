@@ -226,17 +226,18 @@ public class FunctionUser {
 		return f.convertIntegers(offlineUsers);
 	}
 
-	public String[] allFriendsUsername() throws SQLException {
+	public String[] allFriendsNickname() throws SQLException {
 		ArrayList<String> allFriendsUsername = new ArrayList<String>();
 		ResultSet rs = con()
 				.select("SELECT nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
 						+ user().getUserID()
 						+ " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
-						+ user().getUserID() + " AND status= 1))");
+						+ user().getUserID() + " AND status= 1)) ORDER BY user_ID");
 		while(rs.next()) {
 			String uName = rs.getString("nickname");
 			allFriendsUsername.add(uName);
 		}
+		f.printArrayList(allFriendsUsername);
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 	
@@ -405,16 +406,17 @@ public class FunctionUser {
 	}
 	
 
-	public void createGroup(String groupOwner, String groupName, int... groupMembersID) throws SQLException, IOException{
+	public void createGroup(int groupOwner, String groupName, ArrayList<Integer> allFriendsId2) throws SQLException, IOException{
+		allFriendsId2.add(user().getUserID());
+		int[] ids=f.convertIntegers(allFriendsId2);
+		allFriendsId2.remove(allFriendsId2.indexOf(user().getUserID()));
 		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('"+groupOwner+"','"+groupName+"','"+f.timestamp()+"')");
 		ResultSet rs=con().select("SELECT group_id FROM groups WHERE owner_id='"+groupOwner+"' ORDER BY group_id DESC");
 		rs.next();
 		int group_id=rs.getInt("group_id");
-		for(int i=0;i<groupMembersID.length; i++){
-			con().update("INSERT INTO groupmembers(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+groupMembersID[i]+"','"+f.timestamp()+"')");
-			
+		for(int i=0;i<ids.length; i++){
+			con().update("INSERT INTO groupmembers(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+ids[i]+"','"+f.timestamp()+"')");
 		}
-		
 	}
 	
 	public String infoUser(int ID, int choice) throws SQLException{
@@ -424,5 +426,17 @@ public class FunctionUser {
 		if(choice==2) return rs.getString("nickname");
 		if(choice==3) return Integer.toString(rs.getInt("age"));
 		else return Integer.toString(rs.getInt("user_created"));
+	}
+
+	public ArrayList<Integer> allFriendsId() throws SQLException {
+		ArrayList<Integer> allFriendsId = new ArrayList<Integer>();
+		ResultSet rs = con()
+				.select("SELECT user_ID FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+						+ user().getUserID()
+						+ " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
+						+ user().getUserID() + " AND status= 1)) ORDER BY user_ID");
+		while(rs.next()) allFriendsId.add(rs.getInt("user_ID"));
+		f.printArrayList(allFriendsId);
+		return allFriendsId;
 	}
 }
