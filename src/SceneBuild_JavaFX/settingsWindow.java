@@ -91,14 +91,18 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				String name = (String) blockedList.getSelectionModel().getSelectedItem();
 				
 				unBlock.setOnAction(new EventHandler<ActionEvent>() {
+					
+				
 					@Override
 					public void handle(ActionEvent event){
+						
 						try {
 							fu.unBlockContact(fu.usernameToID(name));
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						Items.remove(blockedList.getSelectionModel().getSelectedItem());
 					}
 				});
 			}
