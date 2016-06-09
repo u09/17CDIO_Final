@@ -50,7 +50,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private BorderPane chatFrame;
 	static Thread th;
 	@FXML private MenuBar menuBar;
-	@FXML private MenuItem about, close, settings, signOut, fullScreen, exitFullScreen;
+	@FXML private MenuItem mAbout, mClose, mSettings, mSignOut, mFullScreen, mExitFullScreen;
 	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea textArea;
@@ -64,10 +64,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private int activeUser;
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
-	private final ContextMenu contextMenu = new ContextMenu();
-	private MenuItem Slet = new MenuItem("Slet");
-	private MenuItem Bloker = new MenuItem("Bloker");
-	private MenuItem Oplysninger = new MenuItem("Oplysninger");
+	@FXML private ContextMenu contextMenu;
+	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup;
 	private long loginTime;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
@@ -137,10 +135,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
-		bAddFriend.setId("bAdd");
-		bAddGroup.setId("bAdd");
-		contextMenu.getItems().addAll(Slet, Bloker, Oplysninger);
-		addTextLimiter(inMessage, 900);		
+		bAddFriend.setId("bAddPlus");
+		bAddGroup.setId("bAddPlus");
+		addTextLimiter(inMessage, 900);
 		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -183,36 +180,42 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 	private void setMenuBarFunctions() {
 		menuBar.setUseSystemMenuBar(true);
-		about.setOnAction(this);
-		close.setOnAction(this);
-		close.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
-		settings.setOnAction(this);
-		settings.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
-		signOut.setOnAction(this);
-		signOut.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
-		fullScreen.setOnAction(this);
-		fullScreen.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-		exitFullScreen.setOnAction(this);
-		exitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
+		mAbout.setOnAction(this);
+		mClose.setOnAction(this);
+		mClose.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
+		mSettings.setOnAction(this);
+		mSettings.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
+		mSignOut.setOnAction(this);
+		mSignOut.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
+		mFullScreen.setOnAction(this);
+		mFullScreen.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+		mExitFullScreen.setOnAction(this);
+		mExitFullScreen.setAccelerator(KeyCombination.keyCombination("Esc"));
 		colorPick.setOnAction(this);
 		bAddFriend.setOnAction(this);
 		bAddGroup.setOnAction(this);
+		mDeleteOn.setOnAction(this);
+		mDeleteOff.setOnAction(this);
+		mBlockOn.setOnAction(this);
+		mBlockOff.setOnAction(this);
+		mInfoOn.setOnAction(this);
+		mInfoOff.setOnAction(this);
+		mLeave.setOnAction(this);
+		mInfoGroup.setOnAction(this);
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-		this.onlineFriends=fu.OnlineUsersId();
-		String[] on=fu.OnlineUsersNickname();
+		this.onlineFriends=fu.onlineUsersId();
+		String[] on=fu.onlineUsersNickname();
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
-		friendsOnlineList.setContextMenu(contextMenu);
 		
 		this.offlineFriends=fu.offlineUsersId();
 		String[] off = fu.offlineUsersNickname();
 		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
-		friendsOfflineList.setContextMenu(contextMenu);
 		
 		String[] gro = fu.showGroups();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
@@ -240,31 +243,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
 				
 				textArea.setScrollTop(Double.MAX_VALUE);
-								
+				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
-				Slet.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							fu.deleteFriend(activeUser);
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});
-			    
-				Bloker.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							fu.blockContact(activeUser);
-						} catch (SQLException | IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});	
 			}
 		});
 
@@ -286,33 +266,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				}
 				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
-				
+
 				textArea.setScrollTop(Double.MAX_VALUE);
 				
-				if(name != null && !name.isEmpty()) titledPane.setText(name);
-				Slet.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							fu.deleteFriend(activeUser);
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});
-			    
-				Bloker.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							fu.blockContact(activeUser);
-						} catch (SQLException | IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});			
+				if(name != null && !name.isEmpty()) titledPane.setText(name);	
 			}
 		});
 
@@ -324,13 +281,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
-
-
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource() == about) {
+		if(event.getSource() == mAbout) {
 			ButtonType close = new ButtonType("Luk", ButtonData.OK_DONE);
 			Alert aboutInfo = new Alert(AlertType.NONE,
 					"Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadrer enhver der laver rav.", close);
@@ -340,7 +295,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			aboutInfo.initModality(Modality.NONE);
 			aboutInfo.show();
 		}
-		if(event.getSource() == close) {
+		if(event.getSource() == mClose) {
 			ButtonType bClose = new ButtonType("Luk", ButtonData.OK_DONE);
 			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
 			Alert confirmClose = new Alert(AlertType.CONFIRMATION, null, bClose, bCancel);
@@ -357,7 +312,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				confirmClose.close();
 			}
 		}
-		if(event.getSource() == settings) {
+		if(event.getSource() == mSettings) {
 			Stage stage = new Stage();
 			stage.initOwner(menuBar.getScene().getWindow());
 			settingsWindow sW = new settingsWindow();
@@ -367,7 +322,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				e.printStackTrace();
 			}
 		}
-		if(event.getSource() == signOut) {
+		if(event.getSource() == mSignOut) {
 
 			ButtonType bSignOut = new ButtonType("Log ud", ButtonData.OK_DONE);
 			ButtonType bCancel = new ButtonType("Annullér", ButtonData.NO);
@@ -400,13 +355,13 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				confirmSignOut.close();
 			}
 		}
-		if(event.getSource() == fullScreen) {
+		if(event.getSource() == mFullScreen) {
 			myStage.setFullScreen(true);
-			exitFullScreen.setDisable(false);
+			mExitFullScreen.setDisable(false);
 		}
-		if(event.getSource() == exitFullScreen) {
+		if(event.getSource() == mExitFullScreen) {
 			myStage.setFullScreen(false);
-			exitFullScreen.setDisable(true);
+			mExitFullScreen.setDisable(true);
 		}
 		if(event.getSource() == colorPick) {
 			System.out.println(colorPick.getValue().toString());
@@ -424,12 +379,39 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bAddGroup) {
 			Stage stage = new Stage();
 			stage.initOwner(bAddGroup.getScene().getWindow());
-			groupWindow fW = new groupWindow();
+			groupWindow gW = new groupWindow();
 			try {
-				fW.start(stage, fu);
+				gW.start(stage, fu);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		if(event.getSource() == mDeleteOn || event.getSource() == mDeleteOff) {
+			System.out.println("Trykket på deleteOn");
+//			try {
+//				fu.deleteFriend(activeUser);
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+		if(event.getSource() == mBlockOn || event.getSource() == mBlockOff) {
+			System.out.println("Trykket på block");
+//			try {
+//				fu.blockContact(activeUser);
+//			} catch (SQLException | IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+		if(event.getSource() == mInfoOn || event.getSource() == mInfoOff) {
+			System.out.println("Trykket på info");
+		}
+		if(event.getSource() == mLeave) {
+			System.out.println("Trykket på leave");
+		}
+		if(event.getSource() == mInfoGroup) {
+			System.out.println("Trykket på infogroup");
 		}
 
 	}
