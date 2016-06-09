@@ -78,7 +78,7 @@ public class groupWindow implements EventHandler<ActionEvent> {
 			System.out.println("Remove");
 		}
 		if(event.getSource() == bCreate){
-			System.out.println("Create");
+			//fu.createGroup(""+fu.f.user().getUserID(), inGroupName.getText(), "");;
 		}
 		
 	}
