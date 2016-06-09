@@ -417,7 +417,12 @@ public class FunctionUser {
 		
 	}
 	
-	public void infoUser(int ID) throws SQLException{
+	public String infoUser(int ID, int choice) throws SQLException{
 		ResultSet rs=con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='"+ID+"'");
+		rs.next();
+		if(choice==1) return rs.getString("username");
+		if(choice==2) return rs.getString("nickname");
+		if(choice==3) return Integer.toString(rs.getInt("age"));
+		else return Integer.toString(rs.getInt("user_created"));
 	}
 }

@@ -387,25 +387,31 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 		}
 		if(event.getSource() == mDeleteOn || event.getSource() == mDeleteOff) {
-			System.out.println("Trykket på deleteOn");
-//			try {
-//				fu.deleteFriend(activeUser);
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				fu.deleteFriend(activeUser);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if(event.getSource() == mBlockOn || event.getSource() == mBlockOff) {
-			System.out.println("Trykket på block");
-//			try {
-//				fu.blockContact(activeUser);
-//			} catch (SQLException | IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+
+			try {
+				fu.blockContact(activeUser);
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if(event.getSource() == mInfoOn || event.getSource() == mInfoOff) {
-			System.out.println("Trykket på info");
+			Stage stage = new Stage();
+			infoWindow iW = new infoWindow();
+			try {
+				iW.start(stage,activeUser);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if(event.getSource() == mLeave) {
 			System.out.println("Trykket på leave");
