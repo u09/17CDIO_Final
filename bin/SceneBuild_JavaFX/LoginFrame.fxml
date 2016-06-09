@@ -14,7 +14,7 @@
    <children>
       <Label fx:id="lTitle" text="Velkommen til QuickConnect" wrapText="true">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="Times New Roman Bold" size="18.0" />
          </font></Label>
       <ImageView fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
          <image>
