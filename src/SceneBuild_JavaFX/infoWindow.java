@@ -1,27 +1,17 @@
 package SceneBuild_JavaFX;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.text.SimpleDateFormat;
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,6 +25,7 @@ public class infoWindow implements EventHandler<ActionEvent> {
 	@FXML private Text tUsername, tNickname, tAge, tUser_created;
 	private int activeUser;
 	private FunctionUser fu;
+	
 
 	public void start(Stage stage, int activeUser) {
 		this.activeUser=activeUser;
@@ -71,15 +62,17 @@ public class infoWindow implements EventHandler<ActionEvent> {
 	}
 	
 	public void setInfo() throws SQLException{
+		
+		Long timestamp = Long.valueOf(fu.infoUser(this.activeUser, 4)).longValue();
+		String S = new SimpleDateFormat("dd/MM/yyyy").format(timestamp*1000);
+		
 		tUsername.setText(fu.infoUser(this.activeUser, 1));
 		tNickname.setText(fu.infoUser(this.activeUser, 2));
 		tAge.setText(fu.infoUser(this.activeUser, 3));
-		tUser_created.setText(fu.infoUser(this.activeUser, 4));
+		tUser_created.setText(S);
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 }
