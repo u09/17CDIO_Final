@@ -391,9 +391,15 @@ public class FunctionUser {
 	}
 	
 
-	public boolean createGroup(String groupOwner, String groupName ) throws SQLException, IOException{
-		
-		return false;
+	public void createGroup(String groupOwner, String groupName, int... groupMembersID) throws SQLException, IOException{
+		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('"+groupOwner+"','"+groupName+"','"+f.timestamp()+"')");
+		ResultSet rs=con().select("SELECT group_id FROM groups WHERE owner_id='"+groupOwner+"' ORDER BY group_id DESC");
+		rs.next();
+		int group_id=rs.getInt("group_id");
+		for(int i=0;i<groupMembersID.length; i++){
+			con().update("INSERT INTO groupmembers(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+groupMembersID[i]+"','"+f.timestamp()+"')");
+			
+		}
 		
 	}
 	
