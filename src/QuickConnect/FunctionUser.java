@@ -415,7 +415,7 @@ public class FunctionUser {
 		rs.next();
 		int group_id=rs.getInt("group_id");
 		for(int i=0;i<ids.length; i++){
-			con().update("INSERT INTO groupmembers(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+ids[i]+"','"+f.timestamp()+"')");
+			con().update("INSERT INTO group_members(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+ids[i]+"','"+f.timestamp()+"')");
 		}
 	}
 	

@@ -196,7 +196,7 @@ public class Function {
 		else timestamp();
 	}
 
-	public static boolean isNumeric(String str) {
+	public boolean isNumeric(String str) {
 		try {
 			int nr = Integer.parseInt(str);
 		} catch (NumberFormatException nfe) {
@@ -204,4 +204,14 @@ public class Function {
 		}
 		return true;
 	}
-}
+	
+	public String implode(String[] arr, String seperator){
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < arr.length; i++) {
+		    sb.append(arr[i]);
+		    if (i != arr.length - 1) sb.append(seperator);
+		}
+		String joined = sb.toString();
+		return joined;
+	}
+} 

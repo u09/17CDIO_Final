@@ -12,11 +12,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -117,6 +119,22 @@ public class groupWindow implements EventHandler<ActionEvent> {
 			System.out.println(fu.f.user().getUserID()+" "+inGroupName.getText());
 			try {
 				fu.createGroup(fu.f.user().getUserID(),inGroupName.getText(),allFriendsId2);
+				String out="";
+				for(int i=1;i<=allFriendsId2.size();i++){
+					int id=allFriendsId2.get(i-1);
+					String nick=fu.id2nick(id);
+					if(i==1) out=nick;
+					else out=out+", "+nick;
+				}
+				
+				Alert registerSuccess = new Alert(AlertType.INFORMATION);
+				registerSuccess.setTitle(this.myStage.getTitle());
+				registerSuccess.setHeaderText("Gruppe oprettet");
+				registerSuccess.setContentText("Din gruppe '"+inGroupName.getText()+"' er nu oprettet. Følgende er inviteret til din gruppe:\n"+out);
+				registerSuccess.showAndWait();
+				
+				myStage.close();
+				
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
