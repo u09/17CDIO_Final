@@ -369,6 +369,22 @@ public class FunctionUser {
 		return allUserName.toArray(new String[allUserName.size()]);	
 	}
 	
+	public String[] getBlockedFriendsList() throws SQLException{
+		ResultSet rs= con().select("select username from users where user_id = any(select blocked_id from blocked_contact where user_id="+user().getUserID() +");");
+		ArrayList <String> blockedFriendsList = new ArrayList<String>();
+		
+		while(rs.next()){
+			blockedFriendsList.add(rs.getString("username"));
+		}
+		for(int i = 0; i<blockedFriendsList.size(); i++){
+			System.out.println("Du har blokeret brugernavnet: " + blockedFriendsList.get(i));
+			
+		}
+		return blockedFriendsList.toArray(new String[blockedFriendsList.size()]);	
+
+	}
+	
+
 	public boolean createGroup(String groupOwner, String groupName ) throws SQLException, IOException{
 		
 		return false;

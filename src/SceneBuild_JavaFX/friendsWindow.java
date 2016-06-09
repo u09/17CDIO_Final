@@ -63,7 +63,6 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 	}
 
 	private void showFriendsFrame() throws SQLException {
-
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(friendsWindow.class.getResource("FriendsFrame.fxml"));
 		loader.setController(this);
@@ -72,6 +71,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
 		setButtonFunctions();
 		getRequestsContent();
 
