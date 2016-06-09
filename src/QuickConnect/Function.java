@@ -204,4 +204,12 @@ public class Function {
 		}
 		return true;
 	}
+	
+	public void sleep(int time){
+		try {
+		    Thread.sleep(time);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+	}
 }

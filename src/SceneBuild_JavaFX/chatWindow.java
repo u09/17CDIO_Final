@@ -8,6 +8,8 @@ import java.util.Optional;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -78,6 +80,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 		showChatFrame();
 		myScene = new Scene(chatFrame);
+		
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
@@ -137,7 +140,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bAddFriend.setId("bAdd");
 		bAddGroup.setId("bAdd");
 		contextMenu.getItems().addAll(Slet, Bloker, Oplysninger);
-		addTextLimiter(inMessage, 900);
+		addTextLimiter(inMessage, 900);		
 		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -160,6 +163,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				}
 			}
 		});
+	    
 		setMenuBarFunctions();
 		getListsContents();
 		setListsFunctions();
@@ -235,6 +239,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
 				
+				textArea.setScrollTop(Double.MAX_VALUE);
+								
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -247,6 +253,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 						}
 					}
 				});
+			    
 				Bloker.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -280,6 +287,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
 				
+				textArea.setScrollTop(Double.MAX_VALUE);
+				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 				Slet.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -292,6 +301,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 						}
 					}
 				});
+			    
 				Bloker.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
