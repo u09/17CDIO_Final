@@ -8,8 +8,6 @@ import java.util.Optional;
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,10 +35,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent> {
@@ -261,7 +259,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				try {
 					msgs=fu.getMessages(activeUser,loginTime);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -286,14 +283,20 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == mAbout) {
-			ButtonType close = new ButtonType("Luk", ButtonData.OK_DONE);
-			Alert aboutInfo = new Alert(AlertType.NONE,
-					"Vi er ikke sikre på om alle rettigheder forbeholdes\nMen vi smadrer enhver der laver rav.", close);
-			aboutInfo.initOwner(myStage);
-			aboutInfo.setTitle("Om QuickConnect");
-			aboutInfo.setHeaderText("QuickConnect™\nVersion 1.0 (2016)");
-			aboutInfo.initModality(Modality.NONE);
-			aboutInfo.show();
+			Stage stage = new Stage();
+			stage.setResizable(false);
+			AnchorPane AboutFrame = null;
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(friendsWindow.class.getResource("AboutFrame.fxml"));
+			loader.setController(this);
+			try {
+				AboutFrame = (AnchorPane) loader.load();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			myScene = new Scene(AboutFrame);
+			stage.setScene(myScene);
+			stage.show();
 		}
 		if(event.getSource() == mClose) {
 			ButtonType bClose = new ButtonType("Luk", ButtonData.OK_DONE);
