@@ -5,6 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+
+import QuickConnect.User;
 import SceneBuild_JavaFX.friendsWindow;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -44,6 +48,7 @@ public class FacebookValidation extends Application{
 		this.myScene = new Scene(facebookFrame);
 		
 		WebEngine webEngine = browser.getEngine();
+		browser.setContextMenuEnabled(true);
 		
 		java.net.URI uri = null;
 		try {
@@ -64,15 +69,44 @@ public class FacebookValidation extends Application{
 
           }
         });
-		// https://www.facebook.com/dialog/oauth?client_id=153262288412700&redirect_uri=https://www.facebook.com/connect/login_success.html
-//		webEngine.load("http://www.facebook.com");
-		webEngine.load("https://www.facebook.com/dialog/oauth?client_id=153262288412700&redirect_uri="+uri);
+		
+/*		"<html>
+		<script>
+		  window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '153262288412700',
+		      xfbml      : true,
+		      version    : 'v2.6'
+		    });
+		  };
+
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
+		</html>"
+*/		
+		webEngine.load("https://www.facebook.com/dialog/oauth?"
+				+ "client_id=153262288412700"
+				+ "&display=popup"
+				+ "&response_type=token"
+				+ "&redirect_uri="+uri);
+
+		String accessToken = "EAACLZAChCIBwBAGhAbKVp1drnj5eGrKVeXYjiNFV3zQb91sEV5ZAa9N73KnDyVzZAFDAZBGY0ruJWfN4M8htdn8TpFGGeebJeiIPAt8IOAbbPwBPKj3cmFI1T6LnsZAZBpDKySbt6eMiUMmyVcHUm8bgCZCa0R1gGePkAh68H8Yrvk6ZBwtnjOaAEJKJcwdTTFDUUwZAB3wt1enoQ0GWdZAPKI";
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		com.restfb.types.User me = (com.restfb.types.User) fbClient.fetchObject("me", com.restfb.types.User.class);
+		System.out.println(me.getName());
+		System.out.println(me.getEmail());
+		System.out.println(me.getBirthday());
+		//		webEngine.load("http://www.facebook.com");
 		
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-//		while(true) {
-//			System.out.println(webEngine.getLocation());
-//		}
+
 	}
 	
 	public static void main(String[] args) {

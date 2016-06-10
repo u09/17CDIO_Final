@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="mysql-connector-java-5.1.26-bin.jar"/>
 	<classpathentry kind="lib" path="libs/commons-codec-1.10.jar"/>
 	<classpathentry kind="lib" path="mail.jar"/>
+	<classpathentry kind="lib" path="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/jre/lib/ext/restfb-1.24.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
