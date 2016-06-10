@@ -66,6 +66,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private ContextMenu contextMenu;
 	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup, mDeleteGroup;
 	private long loginTime;
+	private boolean checkType;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
 		this.fu = fu;
@@ -151,7 +152,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					}
 
 					try {
-						fu.sendMessage(msg,activeUser);
+						if(checkType==true) fu.sendMessage(msg,activeUser);
+						else if(checkType==false) fu.sendGroupMessage(msg,activeUser);
 					} catch (SQLException | IOException e) {
 						e.printStackTrace();
 					}
@@ -227,6 +229,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=true;
 				int id = friendsOnlineList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
@@ -248,6 +251,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=true;
 				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
@@ -269,6 +273,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=false;
 				int id = groupsList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = groupsList.getSelectionModel().getSelectedItem();
