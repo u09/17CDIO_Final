@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.sun.javafx.css.converters.ColorConverter;
+
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
@@ -39,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent> {
@@ -144,6 +147,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
+		
+		setInMessageFunctions();
+		setButtonFunctions();
+		getListsContents();
+		setListsFunctions();
+	}
+	
+	private void setInMessageFunctions() {
 		addTextLimiter(inMessage, 900);
 		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -157,7 +168,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
-
+					
 					try {
 						if(checkType==true) fu.sendMessage(msg,activeUser);
 						else if(checkType==false) fu.sendGroupMessage(msg,activeUser);
@@ -168,12 +179,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				}
 			}
 		});
-	    
-		setMenuBarFunctions();
-		getListsContents();
-		setListsFunctions();
+		
 	}
-	
+
 	public static void addTextLimiter(final TextField tf, final int maxLength) {
 		tf.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -186,7 +194,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		});
 	}
 
-	private void setMenuBarFunctions() {
+	private void setButtonFunctions() {
 		menuBar.setUseSystemMenuBar(true);
 		mAbout.setOnAction(this);
 		mClose.setOnAction(this);
@@ -388,7 +396,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			mExitFullScreen.setDisable(true);
 		}
 		if(event.getSource() == colorPick) {
-			System.out.println(colorPick.getValue().toString());
+			System.out.println(colorPick.getValue());
+			String myColor = colorPick.getValue().toString();
+			String hexColor = myColor.substring(4);
+			inMessage.setStyle("-fx-text-inner-color: #"+hexColor+";");
+			
 		}
 		if(event.getSource() == bAddFriend) {
 			Stage stage = new Stage();
@@ -479,7 +491,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public Stage getPrimaryStage() {
