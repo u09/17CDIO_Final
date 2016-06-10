@@ -106,6 +106,15 @@ public class FunctionUser {
 				+ "','" + f.timestamp() + "','" + receive_id + "')");
 	}
 	
+	public void sendGroupMessage(String msg, int groupID) throws SQLException, IOException {
+		msg=cencorMessage(msg);
+		con().update("INSERT INTO group_messages (group_message,user_ID,group_message_sent,group_id) VALUES (?,'" + user().getUserID()
+				+ "','" + f.timestamp() + "','" + groupID + "')",msg);
+		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
+				+ "','" + f.timestamp() + "','" + groupID + "')");
+	}
+	
+	
 	public String cencorMessage(String msg) throws SQLException{
 		ResultSet rs=con().select("SELECT * FROM banned_words WHERE MATCH (word) AGAINST ('"+msg+"' IN NATURAL LANGUAGE MODE)");
 		String badword;
@@ -148,6 +157,17 @@ public class FunctionUser {
 			messages.get(1).add(id2nick(rs.getInt("user_ID")));
 		}
 		return messages;
+	}
+	public ArrayList<ArrayList<String>> getGroupMessages(int id, long timestamp) throws SQLException {
+		ArrayList<ArrayList<String>> groupMessages=new ArrayList<ArrayList<String>>();
+		groupMessages.add(new ArrayList<String>());
+		groupMessages.add(new ArrayList<String>());	
+		ResultSet rs = con().select("SELECT group_message,user_ID FROM group_messages WHERE group_id='"+id+"' AND group_message_deleted=0 AND group_message_sent>="+timestamp);
+		while(rs.next()){
+			groupMessages.get(0).add(rs.getString("group_message"));
+			groupMessages.get(1).add(id2nick(rs.getInt("user_ID")));
+		}
+		return groupMessages;
 	}
 
 	public int addFriend(String username) throws SQLException {
@@ -427,6 +447,8 @@ public class FunctionUser {
 		if(choice==3) return Integer.toString(rs.getInt("age"));
 		else return Integer.toString(rs.getInt("user_created"));
 	}
+	
+	
 
 	public ArrayList<Integer> allFriendsId() throws SQLException {
 		ArrayList<Integer> allFriendsId = new ArrayList<Integer>();
