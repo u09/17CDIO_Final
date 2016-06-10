@@ -268,7 +268,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
+				int id = groupsList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = groupsList.getSelectionModel().getSelectedItem();
 				activeUser=groups[id];
