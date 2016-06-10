@@ -241,7 +241,7 @@ public class FunctionUser {
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 	
-	public String[] showGroups() throws SQLException {
+	public String[] showGroupsName() throws SQLException {
 		ArrayList<String> groups = new ArrayList<String>();
 		ResultSet rs = con()
 				.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="
@@ -438,5 +438,12 @@ public class FunctionUser {
 		while(rs.next()) allFriendsId.add(rs.getInt("user_ID"));
 		f.printArrayList(allFriendsId);
 		return allFriendsId;
+	}
+
+	public int[] groupsId() throws SQLException {
+		ArrayList<Integer> groups = new ArrayList<Integer>();
+		ResultSet rs = con().select("SELECT group_id FROM groups_members WHERE user_id="+user().getUserID());
+		while(rs.next()) groups.add(rs.getInt("group_id"));
+		return f.convertIntegers(groups);
 	}
 }

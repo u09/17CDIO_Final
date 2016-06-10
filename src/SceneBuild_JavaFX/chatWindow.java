@@ -59,6 +59,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private FunctionUser fu;
 	private int[] offlineFriends;
 	private int[] onlineFriends;
+	private int[] groups;
 	private int activeUser;
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
@@ -215,7 +216,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 		
-		String[] gro = fu.showGroups();
+		this.groups=fu.groupsId();
+		String[] gro = fu.showGroupsName();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
 	}
@@ -228,20 +230,16 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				if(id==-1) return;
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				activeUser=onlineFriends[id];
-				System.out.println("clicked on "+onlineFriends[id]);
+				System.out.println("clicked on "+activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
 					msgs=fu.getMessages(activeUser,loginTime);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
-				
 				textArea.setScrollTop(Double.MAX_VALUE);
-				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
@@ -253,7 +251,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				if(id==-1) return;
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				activeUser=offlineFriends[id];
-				System.out.println("clicked on "+offlineFriends[id]);
+				System.out.println("clicked on "+activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
@@ -261,11 +259,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
-
 				textArea.setScrollTop(Double.MAX_VALUE);
-				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);	
 			}
 		});
@@ -273,9 +268,21 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
+				if(id==-1) return;
 				String name = groupsList.getSelectionModel().getSelectedItem();
-				System.out.println("clicked on " + name);
-				if(name != null && !name.isEmpty()) titledPane.setText(name);
+				activeUser=groups[id];
+				System.out.println("clicked on "+activeUser);
+				textArea.clear();
+				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
+				try {
+					msgs=fu.getGroupMessages(activeUser,loginTime);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
+				textArea.setScrollTop(Double.MAX_VALUE);
+				if(name!=null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 	}
