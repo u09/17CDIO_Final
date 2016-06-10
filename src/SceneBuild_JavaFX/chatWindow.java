@@ -92,11 +92,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 						public void run() {
 							try {
 								getListsContents();
-								fu.getMessages(messages,users);
-
-								for(int i=1;i<=messages.size();i++){
-									for(int t=1;t<=messages.get(i-1).size();t++){
-										if(users.get(i-1)==activeUser) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+								if(checkType==false){
+									ArrayList<ArrayList<String>> msg=fu.getGroupMessages(activeUser);
+									for(int i=1;i<=messages.size();i++){
+										textArea.appendText(msg.get(1).get(i-1)+":\n"+messages.get(0).get(i-1)+"\n\n");
+									}
+								}
+								else{
+									fu.getMessages(messages,users);
+									for(int i=1;i<=messages.size();i++){
+										for(int t=1;t<=messages.get(i-1).size();t++){
+											if(users.get(i-1)==activeUser) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+										}
 									}
 								}
 
