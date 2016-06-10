@@ -149,7 +149,7 @@ public class FunctionUser {
 	public ArrayList<ArrayList<String>> getGroupMessages(int groupId) throws SQLException {
 		ArrayList<ArrayList<String>> msg=new ArrayList<ArrayList<String>>();
 		ResultSet rs = con().select("SELECT group_message,user_ID,group_message_sent FROM group_messages WHERE group_id="+groupId
-				+" AND group_message_deleted=0 AND group_message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
+				+" AND group_message_deleted=0 AND user_id!="+user().getUserID()+" AND group_message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
 				+user().getUserID() + "')");
 		msg.add(new ArrayList<String>());
 		msg.add(new ArrayList<String>());
