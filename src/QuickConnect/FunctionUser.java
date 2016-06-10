@@ -145,7 +145,21 @@ public class FunctionUser {
 		f.printArrayListMulti(msg);
 		f.printArrayList(users);
 	}
-
+	
+	public ArrayList<ArrayList<String>> getGroupMessages(int groupId) throws SQLException {
+		ArrayList<ArrayList<String>> msg=new ArrayList<ArrayList<String>>();
+		ResultSet rs = con().select("SELECT group_message,user_ID,group_message_sent FROM group_messages WHERE group_id="+groupId
+				+" AND group_message_deleted=0 AND group_message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
+				+user().getUserID() + "')");
+		msg.add(new ArrayList<String>());
+		msg.add(new ArrayList<String>());
+		while(rs.next()){
+			msg.get(0).add(rs.getString("group_message_sent"));
+			msg.get(1).add(id2nick(rs.getInt("user_id")));
+		}
+		return msg;
+	}
+	
 	public ArrayList<ArrayList<String>> getMessages(int id, long timestamp) throws SQLException {
 		ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 		messages.add(new ArrayList<String>());
