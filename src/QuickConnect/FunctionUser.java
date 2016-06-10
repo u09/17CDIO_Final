@@ -154,7 +154,7 @@ public class FunctionUser {
 		msg.add(new ArrayList<String>());
 		msg.add(new ArrayList<String>());
 		while(rs.next()){
-			msg.get(0).add(rs.getString("group_message_sent"));
+			msg.get(0).add(rs.getString("group_message"));
 			msg.get(1).add(id2nick(rs.getInt("user_id")));
 		}
 		return msg;
