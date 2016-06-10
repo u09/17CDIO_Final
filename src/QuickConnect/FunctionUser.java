@@ -365,12 +365,20 @@ public class FunctionUser {
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
 	
+	public int deleteGroup(int groupID) throws SQLException{
+		if(con().check("SELECT owner_id FROM groups where owner_id ="+user().getUserID())){
+			con().update("DELETE FROM group_members WHERE group_id="+groupID);
+			con().update("DELETE FROM groups WHERE group_id="+groupID);
+			return 1;
+		}
+		return 0;
+	}
+	
 	public void blockContact (int ID) throws SQLException, IOException {
 		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
 			deleteFriend(ID);
 		}
-
 	}
 	
 	public int usernameToID (String username) throws SQLException{

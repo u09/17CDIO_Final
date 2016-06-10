@@ -64,7 +64,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
 	@FXML private ContextMenu contextMenu;
-	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup;
+	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup, mDeleteGroup;
 	private long loginTime;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
@@ -201,6 +201,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		mInfoOff.setOnAction(this);
 		mLeave.setOnAction(this);
 		mInfoGroup.setOnAction(this);
+		mDeleteGroup.setOnAction(this);
 	}
 
 	private void getListsContents() throws SQLException, IOException {
@@ -428,6 +429,33 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 		if(event.getSource() == mInfoGroup) {
 			System.out.println("Trykket på infogroup");
+		}
+		
+		if(event.getSource() == mDeleteGroup){
+			int check=0;
+			System.out.println("hej");
+			try {
+				System.out.println("HEJ");
+				check = fu.deleteGroup(activeUser);
+				System.out.println("NOOOOOO");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println("DEDE");
+			if(check == 0){
+				Alert registerFail = new Alert(AlertType.WARNING);
+				registerFail.setTitle(this.myStage.getTitle());
+				registerFail.setHeaderText("Sletning af gruppe mislykkedes!");
+				registerFail.setContentText("Du kan ikke slette gruppen, da du ikke er admin!");
+				registerFail.showAndWait();
+			}
+			else{
+				Alert registerSuccess = new Alert(AlertType.INFORMATION);
+				registerSuccess.setTitle(this.myStage.getTitle());
+				registerSuccess.setHeaderText("Gruppen er slettet!");
+				registerSuccess.setContentText("Du er admin af gruppen, og den er nu slettet.");
+				registerSuccess.showAndWait();
+			}
 		}
 
 	}
