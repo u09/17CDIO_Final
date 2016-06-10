@@ -95,7 +95,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 								if(checkType==false){
 									ArrayList<ArrayList<String>> msg=fu.getGroupMessages(activeUser);
 									for(int i=1;i<=msg.get(0).size();i++){
-										textArea.appendText(msg.get(1).get(i-1)+":\n"+messages.get(0).get(i-1)+"\n\n");
+										textArea.appendText(msg.get(1).get(i-1)+":\n"+msg.get(0).get(i-1)+"\n\n");
 									}
 								}
 								else{
