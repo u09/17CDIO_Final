@@ -59,12 +59,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private FunctionUser fu;
 	private int[] offlineFriends;
 	private int[] onlineFriends;
+	private int[] groups;
 	private int activeUser;
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
 	@FXML private ContextMenu contextMenu;
-	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup;
+	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup, mDeleteGroup, mThrow;
 	private long loginTime;
+	private boolean checkType;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
 		this.fu = fu;
@@ -90,11 +92,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 						public void run() {
 							try {
 								getListsContents();
-								fu.getMessages(messages,users);
-
-								for(int i=1;i<=messages.size();i++){
-									for(int t=1;t<=messages.get(i-1).size();t++){
-										if(users.get(i-1)==activeUser) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+								if(checkType==false){
+									ArrayList<ArrayList<String>> msg=fu.getGroupMessages(activeUser);
+									for(int i=1;i<=msg.get(0).size();i++){
+										textArea.appendText(msg.get(1).get(i-1)+":\n"+msg.get(0).get(i-1)+"\n\n");
+									}
+								}
+								else{
+									fu.getMessages(messages,users);
+									for(int i=1;i<=messages.size();i++){
+										for(int t=1;t<=messages.get(i-1).size();t++){
+											if(users.get(i-1)==activeUser) textArea.appendText(fu.id2nick(users.get(i-1))+":\n"+messages.get(i-1).get(t-1)+"\n\n");
+										}
 									}
 								}
 
@@ -150,7 +159,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					}
 
 					try {
-						fu.sendMessage(msg,activeUser);
+						if(checkType==true) fu.sendMessage(msg,activeUser);
+						else if(checkType==false) fu.sendGroupMessage(msg,activeUser);
 					} catch (SQLException | IOException e) {
 						e.printStackTrace();
 					}
@@ -200,6 +210,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		mInfoOff.setOnAction(this);
 		mLeave.setOnAction(this);
 		mInfoGroup.setOnAction(this);
+		mDeleteGroup.setOnAction(this);
+		mThrow.setOnAction(this);
 	}
 
 	private void getListsContents() throws SQLException, IOException {
@@ -215,7 +227,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setItems(offlineItems);
 		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 		
-		String[] gro = fu.showGroups();
+		this.groups=fu.groupsId();
+		String[] gro = fu.showGroupsName();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
 	}
@@ -224,24 +237,21 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOnlineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=true;
 				int id = friendsOnlineList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = friendsOnlineList.getSelectionModel().getSelectedItem();
 				activeUser=onlineFriends[id];
-				System.out.println("clicked on "+onlineFriends[id]);
+				System.out.println("clicked on "+activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
 					msgs=fu.getMessages(activeUser,loginTime);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
-				
 				textArea.setScrollTop(Double.MAX_VALUE);
-				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
@@ -249,11 +259,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		friendsOfflineList.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=true;
 				int id = friendsOfflineList.getSelectionModel().getSelectedIndex();
 				if(id==-1) return;
 				String name = friendsOfflineList.getSelectionModel().getSelectedItem();
 				activeUser=offlineFriends[id];
-				System.out.println("clicked on "+offlineFriends[id]);
+				System.out.println("clicked on "+activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
 				try {
@@ -261,11 +272,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				
 				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
-
 				textArea.setScrollTop(Double.MAX_VALUE);
-				
 				if(name != null && !name.isEmpty()) titledPane.setText(name);	
 			}
 		});
@@ -273,9 +281,22 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				checkType=false;
+				int id = groupsList.getSelectionModel().getSelectedIndex();
+				if(id==-1) return;
 				String name = groupsList.getSelectionModel().getSelectedItem();
-				System.out.println("clicked on " + name);
-				if(name != null && !name.isEmpty()) titledPane.setText(name);
+				activeUser=groups[id];
+				System.out.println("clicked on "+activeUser);
+				textArea.clear();
+				ArrayList<ArrayList<String>> msgs=new ArrayList<ArrayList<String>>();
+				try {
+					msgs=fu.getGroupMessages(activeUser,loginTime);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				for(int i=1;i<=msgs.get(0).size();i++) textArea.appendText(msgs.get(1).get(i-1)+":\n"+msgs.get(0).get(i-1)+"\n\n");
+				textArea.setScrollTop(Double.MAX_VALUE);
+				if(name!=null && !name.isEmpty()) titledPane.setText(name);
 			}
 		});
 	}
@@ -417,10 +438,46 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			
 		}
 		if(event.getSource() == mLeave) {
-			System.out.println("Trykket på leave");
+			try {
+				fu.leaveGroup(activeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if(event.getSource() == mInfoGroup) {
 			System.out.println("Trykket på infogroup");
+		}
+		
+		if(event.getSource() == mDeleteGroup){
+			int check=0;
+			try {
+				check = fu.deleteGroup(activeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if(check == 0){
+				Alert registerFail = new Alert(AlertType.WARNING);
+				registerFail.setTitle(this.myStage.getTitle());
+				registerFail.setHeaderText("Sletning af gruppe mislykkedes!");
+				registerFail.setContentText("Du kan ikke slette gruppen, da du ikke er admin!");
+				registerFail.showAndWait();
+			}
+			else{
+				Alert registerSuccess = new Alert(AlertType.INFORMATION);
+				registerSuccess.setTitle(this.myStage.getTitle());
+				registerSuccess.setHeaderText("Gruppen er slettet!");
+				registerSuccess.setContentText("Du er admin af gruppen, og den er nu slettet.");
+				registerSuccess.showAndWait();
+			}
+		}
+		
+		if(event.getSource() == mThrow){
+			try {
+				fu.throwOut(activeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

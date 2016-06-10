@@ -49,7 +49,7 @@ public class FunctionUser {
 		}
 		System.out.println(arr);
 		System.out.println(f.md5(oldPass));
-		
+
 		if(f.checkPassword(newPass) == 0 && newPass.equals(newPass2) && f.md5(oldPass).equals(arr)) {
 			con().update("UPDATE users SET password=? WHERE user_id =?", new String[] { "s", f.md5(newPass) },
 					new String[] { "i", "" + user().getUserID() });
@@ -105,7 +105,16 @@ public class FunctionUser {
 		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
 				+ "','" + f.timestamp() + "','" + receive_id + "')");
 	}
-	
+
+	public void sendGroupMessage(String msg, int groupID) throws SQLException, IOException {
+		msg=cencorMessage(msg);
+		con().update("INSERT INTO group_messages (group_message,user_ID,group_message_sent,group_id) VALUES (?,'" + user().getUserID()
+				+ "','" + f.timestamp() + "','" + groupID + "')",msg);
+		System.out.println("SENDT: (message,user_ID,message_sent,receiver_id) VALUES ('"+msg+"','" + user().getUserID()
+				+ "','" + f.timestamp() + "','" + groupID + "')");
+	}
+
+
 	public String cencorMessage(String msg) throws SQLException{
 		ResultSet rs=con().select("SELECT * FROM banned_words WHERE MATCH (word) AGAINST ('"+msg+"' IN NATURAL LANGUAGE MODE)");
 		String badword;
@@ -137,6 +146,20 @@ public class FunctionUser {
 		f.printArrayList(users);
 	}
 	
+	public ArrayList<ArrayList<String>> getGroupMessages(int groupId) throws SQLException {
+		ArrayList<ArrayList<String>> msg=new ArrayList<ArrayList<String>>();
+		ResultSet rs = con().select("SELECT group_message,user_ID,group_message_sent FROM group_messages WHERE group_id="+groupId
+				+" AND group_message_deleted=0 AND user_id!="+user().getUserID()+" AND group_message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
+				+user().getUserID() + "')");
+		msg.add(new ArrayList<String>());
+		msg.add(new ArrayList<String>());
+		while(rs.next()){
+			msg.get(0).add(rs.getString("group_message"));
+			msg.get(1).add(id2nick(rs.getInt("user_id")));
+		}
+		return msg;
+	}
+	
 	public ArrayList<ArrayList<String>> getMessages(int id, long timestamp) throws SQLException {
 		ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 		messages.add(new ArrayList<String>());
@@ -148,6 +171,17 @@ public class FunctionUser {
 			messages.get(1).add(id2nick(rs.getInt("user_ID")));
 		}
 		return messages;
+	}
+	public ArrayList<ArrayList<String>> getGroupMessages(int id, long timestamp) throws SQLException {
+		ArrayList<ArrayList<String>> groupMessages=new ArrayList<ArrayList<String>>();
+		groupMessages.add(new ArrayList<String>());
+		groupMessages.add(new ArrayList<String>());	
+		ResultSet rs = con().select("SELECT group_message,user_ID FROM group_messages WHERE group_id='"+id+"' AND group_message_deleted=0 AND group_message_sent>="+timestamp);
+		while(rs.next()){
+			groupMessages.get(0).add(rs.getString("group_message"));
+			groupMessages.get(1).add(id2nick(rs.getInt("user_ID")));
+		}
+		return groupMessages;
 	}
 
 	public int addFriend(String username) throws SQLException {
@@ -162,7 +196,7 @@ public class FunctionUser {
 			else if(con().check("SELECT user_id FROM contacts WHERE ((user_id='"+id+"' AND contact_id='"+user().getUserID()+"') OR (user_id='"+user().getUserID()+"' AND contact_id='"+id+"')) AND status=0")) return 3;
 		}
 		con().update("INSERT INTO contacts VALUES(?,?,0,?)",new String[]{"i",""+user().getUserID()},
-					new String[]{"i",""+id},new String[]{"l",Long.toString(0)});
+				new String[]{"i",""+id},new String[]{"l",Long.toString(0)});
 		return 0;
 	}
 
@@ -240,8 +274,8 @@ public class FunctionUser {
 		f.printArrayList(allFriendsUsername);
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
-	
-	public String[] showGroups() throws SQLException {
+
+	public String[] showGroupsName() throws SQLException {
 		ArrayList<String> groups = new ArrayList<String>();
 		ResultSet rs = con()
 				.select("SELECT `group_name` FROM `groups` WHERE group_id IN (SELECT group_id FROM `group_members` WHERE group_members.user_id="
@@ -335,7 +369,7 @@ public class FunctionUser {
 		rs.next();
 		return rs.getString("nickname");
 	}
-	
+
 	public void activateUserMail(String username) throws SQLException{
 		con().update("UPDATE users SET activated=1 WHERE username='"+username+"'");
 	}
@@ -344,21 +378,29 @@ public class FunctionUser {
 		con().update("DELETE FROM contacts WHERE (user_ID='"+ID+"' AND contact_ID='"+user().getUserID()+"') "
 				+ "OR (contact_ID='"+ID+"' AND user_ID='"+user().getUserID()+"')");
 	}
-	
+
+	public int deleteGroup(int groupID) throws SQLException{
+		if(con().check("SELECT owner_id FROM groups where owner_id ="+user().getUserID())){
+			con().update("DELETE FROM group_members WHERE group_id="+groupID);
+			con().update("DELETE FROM groups WHERE group_id="+groupID);
+			return 1;
+		}
+		return 0;
+	}
+
 	public void blockContact (int ID) throws SQLException, IOException {
 		if(!con().check("SELECT user_id,blocked_id FROM blocked_contact WHERE user_id='"+ID+"' AND blocked_id='"+user().getUserID()+"'")){
 			con().update("INSERT INTO blocked_contact (user_ID,blocked_id,blocked_time) VALUES('"+user().getUserID()+"','"+ID+"','"+f.timestamp()+"')");
 			deleteFriend(ID);
 		}
-
 	}
-	
+
 	public int usernameToID (String username) throws SQLException{
 		ResultSet rs = con().select("SELECT user_id FROM users WHERE username='"+username+"'");
 		rs.next();
 		return rs.getInt("user_id");
 	}
-	
+
 	public void unBlockContact (int ID) throws SQLException {
 		con().update("DELETE FROM blocked_contact WHERE user_id='"+user().getUserID()+"' AND blocked_id='"+ID+"'");
 	}
@@ -368,43 +410,43 @@ public class FunctionUser {
 		rs.next();
 		return rs.getString("email");
 	}
-	
+
 	public void setAge(int age) throws SQLException{
 		con().update("UPDATE users set age="+age+"WHERE user_id="+user().getUserID());
 	}
-	
+
 	public String[] showSearchAddFriends(String inUser) throws SQLException{
 		inUser = inUser.toLowerCase();
 		ResultSet  rs = con().select("select username from users where user_id  NOT IN( select user_id from blocked_contact where blocked_id="+user().getUserID()+
 				") AND user_id!="+user().getUserID()+" AND (user_id not in((SELECT user_id FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id ="
 				+user().getUserID()+" ) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id ="+user().getUserID()+" ))))) AND LOWER(username) LIKE '%"+inUser+"%'");
 		ArrayList <String> allUserName = new ArrayList<String>();
-		
+
 		while(rs.next()){
 			allUserName.add(rs.getString("username"));
 		}
 		for(int i = 0; i<allUserName.size(); i++){
 			System.out.println(allUserName.get(i));
-			
+
 		}
 		return allUserName.toArray(new String[allUserName.size()]);	
 	}
-	
+
 	public String[] getBlockedFriendsList() throws SQLException{
 		ResultSet rs= con().select("select username from users where user_id = any(select blocked_id from blocked_contact where user_id="+user().getUserID() +");");
 		ArrayList <String> blockedFriendsList = new ArrayList<String>();
-		
+
 		while(rs.next()){
 			blockedFriendsList.add(rs.getString("username"));
 		}
 		for(int i = 0; i<blockedFriendsList.size(); i++){
 			System.out.println("Du har blokeret brugernavnet: " + blockedFriendsList.get(i));
-			
+
 		}
 		return blockedFriendsList.toArray(new String[blockedFriendsList.size()]);	
 
 	}
-	
+
 
 	public void createGroup(int groupOwner, String groupName, ArrayList<Integer> allFriendsId2) throws SQLException, IOException{
 		allFriendsId2.add(user().getUserID());
@@ -418,7 +460,7 @@ public class FunctionUser {
 			con().update("INSERT INTO group_members(group_id, user_id, group_joined) VALUES ('"+group_id+"','"+ids[i]+"','"+f.timestamp()+"')");
 		}
 	}
-	
+
 	public String infoUser(int ID, int choice) throws SQLException{
 		ResultSet rs=con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='"+ID+"'");
 		rs.next();
@@ -427,6 +469,8 @@ public class FunctionUser {
 		if(choice==3) return Integer.toString(rs.getInt("age"));
 		else return Integer.toString(rs.getInt("user_created"));
 	}
+
+
 
 	public ArrayList<Integer> allFriendsId() throws SQLException {
 		ArrayList<Integer> allFriendsId = new ArrayList<Integer>();
@@ -438,5 +482,22 @@ public class FunctionUser {
 		while(rs.next()) allFriendsId.add(rs.getInt("user_ID"));
 		f.printArrayList(allFriendsId);
 		return allFriendsId;
+	}
+
+	public int[] groupsId() throws SQLException {
+		ArrayList<Integer> groups = new ArrayList<Integer>();
+		ResultSet rs = con().select("SELECT group_id FROM group_members WHERE user_id="+user().getUserID());
+		while(rs.next()) groups.add(rs.getInt("group_id"));
+		return f.convertIntegers(groups);
+	}
+
+	public void leaveGroup(int groupID) throws SQLException{
+		con().update("DELETE FROM group_members WHERE group_id="+groupID+" AND user_id="+user().getUserID());	
+	}
+
+	public void throwOut(int groupID) throws SQLException{
+		if(con().check("SELECT owner_id FROM groups where owner_id ="+user().getUserID())){
+			con().update("DELETE FROM group_members WHERE group_id="+groupID+"AND user_id="+user().getUserID());
+		}
 	}
 }
