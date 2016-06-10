@@ -464,7 +464,7 @@ public class FunctionUser {
 	
 	public int[] groupsId() throws SQLException {
 		ArrayList<Integer> groups = new ArrayList<Integer>();
-		ResultSet rs = con().select("SELECT group_id FROM groups_members WHERE user_id="+user().getUserID());
+		ResultSet rs = con().select("SELECT group_id FROM group_members WHERE user_id="+user().getUserID());
 		while(rs.next()) groups.add(rs.getInt("group_id"));
 		return f.convertIntegers(groups);
 	}
