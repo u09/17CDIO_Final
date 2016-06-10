@@ -425,7 +425,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			
 		}
 		if(event.getSource() == mLeave) {
-			System.out.println("Trykket på leave");
+			try {
+				fu.leaveGroup(activeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if(event.getSource() == mInfoGroup) {
 			System.out.println("Trykket på infogroup");
@@ -433,15 +438,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		
 		if(event.getSource() == mDeleteGroup){
 			int check=0;
-			System.out.println("hej");
 			try {
-				System.out.println("HEJ");
 				check = fu.deleteGroup(activeUser);
-				System.out.println("NOOOOOO");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println("DEDE");
 			if(check == 0){
 				Alert registerFail = new Alert(AlertType.WARNING);
 				registerFail.setTitle(this.myStage.getTitle());

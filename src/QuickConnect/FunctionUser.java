@@ -477,7 +477,7 @@ public class FunctionUser {
 		return f.convertIntegers(groups);
 	}
 	
-	public void leaveGroup(int groupID, int userID) throws SQLException{
-		con().update("DELETE FROM group_members WHERE group_id="+groupID+" AND user_id="+userID);	
+	public void leaveGroup(int groupID) throws SQLException{
+		con().update("DELETE FROM group_members WHERE group_id="+groupID+" AND user_id="+user().getUserID());	
 	}
 }
