@@ -1,45 +1,82 @@
 package Tests;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 
-public class FacebookValidation {
+import SceneBuild_JavaFX.friendsWindow;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+
+public class FacebookValidation extends Application{
 	
 	/* Facebooks guide: 
-	 * https://developers.facebook.com/docs/facebook-login/for-devices#tech
-	 * 
-	 * Kilde til kode:
-	 * http://stackoverflow.com/questions/2793150/using-java-net-urlconnection-to-fire-and-handle-http-requests
+	 * https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
 	 */
 	
-	public FacebookValidation() throws MalformedURLException, IOException {
+	private Stage myStage;
+	private Scene myScene;
+	AnchorPane facebookFrame;
+	@FXML private WebView browser;
 	
-	String url = "http://example.com";
-	String charset = "UTF-8";  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
-	String param1 = "value1";
-	String param2 = "value2";
-	// ...
+	@Override
+	public void start(Stage stage) {
+		this.myStage = stage;
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(FacebookValidation.class.getResource("FacebookFrame.fxml"));
+		loader.setController(this);
+		try {
+			facebookFrame = (AnchorPane) loader.load();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		this.myScene = new Scene(facebookFrame);
+		
+		WebEngine webEngine = browser.getEngine();
+		
+		java.net.URI uri = null;
+		try {
+			URL url = new URL("https://www.facebook.com/connect/login_success.html");
+			uri = url.toURI();
+		} catch(MalformedURLException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+		
+		webEngine.getLoadWorker().stateProperty()
+		.addListener(new ChangeListener<State>() {
+          @Override
+          public void changed(ObservableValue ov, State oldState, State newState) {
 
-	String query = String.format("param1=%s&param2=%s", 
-	     URLEncoder.encode(param1, charset), 
-	     URLEncoder.encode(param2, charset));
-	
-	URLConnection connection = new URL(url).openConnection();
-	connection.setDoOutput(true); // Triggers POST.
-	connection.setRequestProperty("Accept-Charset", charset);
-	connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-	
-	try (OutputStream output = connection.getOutputStream()) {
-		output.write(query.getBytes(charset));
+            if (newState == Worker.State.SUCCEEDED) {
+              myStage.setTitle(webEngine.getLocation());
+            }
+
+          }
+        });
+		// https://www.facebook.com/dialog/oauth?client_id=153262288412700&redirect_uri=https://www.facebook.com/connect/login_success.html
+//		webEngine.load("http://www.facebook.com");
+		webEngine.load("https://www.facebook.com/dialog/oauth?client_id=153262288412700&redirect_uri="+uri);
+		
+		this.myStage.setScene(myScene);
+		this.myStage.show();
+//		while(true) {
+//			System.out.println(webEngine.getLocation());
+//		}
 	}
 	
-	InputStream response = connection.getInputStream();
-	
+	public static void main(String[] args) {
+		launch(args);
 	}
 	
 	
