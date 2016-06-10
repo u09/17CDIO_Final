@@ -64,7 +64,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private ArrayList<ArrayList<String>> messages=new ArrayList<ArrayList<String>>();
 	private ArrayList<Integer> users=new ArrayList<Integer>();
 	@FXML private ContextMenu contextMenu;
-	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup, mDeleteGroup;
+	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup, mDeleteGroup, mThrow;
 	private long loginTime;
 	private boolean checkType;
 
@@ -204,6 +204,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		mLeave.setOnAction(this);
 		mInfoGroup.setOnAction(this);
 		mDeleteGroup.setOnAction(this);
+		mThrow.setOnAction(this);
 	}
 
 	private void getListsContents() throws SQLException, IOException {
@@ -461,6 +462,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				registerSuccess.setHeaderText("Gruppen er slettet!");
 				registerSuccess.setContentText("Du er admin af gruppen, og den er nu slettet.");
 				registerSuccess.showAndWait();
+			}
+		}
+		
+		if(event.getSource() == mThrow){
+			try {
+				fu.throwOut(activeUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 

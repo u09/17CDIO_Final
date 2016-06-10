@@ -104,6 +104,7 @@
                                     <MenuItem fx:id="mDeleteGroup" mnemonicParsing="false" text="Slet gruppe" />
                                     <MenuItem fx:id="mLeave" mnemonicParsing="false" text="Forlad gruppe" />
                                     <MenuItem fx:id="mInfoGroup" mnemonicParsing="false" text="Oplysninger" />
+                                    <MenuItem fx:id="mThrow" mnemonicParsing="false" text="Smid ud af gruppen" />
                                  </items>
                               </ContextMenu>
                            </contextMenu></ListView>
