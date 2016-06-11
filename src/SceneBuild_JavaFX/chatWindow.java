@@ -457,11 +457,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 
 		if(event.getSource() == mThrow) {
-			try {
-				fu.throwOut(activeUser);
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
+			Stage stage = new Stage();
+			throwWindow tW = new throwWindow();
+			tW.start(stage, activeUser);
 		}
 	}
 
