@@ -459,7 +459,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == mThrow) {
 			Stage stage = new Stage();
 			throwWindow tW = new throwWindow();
-			tW.start(stage, activeUser);
+			try {
+				tW.start(stage, activeUser);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

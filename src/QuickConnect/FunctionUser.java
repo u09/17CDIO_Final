@@ -188,7 +188,7 @@ public class FunctionUser {
 		con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id=" + user().getUserID());
 	}
 
-	public void throwOut(int groupID, int ID) throws SQLException {
+	public void kickMember(int groupID, int ID) throws SQLException {
 		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) {
 			con().update("DELETE FROM group_members WHERE group_id=" + groupID + "AND user_id="+ID+"AND owner_id="+user().getUserID());
 		}
@@ -317,6 +317,16 @@ public class FunctionUser {
 		}
 		f.printArrayList(allFriendsUsername);
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
+	}
+	
+	public ArrayList<Integer> getAllMembersID(int groupID) throws SQLException{
+		ArrayList<Integer> allMembersID = new ArrayList<>();
+		ResultSet rs = con().select("SELECT user_id FROM group_members WHERE group_id="+groupID);
+		while(rs.next()){
+			allMembersID.add(rs.getInt("user_id"));
+		}
+		f.printArrayList(allMembersID);
+		return allMembersID;
 	}
 
 	public int[] getOnlineUsersId() throws SQLException, IOException {
