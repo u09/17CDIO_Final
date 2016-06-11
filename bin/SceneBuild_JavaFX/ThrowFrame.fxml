@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
 
+<AnchorPane prefHeight="337.0" prefWidth="369.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <ListView fx:id="GroupMembers" layoutX="49.0" layoutY="67.0" prefHeight="203.0" prefWidth="272.0" />
+      <Label layoutX="49.0" layoutY="35.0" text="Vælg venligst gruppemedlem, som du vil smide ud:" />
+      <Button fx:id="bThrow" layoutX="159.0" layoutY="298.0" mnemonicParsing="false" text="Smid ud!" />
+   </children>
+</AnchorPane>
