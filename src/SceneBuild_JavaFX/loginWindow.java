@@ -29,10 +29,10 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 
 	private Stage myStage;
 	private Scene myScene, myScene2;
-	private VBox LoginFrame;
+	private VBox loginFrame;
 	@FXML private Label lTitle, lUser, lPass, lNoUser, lRegister;
 	@FXML private Button bLogin;
-	@FXML private Hyperlink bClickHere;
+	@FXML private Hyperlink hClickHere;
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
 	private FunctionUser fu;
@@ -46,25 +46,25 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		this.myStage.setTitle("QuickConnect");
 		this.myStage.setResizable(false);
 		showLoginFrame();
-		this.myScene = new Scene(LoginFrame);
+		this.myScene = new Scene(loginFrame);
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}
 
 	private void showLoginFrame() {
-
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(loginWindow.class.getResource("LoginFrame.fxml"));
 		loader.setController(this);
 		try {
-			LoginFrame = (VBox) loader.load();
+			loginFrame = (VBox) loader.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
 		bLogin.setOnAction(this);
 		bLogin.setDefaultButton(true);
-		bClickHere.setOnAction(this);
+		hClickHere.setOnAction(this);
 		lTitle.getStyleClass().add("titles");
 		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
 		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
@@ -116,8 +116,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				inUser.requestFocus();
 			}
 		}
-		// handle for bClickHere
-		if(event.getSource() == bClickHere) {
+		// handle for hClickHere
+		if(event.getSource() == hClickHere) {
 			Stage stage = new Stage();
 			registerWindow rW = new registerWindow();
 			myStage.close();

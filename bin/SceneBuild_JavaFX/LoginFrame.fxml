@@ -11,15 +11,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="292.0" spacing="12.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="292.0" spacing="12.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="lTitle" text="Velkommen til QuickConnect" wrapText="true">
          <font>
             <Font name="Times New Roman Bold" size="18.0" />
          </font></Label>
-      <ImageView fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="130.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../Icons/bg.jpg" />
+            <Image url="@../../Icons/QuickConnect%20logo.png" />
          </image>
       </ImageView>
       <Label fx:id="lUser" text="Indtast dit brugernavn:" />
@@ -27,10 +27,10 @@
       <Label fx:id="lPass" text="Indtast dit password:" />
       <PasswordField fx:id="inPass" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
       <Button fx:id="bLogin" mnemonicParsing="false" text="Login" />
-      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="292.0">
+      <HBox alignment="CENTER" prefHeight="39.0" prefWidth="292.0">
          <children>
             <Label fx:id="lNoUser" prefHeight="17.0" prefWidth="132.0" text="Har du ikke en bruger?" />
-            <Hyperlink fx:id="bClickHere" alignment="CENTER" prefHeight="4.0" prefWidth="66.0" text="Tryk her!" />
+            <Hyperlink fx:id="hClickHere" alignment="CENTER" prefHeight="4.0" prefWidth="66.0" text="Tryk her!" />
          </children>
       </HBox>
    </children>

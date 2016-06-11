@@ -7,6 +7,10 @@ import java.net.URL;
 
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.User;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.net.httpserver.Authenticator.Result;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -21,7 +25,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class FacebookValidation extends Application {
+public class FacebookAPI extends Application {
 
 	/*
 	 * Facebooks guide:
@@ -34,11 +38,19 @@ public class FacebookValidation extends Application {
 	AnchorPane facebookFrame;
 	@FXML private WebView browser;
 
+	public static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
+
+	public static final String MY_ACCESS_TOKEN = "EAACLZAChCIBwBAKBNJYOUiZAsEu6t9jQZBK2TOSx5WlN6yKg57DB5JBPVEvv6jZAD2YUfRL7v9CPSS0ZA8vndx5yzx7FWlaoUpraD3tZAqPr5ZCW9aL9dQFED3ZBUIPb87E2xZBtIEMoNTJRfSkZAMCVXzraKslXtD4lqWgmH9cyrmQQZDZD";
+	
+	// Facebook App
+	public static final String MY_APP_ID = "153262288412700";
+	public static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
+	
 	@Override
 	public void start(Stage stage) {
 		this.myStage = stage;
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(FacebookValidation.class.getResource("FacebookFrame.fxml"));
+		loader.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
 		loader.setController(this);
 		try {
 			facebookFrame = (AnchorPane) loader.load();
@@ -69,33 +81,41 @@ public class FacebookValidation extends Application {
 			}
 		});
 
-		/*
-		 * "<html> <script> window.fbAsyncInit = function() { FB.init({ appId :
-		 * '153262288412700', xfbml : true, version : 'v2.6' }); }; (function(d,
-		 * s, id){ var js, fjs = d.getElementsByTagName(s)[0]; if
-		 * (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id;
-		 * js.src = "//connect.facebook.net/en_US/sdk.js";
-		 * fjs.parentNode.insertBefore(js, fjs); }(document, 'script',
-		 * 'facebook-jssdk')); </script> </html>"
-		 */
 		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id=153262288412700" + "&display=popup"
 		        + "&response_type=token" + "&redirect_uri=" + uri);
-
-		String accessToken = "EAACLZAChCIBwBAGhAbKVp1drnj5eGrKVeXYjiNFV3zQb91sEV5ZAa9N73KnDyVzZAFDAZBGY0ruJWfN4M8htdn8TpFGGeebJeiIPAt8IOAbbPwBPKj3cmFI1T6LnsZAZBpDKySbt6eMiUMmyVcHUm8bgCZCa0R1gGePkAh68H8Yrvk6ZBwtnjOaAEJKJcwdTTFDUUwZAB3wt1enoQ0GWdZAPKI";
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		com.restfb.types.User me = fbClient.fetchObject("me", com.restfb.types.User.class);
-		System.out.println(me.getName());
-		System.out.println(me.getEmail());
-		System.out.println(me.getBirthday());
+		System.out.println(webEngine.getTitle());
 		// webEngine.load("http://www.facebook.com");
-
+		
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 
 	}
 
+	/*
+	 * "<html> <script> window.fbAsyncInit = function() { FB.init({ appId :
+	 * '153262288412700', xfbml : true, version : 'v2.6' }); }; (function(d,
+	 * s, id){ var js, fjs = d.getElementsByTagName(s)[0]; if
+	 * (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id;
+	 * js.src = "//connect.facebook.net/en_US/sdk.js";
+	 * fjs.parentNode.insertBefore(js, fjs); }(document, 'script',
+	 * 'facebook-jssdk')); </script> </html>"
+	 */
 	public static void main(String[] args) {
-		launch(args);
+//		launch(args);
+		
+		authUser(MY_ACCESS_TOKEN);
+		
+	}
+	
+	public static void authUser(String accessToken) {
+		
+	    FacebookClient facebookClient = new DefaultFacebookClient(accessToken);
+	    User user = facebookClient.fetchObject("me", User.class);
+
+	    System.out.println("User="+ user);
+        System.out.println("UserName= "+ user.getUsername());
+        System.out.println("Birthday= "+ user.getBirthday());
+        System.out.println("Email= "+ user.getEmail());
 	}
 
 }
