@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-	<classpathentry kind="lib"
-		path="mysql-connector-java-5.1.26-bin.jar" />
-	<classpathentry kind="lib" path="libs/commons-codec-1.10.jar" />
-	<classpathentry kind="lib" path="mail.jar" />
-	<classpathentry kind="lib"
-		path="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/jre/lib/ext/restfb-1.24.0.jar" />
-	<classpathentry kind="output" path="bin" />
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="mysql-connector-java-5.1.26-bin.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="mail.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
