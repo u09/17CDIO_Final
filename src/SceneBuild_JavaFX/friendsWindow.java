@@ -28,14 +28,14 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 	private Stage myStage;
 	private Scene myScene;
 	private AnchorPane friendsFrame;
-	private TitledPane sentRequestsPane, recRequestsPane;
+	@FXML private TitledPane sentRequestsPane, receivedRequestsPane;
 	@FXML private TextField inUsername;
-	@FXML private Button bAdd, bAccept, bReject, bCancel,bSearchFriends;
-	@FXML private ListView<String> sentList, receivedList,addFriendList;
+	@FXML private Button bAdd, bAccept, bReject, bCancel, bSearchFriends;
+	@FXML private ListView<String> sentList, receivedList, addFriendList;
 	private String[] userList;
-	ObservableList<String> sentItems, reqItems;
+	ObservableList<String> sentItems, requestsItems;
 	private FunctionUser fu;
-	
+
 	@Override
 	public void start(Stage stage, FunctionUser fu) throws SQLException {
 		this.fu = fu;
@@ -59,25 +59,25 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		setButtonFunctions();
 		getRequestsContent();
 
 	}
 
 	private void getAllUsers() throws SQLException {
-		this.userList=fu.showSearchAddFriends(inUsername.getText());
+		this.userList = fu.showSearchAddFriends(inUsername.getText());
 		ObservableList<String> UserItems = FXCollections.observableArrayList(this.userList);
-		addFriendList.setItems(UserItems);	
-		addFriendList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		addFriendList.setItems(UserItems);
+		addFriendList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				String name = addFriendList.getSelectionModel().getSelectedItem();
 				inUsername.setText(name);
 			}
 		});
-		this.userList=fu.showSearchAddFriends(inUsername.getText());
-		addFriendList.setItems(UserItems);	
+		this.userList = fu.showSearchAddFriends(inUsername.getText());
+		addFriendList.setItems(UserItems);
 	}
 
 	private void getRequestsContent() {
@@ -88,19 +88,21 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		sentItems = FXCollections.observableArrayList(sentRequests);
-		if(sentItems != null) sentList.setItems(sentItems);
+		if(sentItems != null)
+			sentList.setItems(sentItems);
 		else;
-		
+
 		String[] receivedRequests = null;
 		try {
 			receivedRequests = fu.getFriendsRequests();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		reqItems = FXCollections.observableArrayList(receivedRequests);
-		if(reqItems != null) receivedList.setItems(reqItems);
+		requestsItems = FXCollections.observableArrayList(receivedRequests);
+		if(requestsItems != null)
+			receivedList.setItems(requestsItems);
 		else;
-		
+
 	}
 
 	private void setButtonFunctions() {
@@ -128,24 +130,29 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 				int i = fu.addFriend(inUsername.getText());
 				Alert passSuccess = new Alert(AlertType.INFORMATION);
 				passSuccess.setTitle(myStage.getTitle());
-				if(i>0) {
+				if(i > 0) {
 					passSuccess.setHeaderText("Din venneanmodning blev ikke sendt");
-					if(i==1) passSuccess.setContentText("Du eller personen du pr�ver at tilf�je har blokeret hinanden");
-					else if(i==2) passSuccess.setContentText("Du er allerede venner med personen");
-					else if(i==3) passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
-					else if(i==4) passSuccess.setContentText("Brugernavnet eksistere desv�rre ikke. Kontrollere om du har stavet korrekt");
-				}
-				else if(i==0) {
+					if(i == 1)
+						passSuccess.setContentText("Du eller personen du præver at tilføje har blokeret hinanden");
+					else if(i == 2)
+						passSuccess.setContentText("Du er allerede venner med personen");
+					else if(i == 3)
+						passSuccess.setContentText("Du har allerede sendt en venneanmodning til personen");
+					else if(i == 4)
+						passSuccess.setContentText(
+						        "Brugernavnet eksistere desværre ikke. Kontrollere om du har stavet korrekt");
+				} else if(i == 0) {
 					passSuccess.setHeaderText("Din venneanmodning blev sendt");
 					passSuccess.setContentText("Du har nu sendt en venneanmodning til " + inUsername.getText());
 				}
 				passSuccess.show();
 			} catch(SQLException e) {
-//				Alert passSuccess = new Alert(AlertType.INFORMATION);
-//				passSuccess.setTitle(myStage.getTitle());
-//				passSuccess.setHeaderText("Brugernavnet eksisterer ikke");
-//				passSuccess.setContentText("Venligst indtast et gyldigt brugernavn");
-//				passSuccess.show();
+				// Alert passSuccess = new Alert(AlertType.INFORMATION);
+				// passSuccess.setTitle(myStage.getTitle());
+				// passSuccess.setHeaderText("Brugernavnet eksisterer ikke");
+				// passSuccess.setContentText("Venligst indtast et gyldigt
+				// brugernavn");
+				// passSuccess.show();
 				e.printStackTrace();
 			}
 		}
@@ -156,7 +163,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			} catch(SQLException | IOException e) {
 				e.printStackTrace();
 			}
-			reqItems.remove(requestName);
+			requestsItems.remove(requestName);
 		}
 		if(event.getSource() == bReject) {
 			String requestName = receivedList.getSelectionModel().getSelectedItem();
@@ -165,7 +172,7 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-			reqItems.remove(requestName);
+			requestsItems.remove(requestName);
 		}
 		if(event.getSource() == bCancel) {
 			String sentName = sentList.getSelectionModel().getSelectedItem();
@@ -176,13 +183,12 @@ public class friendsWindow extends chatWindow implements EventHandler<ActionEven
 			}
 			sentItems.remove(sentName);
 		}
-		if(event.getSource() == bSearchFriends){
+		if(event.getSource() == bSearchFriends) {
 			try {
-				getAllUsers() ;
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				getAllUsers();
+			} catch(SQLException e) {
 				e.printStackTrace();
-			} 
+			}
 		}
 	}
 }

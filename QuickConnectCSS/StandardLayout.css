@@ -7,21 +7,21 @@
 }
 
 #friendsOfflineList {
-	-fx-text-color:red;
+	-fx-text-color: red;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
-    -fx-text-fill: white;
+	-fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+	-fx-text-fill: white;
 }
 
 .list-cell:odd { /* <=== changed to even */
-    -fx-background-color: white;
+	-fx-background-color: white;
 }
 
 .list-cell:filled:hover {
-    -fx-background-color: #0093ff;
-    -fx-text-fill: white;
+	-fx-background-color: #0093ff;
+	-fx-text-fill: white;
 }
 
 .button {
@@ -51,12 +51,12 @@
 }
 
 @font-face {
-    font-family: 'OpenSansEmoji';
-    src: url(../Emojis/OpenSansEmoji.ttf);
+	font-family: 'OpenSansEmoji';
+	src: url(../Emojis/OpenSansEmoji.ttf);
 }
 
 .text-field {
-    -fx-font-family: OpenSansEmoji;
+	-fx-font-family: OpenSansEmoji;
 }
 
 #bSearch {
@@ -70,8 +70,9 @@
 #bAddPlus {
 	-fx-graphic: url(../Icons/add.png);
 }
+
 .color-picker {
-	 -fx-background-color: linear-gradient(#f2f2f2, #d6d6d6),
+	-fx-background-color: linear-gradient(#f2f2f2, #d6d6d6),
 		linear-gradient(#fcfcfc 0%, #d9d9d9 20%, #d6d6d6 100%),
 		linear-gradient(#dddddd 0%, #f6f6f6 50%);
 	-fx-background-radius: 8, 7, 6;
@@ -97,5 +98,5 @@
 }
 
 .unread {
-	-fx-color:red;
+	-fx-color: red;
 }

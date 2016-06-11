@@ -1,12 +1,15 @@
 .label {
-	-fx-alignment:; /*[ top-left | top-center | top-right | center-left | center | center-right bottom-left | bottom-center | bottom-right | baseline-left | baseline-center | baseline-right ]*/
+	-fx-alignment:;
+	/*[ top-left | top-center | top-right | center-left | center | center-right bottom-left | bottom-center | bottom-right | baseline-left | baseline-center | baseline-right ]*/
 	-fx-text-alignment:; /*[ left | center | right | justify ]*/
-	-fx-text-overrun:; /*[ center-ellipsis | center-word-ellipsis | clip | ellipsis | leading-ellipsis | leading-word-ellipsis | word-ellipsis ]*/
+	-fx-text-overrun:;
+	/*[ center-ellipsis | center-word-ellipsis | clip | ellipsis | leading-ellipsis | leading-word-ellipsis | word-ellipsis ]*/
 	-fx-wrap-text:; /*<boolean>*/
 	-fx-font:; /*<font>*/
 	-fx-underline:; /*<boolean>*/
 	-fx-graphic:; /*<uri>*/
-	-fx-content-display:; /*[ top | right | bottom | left | center | right | graphic-only | text-only ]*/
+	-fx-content-display:;
+	/*[ top | right | bottom | left | center | right | graphic-only | text-only ]*/
 	-fx-graphic-text-gap:; /*<size>*/
 	-fx-label-padding:; /*<size> | <size> <size> <size> <size>*/
 	-fx-text-fill:; /*<paint>*/
@@ -37,7 +40,7 @@
 
 .tab-pane {
 	-fx-tab-min-width:; /*<integer>*/
-	-fx-tab-max-width:;	/*<integer>*/
+	-fx-tab-max-width:; /*<integer>*/
 	-fx-tab-min-height:; /*<integer>*/
 	-fx-tab-max-height:; /*<integer>*/
 }
@@ -45,4 +48,3 @@
 .list-view {
 	-fx-orientation:; /*[ horizontal | vertical ]*/
 }
-

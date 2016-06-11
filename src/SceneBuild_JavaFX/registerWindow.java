@@ -6,8 +6,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 import QuickConnect.FunctionUser;
 import javafx.event.ActionEvent;
@@ -36,7 +35,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bRegister, bBack;
 	@FXML private TextField inUser, inMail;
 	@FXML private PasswordField inPass1, inPass2;
-	@FXML private DatePicker datePick;
+	@FXML private DatePicker datePicker;
 	@FXML private Hyperlink hyperlink;
 	@FXML private CheckBox checkBox;
 	private FunctionUser fu;
@@ -71,8 +70,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		bBack.setOnAction(this);
 		bBack.setCancelButton(true);
 		hyperlink.setOnAction(this);
-		checkBox.setId("cb1");
-		lTitle.getStyleClass().add("titles");
+		datePicker.setOnAction(this);
 	}
 
 	@Override
@@ -91,20 +89,15 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		// handle for bRegister
 		if(event.getSource() == bRegister) {
 			if(checkBox.isSelected()) {
-				String cuser = inUser.getText();
-				String cpass1 = inPass1.getText();
-				String cpass2 = inPass2.getText();
-				String cemail = inMail.getText();
-				
-				LocalDate pickedDate = datePick.getValue();
-				int myYear = pickedDate.getYear();
-
-				LocalDate currDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				int currYear = currDate.getYear();
-				
+				String cUser = inUser.getText();
+				String cPass1 = inPass1.getText();
+				String cPass2 = inPass2.getText();
+				String cEmail = inMail.getText();
+				LocalDate cDate = datePicker.getValue();
+				int age = (int) ChronoUnit.YEARS.between(cDate, LocalDate.now());
 				int check = 0;
 				try {
-					check = fu.f.checkRegister(cuser, cpass1, cpass2, cemail);
+					check = fu.f.checkRegister(cUser, cPass1, cPass2, cEmail, cDate);
 				} catch(SQLException e) {
 					e.printStackTrace();
 				}
@@ -126,12 +119,14 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				else if(check == 7)
 					msg = "Ugyldigt email";
 				else if(check == 8)
+					msg = "Du skal være over 10 år for at oprette en bruger";
+				else if(check == 9)
 					msg = "Brugeren eksisterer allerede i systemet";
 				else msg = "Du er registreret";
 
-				if(check == 9) {
+				if(check == 10) {
 					try {
-						boolean bool = fu.addUser(cuser, cpass1, cemail);
+						fu.addUser(cUser, cPass1, cEmail, age);
 					} catch(SQLException | NoSuchAlgorithmException | IOException e) {
 						e.printStackTrace();
 					}
@@ -144,7 +139,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 					Stage stage = new Stage();
 					EmailWindow eW = new EmailWindow();
 					try {
-						eW.start(stage, cemail, cuser);
+						eW.start(stage, cEmail, cUser);
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
@@ -171,7 +166,8 @@ public class registerWindow implements EventHandler<ActionEvent> {
 			URL url = null;
 			java.net.URI uri = null;
 			try {
-				url = new URL("http://vignette3.wikia.nocookie.net/simpsons/images/e/e9/Nelson_Ha-Ha.jpg/revision/latest?cb=20121205194057");
+				url = new URL(
+				        "http://vignette3.wikia.nocookie.net/simpsons/images/e/e9/Nelson_Ha-Ha.jpg/revision/latest?cb=20121205194057");
 				// http://quickconnect.tk/termsandconditions.html
 				uri = url.toURI();
 				java.awt.Desktop.getDesktop().browse(uri);

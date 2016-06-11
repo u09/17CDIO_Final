@@ -35,8 +35,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 	private EmailVal eVal = new EmailVal();
 
 	public void start(Stage stage, String email, String username) {
-		this.eMail=email;
-		this.userName=username;
+		this.eMail = email;
+		this.userName = username;
 		User user = new User();
 		Function f = new Function(user);
 		this.fu = new FunctionUser(f);
@@ -49,7 +49,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 		code = eVal.getCode();
-		eVal.sendMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+		eVal.sendMail("Samilesma", "Samilesma123", this.eMail, "QuickConnect",
+		        "Venligst indtast følgende kode ind\n" + code);
 
 	}
 
@@ -73,7 +74,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		if(event.getSource() == bSend) {
 			System.out.println("Send");
 			code = eVal.getCode();
-			eVal.sendMail("Samilesma","Samilesma123", this.eMail, "QuickConnect","Venligst indtast følgende kode ind\n"+ code);
+			eVal.sendMail("Samilesma", "Samilesma123", this.eMail, "QuickConnect",
+			        "Venligst indtast følgende kode ind\n" + code);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Ny kode sendt");
 			alert.setHeaderText(null);
@@ -82,10 +84,10 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		}
 		if(event.getSource() == bAccept) {
 			System.out.println("Accept");
-			if(inCode.getText().equals(code)){
+			if(inCode.getText().equals(code)) {
 				try {
 					fu.activateUserMail(this.userName);
-				} catch (SQLException e) {
+				} catch(SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -102,8 +104,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
-			}
-			else{
+			} else {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Koden er forkert");
 				alert.setHeaderText(null);

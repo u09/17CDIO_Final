@@ -4,23 +4,24 @@ import java.io.IOException;
 
 public class Threads implements Runnable {
 	private FunctionUser fu;
+
 	public Threads(FunctionUser fu) {
-		this.fu=fu;
+		this.fu = fu;
 	}
 
 	@Override
 	public void run() {
-		while(true){
+		while(true) {
 			try {
 				fu.f.timestampInc();
-			} catch (IOException e) {
+			} catch(IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			try {
-			    Thread.sleep(1000);
+				Thread.sleep(1000);
 			} catch(InterruptedException ex) {
-			    Thread.currentThread().interrupt();
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

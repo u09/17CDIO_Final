@@ -71,60 +71,60 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 		setButtonFunctions();
 		try {
 			blockedListView();
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-
 	@SuppressWarnings("unchecked")
-	private void blockedListView() throws SQLException{	
-		this.blocked=fu.getBlockedFriendsList();
+	private void blockedListView() throws SQLException {
+		this.blocked = fu.getBlockedFriendsList();
 		ObservableList<String> Items = FXCollections.observableArrayList(this.blocked);
 		blockedList.setItems(Items);
 		unBlock.setText("Fjern blokeringen");
-		blockedList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		blockedList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				int id = blockedList.getSelectionModel().getSelectedIndex();
-				if(id==-1) return;
+				if(id == -1)
+					return;
 				String name = (String) blockedList.getSelectionModel().getSelectedItem();
-				
+
 				unBlock.setOnAction(new EventHandler<ActionEvent>() {
-					
-				
-					@Override
-					public void handle(ActionEvent event){
-						
-						try {
-							fu.unBlockContact(fu.usernameToID(name));
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						Items.remove(blockedList.getSelectionModel().getSelectedItem());
-					}
-				});
+
+			        @Override
+			        public void handle(ActionEvent event) {
+
+				        try {
+					        fu.unBlockContact(fu.usernameToId(name));
+				        } catch(SQLException e) {
+					        // TODO Auto-generated catch block
+					        e.printStackTrace();
+				        }
+				        Items.remove(blockedList.getSelectionModel().getSelectedItem());
+			        }
+		        });
 			}
 		});
 
-		//		System.out.println(blockedList.getSelectionModel().getSelectedItem());
-		//		String name = (String) blockedList.getSelectionModel().getSelectedItem();
-		//		System.out.println(name);
-		//		int id = fu.usernameToID(name);
-		//		System.out.println(name);
-		//		unBlock.setText("Fjern blokeringen");
-		//		unBlock.setOnAction(new EventHandler<ActionEvent>() {
-		//			@Override
-		//			public void handle(ActionEvent event) {
-		//				try {
-		//					fu.unBlockContact(id);
-		//				} catch (SQLException e) {
-		//					// TODO Auto-generated catch block
-		//					e.printStackTrace();
-		//				}
-		//			}
-		//		});
+		// System.out.println(blockedList.getSelectionModel().getSelectedItem());
+		// String name = (String)
+		// blockedList.getSelectionModel().getSelectedItem();
+		// System.out.println(name);
+		// int id = fu.usernameToID(name);
+		// System.out.println(name);
+		// unBlock.setText("Fjern blokeringen");
+		// unBlock.setOnAction(new EventHandler<ActionEvent>() {
+		// @Override
+		// public void handle(ActionEvent event) {
+		// try {
+		// fu.unBlockContact(id);
+		// } catch (SQLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// });
 	}
 
 	private void setButtonFunctions() {
@@ -172,14 +172,16 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				Alert nicknameFail = new Alert(AlertType.ERROR);
 				nicknameFail.setTitle(myStage.getTitle());
 				nicknameFail.setHeaderText("Nickname blev ikke sat!");
-				nicknameFail.setContentText("Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
+				nicknameFail.setContentText(
+				        "Nicknamet skal være mellem 1 og 40 tegn,\nog må ikke kun indeholde mellemrum.");
 				nicknameFail.show();
 			}
 		}
 		if(event.getSource() == bSavePass) {
 			int changePassAnswer = 0;
 			try {
-				changePassAnswer = fu.changePassword(inCurrentPass.getText(), inNewPass.getText(), inNewPass2.getText());
+				changePassAnswer = fu.changePassword(inCurrentPass.getText(), inNewPass.getText(),
+				        inNewPass2.getText());
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
@@ -223,14 +225,16 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				deactivateSuccess.initOwner(myStage);
 				deactivateSuccess.setTitle("QuickConnect - Deaktivering");
 				deactivateSuccess.setHeaderText("Deaktivering lykkedes!");
-				deactivateSuccess.setContentText("Din bruger bliver nu deaktiveret, indtil du igen logger på.\nVil du gå til loginsiden eller lukke QuickConnect.");
+				deactivateSuccess.setContentText(
+				        "Din bruger bliver nu deaktiveret, indtil du igen logger på.\nVil du gå til loginsiden eller lukke QuickConnect.");
 
 				Optional<ButtonType> result = deactivateSuccess.showAndWait();
 
 				if(result.get() == bLogW) {
-					th.interrupt(); // Threaden stopper ikke når denne kodes køres, resten virker
+					th.interrupt(); // Threaden stopper ikke når denne kodes
+					                // køres, resten virker
 					try {
-						fu.setOfflineUser();
+						fu.setUserOffline();
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
@@ -244,14 +248,14 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
-				}
-				else {
+				} else {
 					try {
-						fu.setOfflineUser();
+						fu.setUserOffline();
 					} catch(SQLException e1) {
 						e1.printStackTrace();
 					}
-					System.exit(0);;
+					System.exit(0);
+					;
 				}
 			} else if(deactivateUserAnswer == 1) {
 				Alert deactivateFail = new Alert(AlertType.ERROR);

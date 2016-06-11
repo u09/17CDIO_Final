@@ -10,16 +10,18 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Function {
-	private Connector con;
+	private Connector connector;
 	private User user;
-	private long timestamp=0;
+	private long timestamp = 0;
 
 	public Function(User user) {
 		this.user = user;
-		con = mysql();
+		connector = mysql();
 	}
 
 	private Connector mysql() {
@@ -44,60 +46,32 @@ public class Function {
 		}
 		return null;
 	}
-
-	public int[] convertIntegers(ArrayList<Integer> integers) {
-		int[] ret = new int[integers.size()];
-		for(int i = 0; i < ret.length; i++) {
-			ret[i] = integers.get(i).intValue();
-		}
-		return ret;
-	}
-
-	public long timestamp() throws IOException {
-		if(timestamp==0)
-		{
-			URL url = new URL("http://s8dev.org/timestamp.php");
-			URLConnection con = url.openConnection();
-			InputStream in = con.getInputStream();
-			String encoding = con.getContentEncoding();
-			encoding = encoding == null ? "UTF-8" : encoding;
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			byte[] buf = new byte[8192];
-			int len = 0;
-			while ((len = in.read(buf)) != -1) {
-				baos.write(buf, 0, len);
-			}
-			String body = new String(baos.toByteArray(), encoding);
-			timestamp=Long.parseLong(body);
-			System.out.println(timestamp);
-			return timestamp;
-		}
-		return timestamp;
-	}
-
-	public String md5(String str) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(str.getBytes());
-		byte[] digest = md.digest();
-		StringBuffer sb = new StringBuffer();
-		for(byte b : digest) {
-			sb.append(String.format("%02x", b & 0xff));
-		}
-		return sb.toString();
-	}
-
-	public int checkUsername(String user) {
+	/**
+	 * Checks whether or not the username is valid
+	 * @param username
+	 * @return 0 : valid <br>
+	 * 1 : too short or too long <br>
+	 * 2 : found invalid entries
+	 */
+	public int checkUsername(String username) {
 		char c;
-		if(user.length() < 4 || user.length() > 24)
+		if(username.length() < 4 || username.length() > 24)
 			return 1;
-		for(int i = 0; i < user.length(); i++) {
-			c = user.charAt(i);
+		for(int i = 0; i < username.length(); i++) {
+			c = username.charAt(i);
 			if(c != 45 && c != 95 && (c < 48 || c > 57) && (c < 65 || c > 90) && (c < 97 || c > 122))
 				return 2;
 		}
 		return 0;
 	}
-
+	/**
+	 * Checks whether or not the password is valid
+	 * @param pass
+	 * @return 0 : valid <br>
+	 * 1 : too short or too long <br>
+	 * 2 : doesn't contain numbers, uppercase letters or lowercase letters <br>
+	 * 3 : found invalid entries
+	 */
 	public int checkPassword(String pass) {
 		String num = ".*[0-9].*";
 		String bl = ".*[A-Z].*";
@@ -114,16 +88,32 @@ public class Function {
 		}
 		return 0;
 	}
-
+	/**
+	 * Checks whether or not the email has the correct structure
+	 * @param email
+	 * @return true if it has and false if it hasn't
+	 */
 	public boolean checkEmail(String email) {
 		boolean b = email
-				.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+		        .matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
 		if(b == false)
 			return false;
 		return true;
 	}
-
-	public int checkRegister(String user, String pass1, String pass2, String email) throws SQLException {
+	/**
+	 * Determines whether or not the user is approved to be registered by <br>
+	 * checking the username, password, email and also the age and <br>
+	 * whether the user already exists
+	 * @param user
+	 * @param pass1
+	 * @param pass2
+	 * @param email
+	 * @param date
+	 * @return 1-9 : dependent upon the cause of the disapproval <br>
+	 * 10 : approved for registration
+	 * @throws SQLException
+	 */
+	public int checkRegister(String user, String pass1, String pass2, String email, LocalDate date) throws SQLException {
 		boolean bool;
 		int in;
 		in = checkUsername(user);
@@ -142,12 +132,22 @@ public class Function {
 			return 6;
 		if(!checkEmail(email))
 			return 7;
-		bool = con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
-		if(bool)
+		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 10) 
 			return 8;
-		else return 9;
+		bool = getConnector().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
+		if(bool)
+			return 9;
+		else return 10;
 	}
-
+	/**
+	 * Updates all fields in the user object from the User class
+	 * @param id
+	 * @param username
+	 * @param email
+	 * @param nickname
+	 * @param age
+	 * @param user_created
+	 */
 	public void updateUser(int id, String username, String email, String nickname, int age, int user_created) {
 		user.setUserID(id);
 		user.setUsername(username);
@@ -156,18 +156,39 @@ public class Function {
 		user.setAge(age);
 		user.setCreated(user_created);
 	}
-
-	public Connector con() {
-		return con;
+	/**
+	 * Hvad gør denne her metode leow?
+	 * @param str
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 */
+	public String md5(String str) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(str.getBytes());
+		byte[] digest = md.digest();
+		StringBuffer sb = new StringBuffer();
+		for(byte b : digest) {
+			sb.append(String.format("%02x", b & 0xff));
+		}
+		return sb.toString();
 	}
-
-	public User user() {
-		return this.user;
+	
+	public void printArrayList(ArrayList<?> msg) {
+		if(msg != null) {
+			if(msg.size() != 0)
+				System.out.print("[\n\t");
+			for(int i = 1; i <= msg.size(); i++) {
+				System.out.print(", " + msg.get(i - 1));
+			}
+			if(msg.size() != 0)
+				System.out.println("\n]");
+		}
 	}
-
+	
 	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
 		if(msg != null) {
-			if(msg.size()!=0) System.out.println("[");
+			if(msg.size() != 0)
+				System.out.println("[");
 			for(int i = 1; i <= msg.size(); i++) {
 				System.out.print("\t[\n\t\t{");
 				for(int t = 1; t <= msg.get(i - 1).size(); t++) {
@@ -177,41 +198,91 @@ public class Function {
 				}
 				System.out.print("}\n\t]\n");
 			}
-			if(msg.size()!=0) System.out.println("]");
+			if(msg.size() != 0)
+				System.out.println("]");
 		}
 	}
-
-	public void printArrayList(ArrayList<?> msg) {
-		if(msg != null) {
-			if(msg.size()!=0) System.out.print("[\n\t");
-			for(int i = 1; i <= msg.size(); i++) {
-				System.out.print(", " + msg.get(i-1));
+	/**
+	 * Returns the current timestamp in unix time
+	 * @return timestamp in type long
+	 * @throws IOException
+	 */
+	public long timestamp() throws IOException {
+		if(timestamp == 0) {
+			URL url = new URL("http://s8dev.org/timestamp.php");
+			URLConnection con = url.openConnection();
+			InputStream in = con.getInputStream();
+			String encoding = con.getContentEncoding();
+			encoding = encoding == null ? "UTF-8" : encoding;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buf = new byte[8192];
+			int len = 0;
+			while((len = in.read(buf)) != -1) {
+				baos.write(buf, 0, len);
 			}
-			if(msg.size()!=0) System.out.println("\n]");
+			String body = new String(baos.toByteArray(), encoding);
+			timestamp = Long.parseLong(body);
+			System.out.println(timestamp);
+			return timestamp;
 		}
+		return timestamp;
 	}
-
+	/**
+	 * Method for increasing the timestamp by 1
+	 * @throws IOException
+	 */
 	public void timestampInc() throws IOException {
-		if(timestamp!=0) timestamp++;
+		if(timestamp != 0)
+			timestamp++;
 		else timestamp();
 	}
-
-	public boolean isNumeric(String str) {
-		try {
-			int nr = Integer.parseInt(str);
-		} catch (NumberFormatException nfe) {
-			return false;
-		}
-		return true;
-	}
-	
-	public String implode(String[] arr, String seperator){
+	/**
+	 * Hvad gør denne her metode leow?
+	 * @param arr
+	 * @param seperator
+	 * @return
+	 */
+	public String implode(String[] arr, String seperator) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < arr.length; i++) {
-		    sb.append(arr[i]);
-		    if (i != arr.length - 1) sb.append(seperator);
+		for(int i = 0; i < arr.length; i++) {
+			sb.append(arr[i]);
+			if(i != arr.length - 1)
+				sb.append(seperator);
 		}
 		String joined = sb.toString();
 		return joined;
 	}
-} 
+	/**
+	 * Converts an arraylist of integers to a int[]
+	 * @param integers
+	 * @return int[]
+	 */
+	public int[] convertIntegers(ArrayList<Integer> integers) {
+		int[] ret = new int[integers.size()];
+		for(int i = 0; i < ret.length; i++) {
+			ret[i] = integers.get(i).intValue();
+		}
+		return ret;
+	}
+	/**
+	 * Checks whether of not a string only contains numbers
+	 * @param string
+	 * @return true if it does and false if it doesn't
+	 */
+	public boolean isNumeric(String string) {
+		try {
+			int nr = Integer.parseInt(string);
+		} catch(NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+
+	public Connector getConnector() {
+		return connector;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+}

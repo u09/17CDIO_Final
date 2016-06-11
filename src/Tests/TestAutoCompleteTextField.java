@@ -8,11 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TestAutoCompleteTextField extends Application {
-	
+
 	private Stage myStage;
 	private Scene myScene;
 	private VBox test;
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.myStage = stage;
@@ -28,9 +28,9 @@ public class TestAutoCompleteTextField extends Application {
 	}
 
 	public static void main(String[] args) {
-//		WriteToFile.write();
+		// WriteToFile.write();
 		ReadFromFile.read();
-//		Application.launch(TestAutoCompleteTextField.class, args);
+		// Application.launch(TestAutoCompleteTextField.class, args);
 	}
-	
+
 }

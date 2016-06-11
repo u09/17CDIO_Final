@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -26,10 +27,11 @@
       <Label fx:id="lPass" text="Indtast dit password:" />
       <PasswordField fx:id="inPass" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
       <Button fx:id="bLogin" mnemonicParsing="false" text="Login" />
-      <Hyperlink fx:id="bClickHere" alignment="CENTER" prefHeight="59.0" prefWidth="303.0" text="Tryk her">
-         <graphic>
-            <Label fx:id="lNoUser" prefHeight="17.0" prefWidth="168.0" text="Har du ikke nogen bruger?" />
-         </graphic>
-      </Hyperlink>
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="292.0">
+         <children>
+            <Label fx:id="lNoUser" prefHeight="17.0" prefWidth="132.0" text="Har du ikke en bruger?" />
+            <Hyperlink fx:id="bClickHere" alignment="CENTER" prefHeight="4.0" prefWidth="66.0" text="Tryk her!" />
+         </children>
+      </HBox>
    </children>
 </VBox>

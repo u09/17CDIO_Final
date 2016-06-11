@@ -15,7 +15,6 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-
 /**
  * This class is a TextField which implements an "autocomplete" functionality,
  * based on a supplied list of entries.

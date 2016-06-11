@@ -155,15 +155,15 @@
     </display>  
   </class>  
   <association id="18">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="19" name="eVal">        
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="19" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="20" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="21">    
@@ -171,7 +171,7 @@
     <end type="TARGET" refId="10"/>  
   </generalization>  
   <association id="22">    
-    <end type="SOURCE" refId="9" navigable="false">      
+    <end type="SOURCE" refId="11" navigable="false">      
       <attribute id="23" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
@@ -183,7 +183,7 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="25">    
-    <end type="SOURCE" refId="13" navigable="false">      
+    <end type="SOURCE" refId="15" navigable="false">      
       <attribute id="26" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
@@ -195,55 +195,55 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="28">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="29" name="fu">        
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="29" name="user">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="30" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="31">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="32" name="user">        
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="32" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="33" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="35" name="fu">        
+  <generalization id="34">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="35">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="36" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1">        
+      <multiplicity id="37" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="37">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
   <association id="38">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="39" name="fu">        
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="39" name="eVal">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="40" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="41">    
@@ -259,7 +259,7 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="44">    
-    <end type="SOURCE" refId="16" navigable="false">      
+    <end type="SOURCE" refId="10" navigable="false">      
       <attribute id="45" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
@@ -271,35 +271,23 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="47">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="48" name="con">        
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="48" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="49" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="50">    
-    <end type="SOURCE" refId="11" navigable="false">      
+    <end type="SOURCE" refId="17" navigable="false">      
       <attribute id="51" name="fu">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="52" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="54" name="fu">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    

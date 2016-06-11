@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 public class loginWindow extends Application implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
-	private Scene myScene;
+	private Scene myScene, myScene2;
 	private VBox LoginFrame;
 	@FXML private Label lTitle, lUser, lPass, lNoUser, lRegister;
 	@FXML private Button bLogin;
@@ -36,7 +36,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 	@FXML private TextField inUser;
 	@FXML private PasswordField inPass;
 	private FunctionUser fu;
-	
+
 	@Override
 	public void start(Stage stage) {
 		User user = new User();
@@ -47,7 +47,7 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		this.myStage.setResizable(false);
 		showLoginFrame();
 		this.myScene = new Scene(LoginFrame);
-		
+
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}
@@ -79,7 +79,8 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			String passIn = inPass.getText();
 			boolean bool = false;
 			try {
-				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
+				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+				        userIn, fu.f.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -89,9 +90,11 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				User user = null;
 				try {
 					ResultSet sql = fu.con().select(
-					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?", userIn, fu.f.md5(passIn));
+					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+					        userIn, fu.f.md5(passIn));
 					sql.next();
-					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"), sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
+					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"),
+					        sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
 				} catch(NoSuchAlgorithmException | SQLException e1) {
 					e1.printStackTrace();
 				}
