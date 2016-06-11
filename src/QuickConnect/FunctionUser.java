@@ -188,9 +188,9 @@ public class FunctionUser {
 		con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id=" + user().getUserID());
 	}
 
-	public void throwOut(int groupID) throws SQLException {
+	public void throwOut(int groupID, int ID) throws SQLException {
 		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) {
-			con().update("DELETE FROM group_members WHERE group_id=" + groupID + "AND user_id=" + user().getUserID());
+			con().update("DELETE FROM group_members WHERE group_id=" + groupID + "AND user_id="+ID+"AND owner_id="+user().getUserID());
 		}
 	}
 
