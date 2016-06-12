@@ -1,4 +1,4 @@
-package Tests;
+package SceneBuild_JavaFX;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,7 +18,10 @@ import com.restfb.types.FacebookType;
 import com.restfb.types.User;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import com.sun.net.httpserver.Authenticator.Result;
+import com.sun.org.apache.bcel.internal.generic.ObjectType;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
+import QuickConnect.FunctionUser;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,7 +35,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class FacebookAPI extends Application {
+public class FacebookAPI {
 
 	/*
 	 * Facebooks guide:
@@ -42,26 +45,24 @@ public class FacebookAPI extends Application {
 
 	private Stage myStage;
 	private Scene myScene;
-	AnchorPane facebookFrame;
+	WebView facebookFrame;
 	private static WebEngine webEngine;
 	@FXML private WebView browser;
 
-	public static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
-
-	public static final String MY_ACCESS_TOKEN = "EAACEdEose0cBANPkygHiLr2z41ZBfWWnrG3JEAbQ6mbJZAPGGzgZCQfZAjOyj8vLXZAFgHe9FL0U8G2YZC8ed5FVZAEEXtvzEVdoToUP9KfmaGbXuBedL5LzUUX9yQcsDZACmd70a86AT8aFcz70p91qM0jVb37YiVOL9WQeFl7I9QZDZD";
-
+	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
+	private static final String MY_ACCESS_TOKEN = "EAACEdEose0cBANPkygHiLr2z41ZBfWWnrG3JEAbQ6mbJZAPGGzgZCQfZAjOyj8vLXZAFgHe9FL0U8G2YZC8ed5FVZAEEXtvzEVdoToUP9KfmaGbXuBedL5LzUUX9yQcsDZACmd70a86AT8aFcz70p91qM0jVb37YiVOL9WQeFl7I9QZDZD";
+	private static String USER_ACCESS_TOKEN;
 	// Facebook App
-	public static final String MY_APP_ID = "153262288412700";
+	private static final String MY_APP_ID = "153262288412700";
 	public static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
 
-	@Override
-	public void start(Stage stage) {
+	public void start(Stage stage, FunctionUser fu) {
 		this.myStage = stage;
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
 		loader.setController(this);
 		try {
-			facebookFrame = (AnchorPane) loader.load();
+			facebookFrame = (WebView) loader.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -73,52 +74,39 @@ public class FacebookAPI extends Application {
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(ObservableValue ov, State oldState, State newState) {
-
 				if(newState == Worker.State.SUCCEEDED) {
-					myStage.setTitle(webEngine.getLocation());
+					String url = webEngine.getLocation();
+					myStage.setTitle(url);
+					if(url.contains("#access_token")) {
+						String accessUrl = webEngine.getLocation();
+						String string = accessUrl.substring(accessUrl.indexOf("#")+1);
+						getUserInfo(string);
+					}
 				}
-
 			}
 		});
-
-		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id="+MY_APP_ID+ "&display=popup"
-		        + "&response_type=token" + "&redirect_uri="+REDIRECT_URI);
-		// webEngine.load("http://www.facebook.com");
 		
+		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
+				+ "&response_type=token" + "&redirect_uri=" + REDIRECT_URI);
+
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-
+		
 	}
 
-	/*
-	 * "<html> <script> window.fbAsyncInit = function() { FB.init({ appId :
-	 * '153262288412700', xfbml : true, version : 'v2.6' }); }; (function(d, s,
-	 * id){ var js, fjs = d.getElementsByTagName(s)[0]; if
-	 * (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id;
-	 * js.src = "//connect.facebook.net/en_US/sdk.js";
-	 * fjs.parentNode.insertBefore(js, fjs); }(document, 'script',
-	 * 'facebook-jssdk')); </script> </html>"
-	 */
-	public static void main(String[] args) {
-		
-		launch(args);
-		
-		// authUser(MY_ACCESS_TOKEN);
-	}
-
-	public static void authUser(String accessToken) {
-
-		FacebookClient facebookClient = new DefaultFacebookClient(accessToken);
+	private void getUserInfo(String token) {
+		AccessToken tokenInfo = new AccessToken().fromQueryString(token);
+		System.out.println(tokenInfo.getAccessToken());
+		DefaultFacebookClient facebookClient = new DefaultFacebookClient(tokenInfo.getAccessToken());
+//		AccessToken haa = facebookClient.obtainUserAccessToken(MY_APP_ID, MY_APP_SECRET, REDIRECT_URI, token);
 		User user = facebookClient.fetchObject("me", User.class);
+		String username = user.getName();
+		String email = user.getEmail();
+		String birthday = user.getBirthday();
+		System.out.println("Navn = " + email);
+		System.out.println("Email = " + email);
+		System.out.println("Fødselsdag = " + birthday);
 		
-		System.out.println("User=" + user);
-		System.out.println("UserName= " + user.getName());
-		System.out.println("Birthday= " + user.getBirthday());
-		System.out.println("Email= " + user.getEmail());
-
-		// AccessToken acctoken =
-		// facebookClient.obtainUserAccessToken(MY_APP_ID, MY_APP_SECRET,
-		// REDIRECT_URI, String verificationCode);
 	}
 
 }

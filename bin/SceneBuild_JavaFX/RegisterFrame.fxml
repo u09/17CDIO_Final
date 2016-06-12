@@ -11,19 +11,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="322.0" spacing="15.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="322.0" spacing="12.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="lTitle" text="Quick Connect registrering" />
+      <Label fx:id="lTitle" style="-fx-font-size: 22; -fx-font-weight: bold;" text="Quick Connect registrering" />
       <Label fx:id="lUser" text="Indtast ønsket brugernavn:" />
-      <TextField fx:id="inUser" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Brugernavn" />
+      <TextField fx:id="inUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="24" prefHeight="28.0" prefWidth="150.0" promptText="Brugernavn" />
       <Label fx:id="lPass" text="Indtast dit password:" />
-      <PasswordField fx:id="inPass1" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
+      <PasswordField fx:id="inPass1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="24" prefHeight="28.0" prefWidth="150.0" promptText="Password" />
       <Label fx:id="lNewPass" text="Gentag dit password:" />
-      <PasswordField fx:id="inPass2" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="Password" />
+      <PasswordField fx:id="inPass2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="24" prefHeight="28.0" prefWidth="150.0" promptText="Password" />
       <Label fx:id="lMail" text="Indtast din E-mail:" />
-      <TextField fx:id="inMail" maxWidth="150.0" minWidth="150.0" prefColumnCount="24" prefWidth="150.0" promptText="E-mail" />
+      <TextField fx:id="inMail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="24" prefHeight="28.0" prefWidth="150.0" promptText="E-mail" />
       <Label text="Vælg din fødselsdagsdato herunder:" />
-      <DatePicker fx:id="datePicker" />
+      <DatePicker fx:id="datePicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="150.0" />
       <VBox alignment="CENTER" prefHeight="35.0" prefWidth="322.0">
          <children>
             <Label prefHeight="16.0" prefWidth="237.0" text="Ved at klikke på Registrer accepterer jeg" textAlignment="CENTER" wrapText="true" />
@@ -40,7 +40,9 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="bRegister" mnemonicParsing="false" text="Registrer" />
+      <Button fx:id="bRegister" mnemonicParsing="false" text="Registrer med QuickConnect" />
+      <Label fx:id="lMail1" text="Eller" />
+      <Button fx:id="bFacebook" mnemonicParsing="false" text="Registrer med Facebook" />
       <Button fx:id="bBack" mnemonicParsing="false" text="Tilbage" />
    </children>
 </VBox>

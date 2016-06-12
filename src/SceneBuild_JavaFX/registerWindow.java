@@ -32,7 +32,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 	private Scene myScene;
 	private VBox RegisterFrame;
 	@FXML private Label lTitle, lUser, lPass, lNewPass, lMail, lRegister;
-	@FXML private Button bRegister, bBack;
+	@FXML private Button bRegister, bBack, bFacebook;
 	@FXML private TextField inUser, inMail;
 	@FXML private PasswordField inPass1, inPass2;
 	@FXML private DatePicker datePicker;
@@ -69,8 +69,9 @@ public class registerWindow implements EventHandler<ActionEvent> {
 		bRegister.setDefaultButton(true);
 		bBack.setOnAction(this);
 		bBack.setCancelButton(true);
-		hyperlink.setOnAction(this);
 		datePicker.setOnAction(this);
+		hyperlink.setOnAction(this);
+		bFacebook.setOnAction(this);
 	}
 
 	@Override
@@ -174,6 +175,17 @@ public class registerWindow implements EventHandler<ActionEvent> {
 			} catch(URISyntaxException | IOException e) {
 				e.printStackTrace();
 			}
+		}
+		if(event.getSource() == bFacebook) {
+			myStage.close();
+			Stage stage = new Stage();
+			FacebookAPI fbAPI = new FacebookAPI();
+			try {
+				fbAPI.start(stage, fu);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 	}
 }

@@ -59,6 +59,14 @@
 	-fx-font-family: OpenSansEmoji;
 }
 
+#bRegister {
+	-fx-graphic: url(../Icons/qc-32.png);
+}
+
+#bFacebook {
+	-fx-graphic: url(../Icons/fb-32.png);
+}
+
 #bSearch {
 	-fx-graphic: url(../Icons/search-icon.png);
 }
