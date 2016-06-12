@@ -281,6 +281,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
 				try {
 					msgs = fu.getMessages(activeUser, loginTime);
+					msgs = fu.getAllMessages(activeUser);
 				} catch(SQLException e1) {
 					e1.printStackTrace();
 				}

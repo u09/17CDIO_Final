@@ -543,4 +543,20 @@ public class FunctionUser {
 	public User user() {
 		return f.getUser();
 	}
+
+	public ArrayList<ArrayList<String>> getAllMessages(int id) throws SQLException {
+		ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
+		messages.add(new ArrayList<String>());
+		messages.add(new ArrayList<String>());
+		ResultSet rs = con().select("SELECT message,user_ID FROM messages WHERE ((receiver_id='" + user().getUserID()
+		        + "' AND user_ID=" + id + ") OR" + " (receiver_id='" + id + "' AND user_ID=" + user().getUserID()
+		        + ")) AND message_deleted=0 ORDER BY message_sent ASC");
+		while(rs.next()) {
+			messages.get(0).add(rs.getString("message"));
+			messages.get(1).add(idToNickname(rs.getInt("user_ID")));
+		}
+		return messages;
+	}
+
+	
 }
