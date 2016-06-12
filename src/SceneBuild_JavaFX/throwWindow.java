@@ -2,10 +2,13 @@ package SceneBuild_JavaFX;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import QuickConnect.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -21,7 +25,7 @@ public class throwWindow implements EventHandler<ActionEvent> {
 	private Stage myStage;
 	private Scene myScene; 
 	private AnchorPane ThrowFrame;
-	@FXML private ListView GroupMembers; 
+	@FXML private ListView<Integer> groupMembers;
 	@FXML private Button bThrow;
 	private int activeUser;
 	private FunctionUser fu;
@@ -52,7 +56,6 @@ public class throwWindow implements EventHandler<ActionEvent> {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
 		
 		
 		bThrow.setOnAction(this);

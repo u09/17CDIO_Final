@@ -319,14 +319,14 @@ public class FunctionUser {
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 	
-	public ArrayList<Integer> getAllMembersID(int groupID) throws SQLException{
-		ArrayList<Integer> allMembersID = new ArrayList<>();
+	public int[] getAllMembersID(int groupID) throws SQLException{
+		ArrayList<Integer> allMembersID = new ArrayList<Integer>();
 		ResultSet rs = con().select("SELECT user_id FROM group_members WHERE group_id="+groupID);
 		while(rs.next()){
 			allMembersID.add(rs.getInt("user_id"));
 		}
 		f.printArrayList(allMembersID);
-		return allMembersID;
+		return f.convertIntegers(allMembersID);
 	}
 
 	public int[] getOnlineUsersId() throws SQLException, IOException {

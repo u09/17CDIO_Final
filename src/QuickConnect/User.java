@@ -1,7 +1,7 @@
 package QuickConnect;
 
 public class User {
-	private int UserID;
+	private int UserID, GroupID;
 	private String Username;
 	private String Email;
 	private String Nickname;
@@ -11,7 +11,7 @@ public class User {
 	public User() {
 
 	}
-
+	
 	public int getUserID() {
 		return UserID;
 	}
