@@ -47,6 +47,7 @@ public class FacebookAPI {
 	private Scene myScene;
 	WebView facebookFrame;
 	private static WebEngine webEngine;
+	private FunctionUser fu;
 	@FXML private WebView browser;
 
 	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
@@ -57,6 +58,7 @@ public class FacebookAPI {
 	public static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
 
 	public void start(Stage stage, FunctionUser fu) {
+		this.fu = fu;
 		this.myStage = stage;
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
@@ -103,7 +105,7 @@ public class FacebookAPI {
 		String username = user.getName();
 		String email = user.getEmail();
 		String birthday = user.getBirthday();
-		System.out.println("Navn = " + email);
+		System.out.println("Navn = " + username);
 		System.out.println("Email = " + email);
 		System.out.println("Fødselsdag = " + birthday);
 		
