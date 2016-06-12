@@ -52,7 +52,7 @@
 
 @font-face {
 	font-family: 'OpenSansEmoji';
-	src: url(../Emojis/OpenSansEmoji.ttf);
+	src: url(../Emojis/OpenSansEmoji.otf);
 }
 
 .text-field {

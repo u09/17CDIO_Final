@@ -94,7 +94,6 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 
 			        @Override
 			        public void handle(ActionEvent event) {
-
 				        try {
 					        fu.unBlockContact(fu.usernameToId(name));
 				        } catch(SQLException e) {

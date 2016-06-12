@@ -73,6 +73,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		this.fu = fu;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
+		this.myStage.setMinHeight(450);
+		this.myStage.setMinWidth(425);
 		this.loginTime = fu.f.timestamp();
 		fu.activateUser();
 		fu.setUserOnline();
@@ -166,7 +168,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		            // String har gennem HTML string.
 		            // String msg1 = "<font
 		            // color="+hexColor+">"+String.valueOf(msg)+"</font>";
-
+					    
 					// FunctionUser.sendMessage(msg, user.UserID,
 		            // titledPane.getText());
 					try {
@@ -199,6 +201,13 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					String s = tf.getText().substring(0, maxLength);
 					tf.appendText(s);
 				}
+//				final HashMap<String, String> smileys = new HashMap<String, String>();
+//				String msg = tf.getText();
+//				smileys.put("&:\\)", "<img src='file: Emoji Smiley-01.png'/>");
+//				smileys.put("&:O", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-02.png'/>");
+//				smileys.put("&:\\(", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-03.png'/>");
+//				    for(Entry<String, String> smiley : smileys.entrySet())
+//				        msg = msg.replaceAll(smiley.getKey(), smiley.getValue());
 			}
 		});
 	}
@@ -342,8 +351,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			Optional<ButtonType> result = confirmSignOut.showAndWait();
 
 			if(result.get() == bSignOut) {
-				th.interrupt();// Threaden stopper ikke når denne kodes køres,
-				               // resten virker
 				try {
 					fu.setUserOffline();
 				} catch(SQLException e1) {
@@ -399,7 +406,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			try {
 				fu.deleteFriend(activeUser);
 			} catch(SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -408,7 +414,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			try {
 				fu.blockContact(activeUser);
 			} catch(SQLException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
