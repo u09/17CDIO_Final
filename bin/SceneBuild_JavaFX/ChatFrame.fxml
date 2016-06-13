@@ -92,7 +92,7 @@
                                                               <content>
                                                                   <AnchorPane>
                                                                      <children>
-                                                                        <ListView fx:id="friendsOnlineList" maxWidth="-Infinity" prefHeight="239.0" prefWidth="204.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                        <ListView fx:id="friendsOnlineList" maxWidth="-Infinity" prefHeight="239.0" prefWidth="204.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
                                                                            <contextMenu>
                                                                               <ContextMenu>
                                                                                 <items>
@@ -115,7 +115,7 @@
                                                               <content>
                                                                   <AnchorPane>
                                                                      <children>
-                                                                        <ListView fx:id="friendsOfflineList" prefHeight="233.0" prefWidth="204.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                        <ListView fx:id="friendsOfflineList" prefHeight="233.0" prefWidth="204.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-12.0" AnchorPane.rightAnchor="-12.0" AnchorPane.topAnchor="-12.0">
                                                                            <contextMenu>
                                                                               <ContextMenu>
                                                                                  <items>
