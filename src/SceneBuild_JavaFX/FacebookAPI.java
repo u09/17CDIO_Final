@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 import javax.mail.Session;
 
+import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.FacebookClient.AccessToken;
@@ -21,6 +22,7 @@ import com.sun.net.httpserver.Authenticator.Result;
 import com.sun.org.apache.bcel.internal.generic.ObjectType;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
+import QuickConnect.Function;
 import QuickConnect.FunctionUser;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -51,7 +53,7 @@ public class FacebookAPI {
 	@FXML private WebView browser;
 
 	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
-	private static final String MY_ACCESS_TOKEN = "EAACEdEose0cBANPkygHiLr2z41ZBfWWnrG3JEAbQ6mbJZAPGGzgZCQfZAjOyj8vLXZAFgHe9FL0U8G2YZC8ed5FVZAEEXtvzEVdoToUP9KfmaGbXuBedL5LzUUX9yQcsDZACmd70a86AT8aFcz70p91qM0jVb37YiVOL9WQeFl7I9QZDZD";
+	private static final String MY_ACCESS_TOKEN = "EAACEdEose0cBAEvePZCkmOZBvExlDd2xNdG6S0doPU1PPg3X7ZBgbK9CpYFBh7DVxS9vjtJcsO9OMls1YOcdaHrwRvzX0IEikUQcLSKvjx1qG7TqijzAVjtAyEiHu8wayNZAUFJ3RF4YTof8wPuRXMS2UXhDwxTiIWsMSZCdZAFAZDZD";
 	private static String USER_ACCESS_TOKEN;
 	// Facebook App
 	private static final String MY_APP_ID = "153262288412700";
@@ -81,6 +83,7 @@ public class FacebookAPI {
 					myStage.setTitle(url);
 					if(url.contains("#access_token")) {
 						String accessUrl = webEngine.getLocation();
+						System.out.println(accessUrl);
 						String string = accessUrl.substring(accessUrl.indexOf("#")+1);
 						getUserInfo(string);
 					}
@@ -88,8 +91,12 @@ public class FacebookAPI {
 			}
 		});
 		
-		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
-				+ "&response_type=token" + "&redirect_uri=" + REDIRECT_URI);
+		webEngine.load("https://www.facebook.com/dialog/oauth?"
+				+ "client_id=" + MY_APP_ID
+				+ "&display=popup"
+				+ "&response_type=token"
+				+ "&redirect_uri=" + REDIRECT_URI
+				+ "&scope=email"); //user_birthday
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
@@ -97,10 +104,12 @@ public class FacebookAPI {
 	}
 
 	private void getUserInfo(String token) {
+		
 		AccessToken tokenInfo = new AccessToken().fromQueryString(token);
 		System.out.println(tokenInfo.getAccessToken());
-		DefaultFacebookClient facebookClient = new DefaultFacebookClient(tokenInfo.getAccessToken());
-//		AccessToken haa = facebookClient.obtainUserAccessToken(MY_APP_ID, MY_APP_SECRET, REDIRECT_URI, token);
+		System.out.println(tokenInfo.getExpires());
+//		System.out.println(MY_ACCESS_TOKEN);
+		FacebookClient facebookClient = new DefaultFacebookClient(tokenInfo.getAccessToken());
 		User user = facebookClient.fetchObject("me", User.class);
 		String username = user.getName();
 		String email = user.getEmail();
