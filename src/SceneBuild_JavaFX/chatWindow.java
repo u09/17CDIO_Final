@@ -193,9 +193,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 		});
 		inMessage.setId("messageInput");
-		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
-		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
-		inMessage.setText(emojiAsString);
 	}
 
 	public static void addTextLimiter(final TextField tf, final int maxLength) {

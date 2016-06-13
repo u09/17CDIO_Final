@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="322.0" spacing="12.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="322.0" spacing="12.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="lTitle" style="-fx-font-size: 22; -fx-font-weight: bold;" text="Quick Connect registrering" />
       <Label fx:id="lUser" text="Indtast ønsket brugernavn:" />
@@ -26,11 +26,11 @@
       <DatePicker fx:id="datePicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="150.0" />
       <VBox alignment="CENTER" prefHeight="35.0" prefWidth="322.0">
          <children>
-            <Label prefHeight="16.0" prefWidth="237.0" text="Ved at klikke på Registrer accepterer jeg" textAlignment="CENTER" wrapText="true" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="257.0" text="Ved at klikke på Registrer accepterer jeg" textAlignment="CENTER" wrapText="true" />
             <HBox alignment="CENTER">
                <children>
-                  <Label prefHeight="16.0" prefWidth="89.0" text="QuickConnects" />
-                  <Hyperlink fx:id="hyperlink" prefHeight="24.0" prefWidth="128.0" text="vilkår og betingelser" />
+                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="103.0" text="QuickConnects" />
+                  <Hyperlink fx:id="hyperlink" prefHeight="9.0" prefWidth="139.0" text="vilkår og betingelser" textAlignment="CENTER" />
                   <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="0.0">
                      <effect>
                         <InnerShadow color="#a1d7f8" />

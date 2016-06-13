@@ -65,11 +65,6 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 		bLogin.setOnAction(this);
 		bLogin.setDefaultButton(true);
 		hClickHere.setOnAction(this);
-		lTitle.getStyleClass().add("titles");
-		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
-		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
-		inUser.setText(emojiAsString);
-		// inUser.appendText("<img src='file:/Emoji Smiley-02.png'/>");
 	}
 
 	@Override
