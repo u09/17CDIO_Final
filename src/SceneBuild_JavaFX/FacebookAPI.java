@@ -1,43 +1,35 @@
 package SceneBuild_JavaFX;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-import javax.mail.Session;
+import javax.swing.JOptionPane;
 
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
+import com.restfb.DefaultWebRequestor;
 import com.restfb.FacebookClient;
 import com.restfb.FacebookClient.AccessToken;
 import com.restfb.Parameter;
-import com.restfb.experimental.api.Facebook;
-import com.restfb.types.FacebookType;
+import com.restfb.Version;
+import com.restfb.WebRequestor;
 import com.restfb.types.User;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
-import com.sun.net.httpserver.Authenticator.Result;
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
-import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class FacebookAPI {
+public class FacebookAPI implements Runnable {
 
 	/*
 	 * Facebooks guide:
@@ -74,7 +66,7 @@ public class FacebookAPI {
 
 		webEngine = browser.getEngine();
 		browser.setContextMenuEnabled(true);
-		
+
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(ObservableValue ov, State oldState, State newState) {
@@ -84,40 +76,70 @@ public class FacebookAPI {
 					if(url.contains("#access_token")) {
 						String accessUrl = webEngine.getLocation();
 						System.out.println(accessUrl);
-						String string = accessUrl.substring(accessUrl.indexOf("#")+1);
-						getUserInfo(string);
+						String token = accessUrl.substring(accessUrl.indexOf("#") + 1);
+						String code = accessUrl.substring(accessUrl.indexOf("&code") + 6);
+						getUserInfo(token, code, accessUrl);
 					}
 				}
 			}
 		});
-		
-		webEngine.load("https://www.facebook.com/dialog/oauth?"
-				+ "client_id=" + MY_APP_ID
-				+ "&display=popup"
-				+ "&response_type=token"
-				+ "&redirect_uri=" + REDIRECT_URI
-				+ "&scope=email"); //user_birthday
+
+		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
+		        + "&response_type=code%20token" + "&redirect_uri=" + REDIRECT_URI + "&scope=email");
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
-		
 	}
 
-	private void getUserInfo(String token) {
-		
-		AccessToken tokenInfo = new AccessToken().fromQueryString(token);
-		System.out.println(tokenInfo.getAccessToken());
-		System.out.println(tokenInfo.getExpires());
-//		System.out.println(MY_ACCESS_TOKEN);
-		FacebookClient facebookClient = new DefaultFacebookClient(tokenInfo.getAccessToken());
-		User user = facebookClient.fetchObject("me", User.class);
-		String username = user.getName();
-		String email = user.getEmail();
-		String birthday = user.getBirthday();
-		System.out.println("Navn = " + username);
-		System.out.println("Email = " + email);
-		System.out.println("Fødselsdag = " + birthday);
-		
+	private void getUserInfo(String token, String code, String accessUrl) {
+
+		new AccessToken();
+		AccessToken tokenInfo = AccessToken.fromQueryString(token);
+		System.out.println("Access token 1: " + tokenInfo.getAccessToken());
+		System.out.println("Expires 1: " + tokenInfo.getExpires());
+		System.out.println("Code 1 : " + code);
+		FacebookClient.AccessToken userToken = null;
+		try {
+			userToken = getFacebookUserToken(code, accessUrl);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("UserBody: " + userToken);
+		System.out.println("User Access token: " + userToken.getAccessToken());
+		String userAccessToken = userToken.getAccessToken();
+		FacebookClient fbClient = new DefaultFacebookClient(userAccessToken, MY_APP_SECRET, Version.VERSION_2_6);
+		User user = fbClient.fetchObject("me", User.class,
+		        Parameter.with("fields", "name, first_name, last_name, email, age_range, gender"));
+
+		System.out.println("Navn = " + user.getName());
+		System.out.println("Fornavn: " + user.getFirstName());
+		System.out.println("Efternavn: " + user.getLastName());
+		System.out.println("Email = " + user.getEmail());
+		System.out.println("Placering: " + user.getLocation());
+		System.out.println("Alder: " + user.getAgeRange());
+		System.out.println("Fødselsdag: " + user.getBirthday());
+		System.out.println("Køn: " + user.getGender());
+		new Thread(new FacebookAPI()).start();
 	}
 
+	private FacebookClient.AccessToken getFacebookUserToken(String code, String redirectUrl) throws IOException {
+
+		WebRequestor wr = new DefaultWebRequestor();
+		WebRequestor.Response accessTokenResponse = wr
+		        .executeGet("https://graph.facebook.com/oauth/access_token?" + "client_id=" + MY_APP_ID
+		                + "&redirect_uri=" + REDIRECT_URI + "&client_secret=" + MY_APP_SECRET + "&code=" + code);
+
+		return DefaultFacebookClient.AccessToken.fromQueryString(accessTokenResponse.getBody());
+	}
+
+	public static void getInputsFromJOptionPane() {
+		String name;
+		name = JOptionPane.showInputDialog(null, "Please enter your name");
+
+	}
+
+	@Override
+	public void run() {
+		getInputsFromJOptionPane();
+	}
 }

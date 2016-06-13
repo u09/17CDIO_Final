@@ -7,5 +7,6 @@ import java.sql.SQLException;
 public class Main {
 	public static void main(String[] args) throws FontFormatException, IOException, SQLException {
 		new Controller().start();
+		
 	}
 }
