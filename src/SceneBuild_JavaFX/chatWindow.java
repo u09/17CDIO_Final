@@ -254,7 +254,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		
 		this.onlineFriends = fu.getOnlineUsersId();
 		String[] on = fu.getOnlineUsersNickname();
-		if(notification.size()>0){
+		if(notification.size()>0 && checkType==true) {
 		for(int j=0; j<notification.size(); j++){							            		
     		System.out.println("blabla " + "notifation" + notification.get(j));
     		on[j]="(!)"+on[j];	
