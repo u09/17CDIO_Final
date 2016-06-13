@@ -233,7 +233,7 @@ public class FunctionUser {
 		ResultSet rs = con()
 		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
 		                + "' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
-		                + user().getUserID() + "')");
+		                + user().getUserID()+"')");
 		int index;
 		Integer ID;
 		while(rs.next()) {
