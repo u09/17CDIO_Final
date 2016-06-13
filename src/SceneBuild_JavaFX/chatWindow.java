@@ -290,22 +290,29 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		list.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				checkType = true;
 				int id = list.getSelectionModel().getSelectedIndex();
 				if(id == -1)
 					return;
 				
-					
-				
-			
-				
 				String name = list.getSelectionModel().getSelectedItem();
-				if(list==friendsOnlineList) activeUser = onlineFriends[id];
-				else activeUser=offlineFriends[id];
+				if(list==friendsOnlineList){
+					checkType=true;
+					activeUser=onlineFriends[id];
+				}
+				else if(list==friendsOfflineList){
+					checkType=true;
+					activeUser=offlineFriends[id];
+				}
+				else{
+					checkType=false;
+					activeUser=groups[id];
+				}
+				
 				if(notification.contains(activeUser)){
 					notification.remove(notification.indexOf(activeUser));
 
 				}
+				
 				System.out.println("clicked on " + activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
