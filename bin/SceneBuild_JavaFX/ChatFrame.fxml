@@ -212,7 +212,6 @@
                                                 <Cursor fx:constant="TEXT" />
                                              </cursor>
                                           </TextField>
-                                          <Button id="bEmoji" fx:id="bEmojis" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" />
                                        </children>
                                     </HBox>
                                  </bottom>
