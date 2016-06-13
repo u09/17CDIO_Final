@@ -21,6 +21,14 @@ public class FunctionUser {
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
 	}
+	
+	public boolean addFacebookUser(String user, String email, int age)
+	        throws SQLException, NoSuchAlgorithmException, IOException {
+		con().update("INSERT INTO users VALUES (0,?,?,?,'',?,0,?,0,0,1)", new String[] { "s", user },
+		        new String[] { "s", f.md5("Qwerty1234") }, new String[] { "s", email }, new String[] { "i", "" + age },
+		        new String[] { "l", Long.toString(f.timestamp()) });
+		return false;
+	}
 
 	public void activateUser() throws SQLException {
 		con().update("UPDATE users SET user_deleted=0 WHERE user_ID=" + user().getUserID());
