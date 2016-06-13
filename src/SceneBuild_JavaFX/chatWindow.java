@@ -117,7 +117,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					            messages.clear();
 					            users.clear();
 					            getListsContents();
-					            fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
+					            fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' AND online=1 WHERE user_ID='"
 		                                + fu.user().getUserID() + "'");
 				            } catch(SQLException | IOException e) {
 					            e.printStackTrace();
