@@ -176,7 +176,7 @@ public class FunctionUser {
 	}
 
 	public int deleteGroup(int groupID) throws SQLException {
-		if(isUser()) {
+		if(isOwner(groupID)) {
 			con().update("DELETE FROM group_members WHERE group_id=" + groupID);
 			con().update("DELETE FROM groups WHERE group_id=" + groupID);
 			return 1;
@@ -184,8 +184,8 @@ public class FunctionUser {
 		return 0;
 	}
 	
-	public boolean isUser() throws SQLException{
-		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) return true;
+	public boolean isOwner(int groupID) throws SQLException{
+		if(con().check("SELECT owner_id FROM groups where owner_id ="+user().getUserID()+" AND group_id="+groupID)) return true;
 		return false; 
 	}
 

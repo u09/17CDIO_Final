@@ -502,7 +502,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 
 		if(event.getSource() == mThrow) {
 			try {
-				if(fu.isUser()){
+				if(fu.isOwner(activeUser)){
 					Stage stage = new Stage();
 					throwWindow tW = new throwWindow();
 					try {
