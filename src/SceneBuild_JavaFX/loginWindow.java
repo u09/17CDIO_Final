@@ -74,33 +74,67 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 			String userIn = inUser.getText();
 			String passIn = inPass.getText();
 			boolean bool = false;
+			boolean activated = false;
 			try {
 				bool = fu.con().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-				        userIn, fu.f.md5(passIn));
+						userIn, fu.f.md5(passIn));
 				System.out.println(bool);
 			} catch(SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 
 			if(bool == true) {
-				User user = null;
 				try {
-					ResultSet sql = fu.con().select(
-					        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
-					        userIn, fu.f.md5(passIn));
-					sql.next();
-					fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"),
-					        sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
-				} catch(NoSuchAlgorithmException | SQLException e1) {
-					e1.printStackTrace();
+					activated = fu.con().check("SELECT username FROM users WHERE username='"+userIn+"' AND activated=1");
+				} catch (SQLException e2) {
+					e2.printStackTrace();
 				}
-				myStage.close();
-				Stage stage = new Stage();
-				chatWindow cW = new chatWindow();
-				try {
-					cW.start(stage, fu);
-				} catch(Exception e) {
-					e.printStackTrace();
+				if(activated){
+					User user = null;
+					try {
+						ResultSet sql = fu.con().select(
+								"SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
+								userIn, fu.f.md5(passIn));
+						sql.next();
+						fu.updateUser(sql.getInt("user_ID"), sql.getString("username"), sql.getString("email"),
+								sql.getString("nickname"), sql.getInt("age"), sql.getInt("user_created"));
+					} catch(NoSuchAlgorithmException | SQLException e1) {
+						e1.printStackTrace();
+					}
+					myStage.close();
+					Stage stage = new Stage();
+					chatWindow cW = new chatWindow();
+					try {
+						cW.start(stage, fu);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					ResultSet mail = null;
+					try {
+						mail = fu.con().select("SELECT email FROM users WHERE username='"+userIn+"'");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						mail.next();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					String email = null;
+					try {
+						email = mail.getString("email");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					myStage.close();
+					Stage stage = new Stage();
+					EmailWindow eW = new EmailWindow();
+					eW.start(stage,email , userIn, fu);
 				}
 			} else {
 				Alert loginFail = new Alert(AlertType.ERROR);
