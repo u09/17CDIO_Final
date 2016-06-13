@@ -1,6 +1,7 @@
 package SceneBuild_JavaFX;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea textArea;
 	@FXML private TextField inMessage;
-	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
+	@FXML private Button bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
 	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
 	private ArrayList <Integer> notification = new ArrayList <Integer>();
@@ -150,7 +151,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		HBox.setHgrow(inMessage, Priority.ALWAYS);
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
-		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
 		if(titledPane.getText().equals("QuickConnect chat")) inMessage.setEditable(false);
@@ -172,12 +172,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			public void handle(KeyEvent event) {
 				if(event.getCode().equals(KeyCode.ENTER)) {
 					String msg = inMessage.getText();
-					String hexColor = "#" + Integer.toHexString(colorPick.getValue().hashCode());
-					// Mangelfuld! Farven hexColor skal være den farve msg1
-					// String har gennem HTML string.
-					// String msg1 = "<font
-					// color="+hexColor+">"+String.valueOf(msg)+"</font>";
-
 					// FunctionUser.sendMessage(msg, user.UserID,
 					// titledPane.getText());
 					try {
@@ -199,6 +193,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 		});
 		inMessage.setId("messageInput");
+		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
+		String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
+		inMessage.setText(emojiAsString);
 	}
 
 	public static void addTextLimiter(final TextField tf, final int maxLength) {
@@ -226,7 +223,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		menuBar.setUseSystemMenuBar(true);
 		bAddFriend.setOnAction(this);
 		bAddGroup.setOnAction(this);
-		colorPick.setOnAction(this);
 		mAbout.setOnAction(this);
 		mClose.setOnAction(this);
 		mClose.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
