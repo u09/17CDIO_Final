@@ -146,13 +146,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			e.printStackTrace();
 		}
 
-		titledPane.setText("Chat system");
+		titledPane.setText("QuickConnect chat");
 		HBox.setHgrow(inMessage, Priority.ALWAYS);
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
+		if(titledPane.getText().equals("QuickConnect chat")) inMessage.setEditable(false);
+		else inMessage.setEditable(true);
 		
 		textArea.setEditable(false);
 		setInMessageFunctions();
@@ -318,6 +320,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				textArea.setScrollTop(Double.MAX_VALUE);
 				if(name != null && !name.isEmpty())
 					titledPane.setText(name);
+					inMessage.setEditable(true);
 			}
 		});
 	}
@@ -505,7 +508,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					Alert deleteFail = new Alert(AlertType.WARNING);
 					deleteFail.setTitle(this.myStage.getTitle());
 					deleteFail.setHeaderText("Du kan ikke smide medlemmer ud af gruppen!");
-					deleteFail.setContentText("Du har desværre ikke administrator tilladelse til denne gruppe, og kan derfor ikke smide nogen ud.");
+					deleteFail.setContentText("Du har desvï¿½rre ikke administrator tilladelse til denne gruppe, og kan derfor ikke smide nogen ud.");
 					deleteFail.showAndWait();
 				}
 			} catch (SQLException e) {
