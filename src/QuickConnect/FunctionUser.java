@@ -325,7 +325,7 @@ public class FunctionUser {
 	public String[] getAllMembersNickname(int groupID) throws SQLException{
 		ArrayList<String> allMembersNickname = new ArrayList<String>();
 		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id=ANY(SELECT user_id FROM group_members"
-				+ " WHERE group_id="+groupID+") ORDER BY user_id");
+				+ " WHERE group_id="+groupID+" AND user_id != (SELECT owner_id FROM groups WHERE group_id="+groupID+")) ORDER BY user_id");
 		while(rs.next()){
 			String nName = rs.getString("Nickname");
 			allMembersNickname.add(nName);
@@ -525,6 +525,25 @@ public class FunctionUser {
 		                + " AND (user_id not in((SELECT user_id FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id ="
 		                + user().getUserID() + " ) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id ="
 		                + user().getUserID() + " ))))) AND LOWER(username) LIKE '%" + inUser + "%'");
+		ArrayList<String> allUserName = new ArrayList<String>();
+
+		while(rs.next()) {
+			allUserName.add(rs.getString("username"));
+		}
+		for(int i = 0; i < allUserName.size(); i++) {
+			System.out.println(allUserName.get(i));
+
+		}
+		return allUserName.toArray(new String[allUserName.size()]);
+	}
+	
+	public String[] searchFriends(String inUser) throws SQLException{
+		inUser = inUser.toLowerCase();
+		ResultSet rs = con()
+		        .select("SELECT username FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		                + user().getUserID()
+		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
+		                + user().getUserID() + " AND status= 1)) AND LOWER(username) LIKE '%" + inUser + "%'");
 		ArrayList<String> allUserName = new ArrayList<String>();
 
 		while(rs.next()) {
