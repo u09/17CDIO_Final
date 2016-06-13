@@ -140,7 +140,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 					Stage stage = new Stage();
 					EmailWindow eW = new EmailWindow();
 					try {
-						eW.start(stage, cEmail, cUser);
+						eW.start(stage, cEmail, cUser, fu);
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
