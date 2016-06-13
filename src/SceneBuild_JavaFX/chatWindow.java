@@ -297,15 +297,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				String name = list.getSelectionModel().getSelectedItem();
 				if(list==friendsOnlineList){
 					checkType=true;
-					activeUser=onlineFriends[id];
+					activeUser=intArray[id];
 				}
 				else if(list==friendsOfflineList){
 					checkType=true;
-					activeUser=offlineFriends[id];
+					activeUser=intArray[id];
 				}
 				else{
 					checkType=false;
-					activeUser=groups[id];
+					activeUser=intArray[id];
 				}
 				
 				if(notification.contains(activeUser)){
