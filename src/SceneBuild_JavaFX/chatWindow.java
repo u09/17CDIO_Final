@@ -53,7 +53,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea textArea;
-	@FXML private TextField inMessage;
+	@FXML private TextField inMessage, inSearchFriends;
 	@FXML private Button bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
 	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
@@ -514,6 +514,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		if(event.getSource() == bSearchFriends){
+			try {
+				fu.searchFriends(inSearchFriends.getText());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 
