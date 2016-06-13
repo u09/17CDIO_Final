@@ -2,6 +2,7 @@ package QuickConnect;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,13 +22,23 @@ public class FunctionUser {
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
 	}
-	
-	public boolean addFacebookUser(String user, String email, int age)
+
+	public boolean addFacebookUser(String email, String ranPass, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,'',?,0,?,0,0,1)", new String[] { "s", user },
-		        new String[] { "s", f.md5("Qwerty1234") }, new String[] { "s", email }, new String[] { "i", "" + age },
+		con().update("INSERT INTO users VALUES (0,?,?,?,'',?,0,?,0,0,1)", new String[] { "s", email },
+		        new String[] { "s", f.md5(ranPass) }, new String[] { "s", email }, new String[] { "i", "" + age },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
+	}
+
+	static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	static SecureRandom rnd = new SecureRandom();
+
+	public String randomString() {
+		StringBuilder sb = new StringBuilder(10);
+		for(int i = 0; i < 10; i++)
+			sb.append(AB.charAt(rnd.nextInt(AB.length())));
+		return sb.toString();
 	}
 
 	public void activateUser() throws SQLException {
@@ -191,10 +202,12 @@ public class FunctionUser {
 		}
 		return 0;
 	}
-	
-	public boolean isOwner(int groupID) throws SQLException{
-		if(con().check("SELECT owner_id FROM groups where owner_id ="+user().getUserID()+" AND group_id="+groupID)) return true;
-		return false; 
+
+	public boolean isOwner(int groupID) throws SQLException {
+		if(con().check(
+		        "SELECT owner_id FROM groups where owner_id =" + user().getUserID() + " AND group_id=" + groupID))
+			return true;
+		return false;
 	}
 
 	public void leaveGroup(int groupID) throws SQLException {
@@ -202,7 +215,7 @@ public class FunctionUser {
 	}
 
 	public void kickMember(int groupID, int ID) throws SQLException {
-			con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id="+ID);
+		con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id=" + ID);
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {
@@ -241,7 +254,7 @@ public class FunctionUser {
 		ResultSet rs = con()
 		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
 		                + "' AND message_deleted=0 AND message_sent>=ANY(SELECT last_on FROM users WHERE user_ID='"
-		                + user().getUserID()+"')");
+		                + user().getUserID() + "')");
 		int index;
 		Integer ID;
 		while(rs.next()) {
@@ -329,26 +342,27 @@ public class FunctionUser {
 		f.printArrayList(allFriendsUsername);
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
-	
-	public String[] getAllMembersNickname(int groupID) throws SQLException{
+
+	public String[] getAllMembersNickname(int groupID) throws SQLException {
 		ArrayList<String> allMembersNickname = new ArrayList<String>();
 		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id=ANY(SELECT user_id FROM group_members"
-				+ " WHERE group_id="+groupID+" AND user_id != (SELECT owner_id FROM groups WHERE group_id="+groupID+")) ORDER BY user_id");
-		while(rs.next()){
+		        + " WHERE group_id=" + groupID + " AND user_id != (SELECT owner_id FROM groups WHERE group_id="
+		        + groupID + ")) ORDER BY user_id");
+		while(rs.next()) {
 			String nName = rs.getString("Nickname");
 			allMembersNickname.add(nName);
 		}
 		f.printArrayList(allMembersNickname);
 		return allMembersNickname.toArray(new String[allMembersNickname.size()]);
 	}
-	
+
 	public int[] getAllMembersID(int groupID) throws SQLException {
 		ArrayList<Integer> allMembersID = new ArrayList<Integer>();
-		ResultSet rs = con().select("SELECT user_id FROM group_members WHERE group_id="+groupID);
-		while(rs.next()) allMembersID.add(rs.getInt("user_id"));
+		ResultSet rs = con().select("SELECT user_id FROM group_members WHERE group_id=" + groupID);
+		while(rs.next())
+			allMembersID.add(rs.getInt("user_id"));
 		return f.convertIntegers(allMembersID);
 	}
-
 
 	public int[] getOnlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
@@ -544,8 +558,8 @@ public class FunctionUser {
 		}
 		return allUserName.toArray(new String[allUserName.size()]);
 	}
-	
-	public String[] searchFriends(String inUser) throws SQLException{
+
+	public String[] searchFriends(String inUser) throws SQLException {
 		inUser = inUser.toLowerCase();
 		ResultSet rs = con()
 		        .select("SELECT username FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
@@ -597,5 +611,5 @@ public class FunctionUser {
 		}
 		return messages;
 	}
-	
+
 }

@@ -185,7 +185,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 }

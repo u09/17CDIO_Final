@@ -46,12 +46,14 @@ public class Function {
 		}
 		return null;
 	}
+
 	/**
 	 * Checks whether or not the username is valid
+	 * 
 	 * @param username
 	 * @return 0 : valid <br>
-	 * 1 : too short or too long <br>
-	 * 2 : found invalid entries
+	 *         1 : too short or too long <br>
+	 *         2 : found invalid entries
 	 */
 	public int checkUsername(String username) {
 		char c;
@@ -64,13 +66,16 @@ public class Function {
 		}
 		return 0;
 	}
+
 	/**
 	 * Checks whether or not the password is valid
+	 * 
 	 * @param pass
 	 * @return 0 : valid <br>
-	 * 1 : too short or too long <br>
-	 * 2 : doesn't contain numbers, uppercase letters or lowercase letters <br>
-	 * 3 : found invalid entries
+	 *         1 : too short or too long <br>
+	 *         2 : doesn't contain numbers, uppercase letters or lowercase
+	 *         letters <br>
+	 *         3 : found invalid entries
 	 */
 	public int checkPassword(String pass) {
 		String num = ".*[0-9].*";
@@ -88,8 +93,10 @@ public class Function {
 		}
 		return 0;
 	}
+
 	/**
 	 * Checks whether or not the email has the correct structure
+	 * 
 	 * @param email
 	 * @return true if it has and false if it hasn't
 	 */
@@ -100,20 +107,23 @@ public class Function {
 			return false;
 		return true;
 	}
+
 	/**
 	 * Determines whether or not the user is approved to be registered by <br>
 	 * checking the username, password, email and also the age and <br>
 	 * whether the user already exists
+	 * 
 	 * @param user
 	 * @param pass1
 	 * @param pass2
 	 * @param email
 	 * @param date
 	 * @return 1-9 : dependent upon the cause of the disapproval <br>
-	 * 10 : approved for registration
+	 *         10 : approved for registration
 	 * @throws SQLException
 	 */
-	public int checkRegister(String user, String pass1, String pass2, String email, LocalDate date) throws SQLException {
+	public int checkRegister(String user, String pass1, String pass2, String email, LocalDate date)
+	        throws SQLException {
 		boolean bool;
 		int in;
 		in = checkUsername(user);
@@ -132,15 +142,17 @@ public class Function {
 			return 6;
 		if(!checkEmail(email))
 			return 7;
-		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 10) 
+		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 10)
 			return 8;
 		bool = getConnector().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
 		if(bool)
 			return 9;
 		else return 10;
 	}
+
 	/**
 	 * Updates all fields in the user object from the User class
+	 * 
 	 * @param id
 	 * @param username
 	 * @param email
@@ -156,8 +168,10 @@ public class Function {
 		user.setAge(age);
 		user.setCreated(user_created);
 	}
+
 	/**
 	 * Hvad gør denne her metode leow?
+	 * 
 	 * @param str
 	 * @return
 	 * @throws NoSuchAlgorithmException
@@ -172,7 +186,7 @@ public class Function {
 		}
 		return sb.toString();
 	}
-	
+
 	public void printArrayList(ArrayList<?> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -184,7 +198,7 @@ public class Function {
 				System.out.println("\n]");
 		}
 	}
-	
+
 	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -202,8 +216,10 @@ public class Function {
 				System.out.println("]");
 		}
 	}
+
 	/**
 	 * Returns the current timestamp in unix time
+	 * 
 	 * @return timestamp in type long
 	 * @throws IOException
 	 */
@@ -227,8 +243,10 @@ public class Function {
 		}
 		return timestamp;
 	}
+
 	/**
 	 * Method for increasing the timestamp by 1
+	 * 
 	 * @throws IOException
 	 */
 	public void timestampInc() throws IOException {
@@ -236,8 +254,10 @@ public class Function {
 			timestamp++;
 		else timestamp();
 	}
+
 	/**
 	 * Hvad gør denne her metode leow?
+	 * 
 	 * @param arr
 	 * @param seperator
 	 * @return
@@ -252,8 +272,10 @@ public class Function {
 		String joined = sb.toString();
 		return joined;
 	}
+
 	/**
 	 * Converts an arraylist of integers to a int[]
+	 * 
 	 * @param integers
 	 * @return int[]
 	 */
@@ -264,8 +286,10 @@ public class Function {
 		}
 		return ret;
 	}
+
 	/**
 	 * Checks whether of not a string only contains numbers
+	 * 
 	 * @param string
 	 * @return true if it does and false if it doesn't
 	 */
