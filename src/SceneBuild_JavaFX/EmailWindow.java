@@ -36,15 +36,13 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 	private FunctionUser fu;
 	private EmailVal eVal = new EmailVal();
 
-	public void start(Stage stage, String email, String username) {
+	public void start(Stage stage, String email, String username, FunctionUser fu) {
 		this.eMail = email;
 		this.userName = username;
 		this.HostMail = eVal.getMail();
 		this.HostPass = eVal.getPass();
-		User user = new User();
-		Function f = new Function(user);
-		this.fu = new FunctionUser(f);
 		this.myStage = stage;
+		this.fu = fu;
 		this.myStage.setTitle("QuickConnect");
 		this.myStage.setResizable(false);
 		showEmailFrame();
@@ -53,9 +51,9 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 		code = eVal.getCode();
-		eVal.sendMail(this.HostMail,this.HostPass, this.eMail, "QuickConnect",
+		eVal.sendMail(this.HostMail, this.HostPass, this.eMail, "QuickConnect",
 		        "Venligst indtast følgende kode ind\n" + code);
-
+		System.out.println(this.HostMail+this.HostPass+this.eMail);
 	}
 
 	private void showEmailFrame() {
