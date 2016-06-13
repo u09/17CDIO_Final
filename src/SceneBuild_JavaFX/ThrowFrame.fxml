@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="337.0" prefWidth="369.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="337.0" prefWidth="369.0" stylesheets="@../../QuickConnectCSS/StandardLayout.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" layoutX="48.95800018310547" layoutY="35.0" prefHeight="337.0" prefWidth="371.95800018310547" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" text="Vælg venligst gruppemedlem, som du vil smide ud:" textAlignment="CENTER" wrapText="true" />
-            <ListView fx:id="GroupMembers" prefHeight="203.0" prefWidth="272.0" />
+            <ListView fx:id="groupMembers" prefHeight="203.0" prefWidth="272.0" />
             <Button fx:id="bThrow" mnemonicParsing="false" text="Smid ud!" />
          </children>
       </VBox>

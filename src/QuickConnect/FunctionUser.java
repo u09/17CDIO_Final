@@ -194,7 +194,7 @@ public class FunctionUser {
 	}
 
 	public void kickMember(int groupID, int ID) throws SQLException {
-			con().update("DELETE FROM group_members WHERE group_id=" + groupID + "AND user_id="+ID+"AND owner_id="+user().getUserID());
+			con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id="+ID);
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {
@@ -322,15 +322,25 @@ public class FunctionUser {
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 	
-	public int[] getAllMembersID(int groupID) throws SQLException{
+	public String[] getAllMembersNickname(int groupID) throws SQLException{
+		ArrayList<String> allMembersNickname = new ArrayList<String>();
+		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id=ANY(SELECT user_id FROM group_members"
+				+ " WHERE group_id="+groupID+") ORDER BY user_id");
+		while(rs.next()){
+			String nName = rs.getString("Nickname");
+			allMembersNickname.add(nName);
+		}
+		f.printArrayList(allMembersNickname);
+		return allMembersNickname.toArray(new String[allMembersNickname.size()]);
+	}
+	
+	public int[] getAllMembersID(int groupID) throws SQLException {
 		ArrayList<Integer> allMembersID = new ArrayList<Integer>();
 		ResultSet rs = con().select("SELECT user_id FROM group_members WHERE group_id="+groupID);
-		while(rs.next()){
-			allMembersID.add(rs.getInt("user_id"));
-		}
-		f.printArrayList(allMembersID);
+		while(rs.next()) allMembersID.add(rs.getInt("user_id"));
 		return f.convertIntegers(allMembersID);
 	}
+
 
 	public int[] getOnlineUsersId() throws SQLException, IOException {
 		ArrayList<Integer> onlineUsers = new ArrayList<Integer>();
@@ -560,6 +570,5 @@ public class FunctionUser {
 		}
 		return messages;
 	}
-
 	
 }

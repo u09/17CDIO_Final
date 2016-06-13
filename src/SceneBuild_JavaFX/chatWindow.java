@@ -499,7 +499,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					Stage stage = new Stage();
 					throwWindow tW = new throwWindow();
 					try {
-						tW.start(stage, activeUser);
+						tW.start(stage,activeUser);
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
