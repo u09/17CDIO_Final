@@ -56,6 +56,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private Button bEmojis, bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
 	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
+	private ArrayList <Integer> notification = new ArrayList <Integer>();
 	private FunctionUser fu;
 	private int[] offlineFriends;
 	private int[] onlineFriends;
@@ -90,36 +91,40 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			public Void call() throws Exception {
 				while(true) {
 					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								getListsContents();
-								if(checkType == false) {
-									ArrayList<ArrayList<String>> msg = fu.getGroupMessages(activeUser);
-									for(int i = 1; i <= msg.get(0).size(); i++) {
-										textArea.appendText(
-												msg.get(1).get(i - 1) + ":\n" + msg.get(0).get(i - 1) + "\n\n");
-									}
-								} else {
-									fu.getMessages(messages, users);
-									for(int i = 1; i <= messages.size(); i++) {
-										for(int t = 1; t <= messages.get(i - 1).size(); t++) {
-											if(users.get(i - 1) == activeUser)
-												textArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
-														+ messages.get(i - 1).get(t - 1) + "\n\n");
-										}
-									}
-								}
+			            @Override
+			            public void run() {
+				            try {
+					            if(checkType == false) {
+						            ArrayList<ArrayList<String>> msg = fu.getGroupMessages(activeUser);
+						            for(int i = 1; i <= msg.get(0).size(); i++) {
+							            textArea.appendText(
+		                                        msg.get(1).get(i - 1) + ":\n" + msg.get(0).get(i - 1) + "\n\n");
+						            }
+					            } else {
+						            fu.getMessages(messages, users);
+						            for(int i = 1; i <= messages.size(); i++) {
+							            for(int t = 1; t <= messages.get(i - 1).size(); t++) {
+								            if(users.get(i - 1) == activeUser)
+									            textArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
+		                                                + messages.get(i - 1).get(t - 1) + "\n\n");
+							            }
+							            
+							            if(users.get(i-1)!=activeUser){
+							            	notification.add(users.get(i-1));
+							            }
+						            }
+					            }
+					            messages.clear();
+					            users.clear();					            
+					            getListsContents();
+					            fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
+		                                + fu.user().getUserID() + "'");
+				            } catch(SQLException | IOException e) {
+					            e.printStackTrace();
+				            }
 
-								messages.clear();
-								users.clear();
-								fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
-										+ fu.user().getUserID() + "'");
-							} catch(SQLException | IOException e) {
-								e.printStackTrace();
-							}
-						}
-					});
+			            }
+		            });
 					Thread.sleep(5000);
 				}
 			}
@@ -149,11 +154,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		bEmojis.setId("bEmoji");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
-
+		
+		textArea.setEditable(false);
 		setInMessageFunctions();
 		setButtonFunctions();
 		getListsContents();
 		setListsFunctions();
+		
+		
 	}
 
 	private void setInMessageFunctions() {
@@ -242,8 +250,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
+		
 		this.onlineFriends = fu.getOnlineUsersId();
 		String[] on = fu.getOnlineUsersNickname();
+		if(notification.size()>0){
+		for(int j=0; j<notification.size(); j++){							            		
+    		System.out.println("blabla " + "notifation" + notification.get(j));
+    		on[j]="(!)"+on[j];	
+    	}}
+		
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 		friendsOnlineList.setItems(onlineItems);
 		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
@@ -258,6 +273,10 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		String[] gro = fu.getGroupsNames();
 		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 		groupsList.setItems(groupsItems);
+				
+	
+		
+		
 	}
 
 	private void setListsFunctions() {
@@ -274,8 +293,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				int id = list.getSelectionModel().getSelectedIndex();
 				if(id == -1)
 					return;
+				
+					
+				
+			
+				
 				String name = list.getSelectionModel().getSelectedItem();
-				activeUser = intArray[id];
+				if(list==friendsOnlineList) activeUser = onlineFriends[id];
+				else activeUser=offlineFriends[id];
+				if(notification.contains(activeUser)){
+					notification.remove(notification.indexOf(activeUser));
+
+				}
 				System.out.println("clicked on " + activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
