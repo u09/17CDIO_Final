@@ -176,12 +176,17 @@ public class FunctionUser {
 	}
 
 	public int deleteGroup(int groupID) throws SQLException {
-		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) {
+		if(isUser()) {
 			con().update("DELETE FROM group_members WHERE group_id=" + groupID);
 			con().update("DELETE FROM groups WHERE group_id=" + groupID);
 			return 1;
 		}
 		return 0;
+	}
+	
+	public boolean isUser() throws SQLException{
+		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) return true;
+		return false; 
 	}
 
 	public void leaveGroup(int groupID) throws SQLException {
@@ -189,9 +194,7 @@ public class FunctionUser {
 	}
 
 	public void kickMember(int groupID, int ID) throws SQLException {
-		if(con().check("SELECT owner_id FROM groups where owner_id =" + user().getUserID())) {
 			con().update("DELETE FROM group_members WHERE group_id=" + groupID + "AND user_id="+ID+"AND owner_id="+user().getUserID());
-		}
 	}
 
 	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {

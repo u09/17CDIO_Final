@@ -65,7 +65,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	private ArrayList<Integer> users = new ArrayList<Integer>();
 	@FXML private ContextMenu contextMenu;
 	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup,
-	        mDeleteGroup, mThrow;
+	mDeleteGroup, mThrow;
 	private long loginTime;
 	private boolean checkType;
 
@@ -90,36 +90,36 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			public Void call() throws Exception {
 				while(true) {
 					Platform.runLater(new Runnable() {
-			            @Override
-			            public void run() {
-				            try {
-					            getListsContents();
-					            if(checkType == false) {
-						            ArrayList<ArrayList<String>> msg = fu.getGroupMessages(activeUser);
-						            for(int i = 1; i <= msg.get(0).size(); i++) {
-							            textArea.appendText(
-		                                        msg.get(1).get(i - 1) + ":\n" + msg.get(0).get(i - 1) + "\n\n");
-						            }
-					            } else {
-						            fu.getMessages(messages, users);
-						            for(int i = 1; i <= messages.size(); i++) {
-							            for(int t = 1; t <= messages.get(i - 1).size(); t++) {
-								            if(users.get(i - 1) == activeUser)
-									            textArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
-		                                                + messages.get(i - 1).get(t - 1) + "\n\n");
-							            }
-						            }
-					            }
+						@Override
+						public void run() {
+							try {
+								getListsContents();
+								if(checkType == false) {
+									ArrayList<ArrayList<String>> msg = fu.getGroupMessages(activeUser);
+									for(int i = 1; i <= msg.get(0).size(); i++) {
+										textArea.appendText(
+												msg.get(1).get(i - 1) + ":\n" + msg.get(0).get(i - 1) + "\n\n");
+									}
+								} else {
+									fu.getMessages(messages, users);
+									for(int i = 1; i <= messages.size(); i++) {
+										for(int t = 1; t <= messages.get(i - 1).size(); t++) {
+											if(users.get(i - 1) == activeUser)
+												textArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
+														+ messages.get(i - 1).get(t - 1) + "\n\n");
+										}
+									}
+								}
 
-					            messages.clear();
-					            users.clear();
-					            fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
-		                                + fu.user().getUserID() + "'");
-				            } catch(SQLException | IOException e) {
-					            e.printStackTrace();
-				            }
-			            }
-		            });
+								messages.clear();
+								users.clear();
+								fu.con().update("UPDATE users SET last_on='" + fu.f.timestamp() + "' WHERE user_ID='"
+										+ fu.user().getUserID() + "'");
+							} catch(SQLException | IOException e) {
+								e.printStackTrace();
+							}
+						}
+					});
 					Thread.sleep(5000);
 				}
 			}
@@ -165,12 +165,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					String msg = inMessage.getText();
 					String hexColor = "#" + Integer.toHexString(colorPick.getValue().hashCode());
 					// Mangelfuld! Farven hexColor skal vÃ¦re den farve msg1
-		            // String har gennem HTML string.
-		            // String msg1 = "<font
-		            // color="+hexColor+">"+String.valueOf(msg)+"</font>";
-					    
+					// String har gennem HTML string.
+					// String msg1 = "<font
+					// color="+hexColor+">"+String.valueOf(msg)+"</font>";
+
 					// FunctionUser.sendMessage(msg, user.UserID,
-		            // titledPane.getText());
+					// titledPane.getText());
 					try {
 						textArea.appendText(fu.getNickName() + ":\n" + msg + "\n\n");
 					} catch(SQLException e) {
@@ -196,18 +196,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		tf.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(final ObservableValue<? extends String> ov, final String oldValue,
-		            final String newValue) {
+					final String newValue) {
 				if(tf.getText().length() > maxLength) {
 					String s = tf.getText().substring(0, maxLength);
 					tf.appendText(s);
 				}
-//				final HashMap<String, String> smileys = new HashMap<String, String>();
-//				String msg = tf.getText();
-//				smileys.put("&:\\)", "<img src='file: Emoji Smiley-01.png'/>");
-//				smileys.put("&:O", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-02.png'/>");
-//				smileys.put("&:\\(", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-03.png'/>");
-//				    for(Entry<String, String> smiley : smileys.entrySet())
-//				        msg = msg.replaceAll(smiley.getKey(), smiley.getValue());
+				//				final HashMap<String, String> smileys = new HashMap<String, String>();
+				//				String msg = tf.getText();
+				//				smileys.put("&:\\)", "<img src='file: Emoji Smiley-01.png'/>");
+				//				smileys.put("&:O", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-02.png'/>");
+				//				smileys.put("&:\\(", "<img src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji Smiley-03.png'/>");
+				//				    for(Entry<String, String> smiley : smileys.entrySet())
+				//				        msg = msg.replaceAll(smiley.getKey(), smiley.getValue());
 			}
 		});
 	}
@@ -463,11 +463,24 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 
 		if(event.getSource() == mThrow) {
-			Stage stage = new Stage();
-			throwWindow tW = new throwWindow();
 			try {
-				tW.start(stage, activeUser);
-			} catch(Exception e) {
+				if(fu.isUser()){
+					Stage stage = new Stage();
+					throwWindow tW = new throwWindow();
+					try {
+						tW.start(stage, activeUser);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					Alert deleteFail = new Alert(AlertType.WARNING);
+					deleteFail.setTitle(this.myStage.getTitle());
+					deleteFail.setHeaderText("Du kan ikke smide medlemmer ud af gruppen!");
+					deleteFail.setContentText("Du har desværre ikke administrator tilladelse til denne gruppe, og kan derfor ikke smide nogen ud.");
+					deleteFail.showAndWait();
+				}
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
