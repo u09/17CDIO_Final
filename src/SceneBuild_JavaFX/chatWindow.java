@@ -275,7 +275,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				if(id == -1)
 					return;
 				String name = list.getSelectionModel().getSelectedItem();
-				activeUser = intArray[id];
+				if(list==friendsOnlineList) activeUser = onlineFriends[id];
+				else activeUser=offlineFriends[id];
 				System.out.println("clicked on " + activeUser);
 				textArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
