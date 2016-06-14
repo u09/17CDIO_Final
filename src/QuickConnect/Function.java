@@ -46,12 +46,14 @@ public class Function {
 		}
 		return null;
 	}
+
 	/**
-	 * Checks whether or not the username is valid
+	 * Checks whether or not the <code>username</code> is valid.
+	 * 
 	 * @param username
 	 * @return 0 : valid <br>
-	 * 1 : too short or too long <br>
-	 * 2 : found invalid entries
+	 *         1 : too short or too long <br>
+	 *         2 : found invalid entries
 	 */
 	public int checkUsername(String username) {
 		char c;
@@ -64,13 +66,16 @@ public class Function {
 		}
 		return 0;
 	}
+
 	/**
-	 * Checks whether or not the password is valid
+	 * Checks whether or not the <code>password</code> is valid.
+	 * 
 	 * @param pass
 	 * @return 0 : valid <br>
-	 * 1 : too short or too long <br>
-	 * 2 : doesn't contain numbers, uppercase letters or lowercase letters <br>
-	 * 3 : found invalid entries
+	 *         1 : too short or too long <br>
+	 *         2 : doesn't contain numbers, uppercase letters or lowercase
+	 *         letters <br>
+	 *         3 : found invalid entries
 	 */
 	public int checkPassword(String pass) {
 		String num = ".*[0-9].*";
@@ -88,10 +93,14 @@ public class Function {
 		}
 		return 0;
 	}
+
 	/**
-	 * Checks whether or not the email has the correct structure
+	 * Checks whether or not the <code>email</code> has the correct
+	 * structure
+	 * 
 	 * @param email
-	 * @return true if it has and false if it hasn't
+	 * @return <code>true</code> if it has and <code>false</code>
+	 * if it hasn't.
 	 */
 	public boolean checkEmail(String email) {
 		boolean b = email
@@ -100,20 +109,26 @@ public class Function {
 			return false;
 		return true;
 	}
+
 	/**
-	 * Determines whether or not the user is approved to be registered by <br>
-	 * checking the username, password, email and also the age and <br>
-	 * whether the user already exists
+	 * Determines whether or not the user is approved to be registered
+	 * by using <code>{@link #checkUsername(String)}</code>, 
+	 * <code>{@link #checkPassword(String)}</code>, 
+	 * <code>{@link #checkEmail(String)}</code> and also the age 
+	 * (using the <code>date</code>) and whether the <code>username</code> 
+	 * already exists.
+	 * 
 	 * @param user
 	 * @param pass1
 	 * @param pass2
 	 * @param email
 	 * @param date
 	 * @return 1-9 : dependent upon the cause of the disapproval <br>
-	 * 10 : approved for registration
+	 *         10 : approved for registration
 	 * @throws SQLException
 	 */
-	public int checkRegister(String user, String pass1, String pass2, String email, LocalDate date) throws SQLException {
+	public int checkRegister(String user, String pass1, String pass2, String email, LocalDate date)
+	        throws SQLException {
 		boolean bool;
 		int in;
 		in = checkUsername(user);
@@ -132,15 +147,18 @@ public class Function {
 			return 6;
 		if(!checkEmail(email))
 			return 7;
-		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 10) 
+		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 13)
 			return 8;
 		bool = getConnector().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
 		if(bool)
 			return 9;
 		else return 10;
 	}
+
 	/**
-	 * Updates all fields in the user object from the User class
+	 * Updates all fields in the <code>user</code> object from the
+	 * <code>{@link #User}</code> class.
+	 * 
 	 * @param id
 	 * @param username
 	 * @param email
@@ -156,15 +174,18 @@ public class Function {
 		user.setAge(age);
 		user.setCreated(user_created);
 	}
+
 	/**
-	 * Hvad gør denne her metode leow?
-	 * @param str
-	 * @return
+	 * Method to digest a <code>String</code> such as a password or message
+	 * using the Message Digest algorithm 5.
+	 * 
+	 * @param string
+	 * @return encrypted <code>String</code>
 	 * @throws NoSuchAlgorithmException
 	 */
-	public String md5(String str) throws NoSuchAlgorithmException {
+	public String md5(String string) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(str.getBytes());
+		md.update(string.getBytes());
 		byte[] digest = md.digest();
 		StringBuffer sb = new StringBuffer();
 		for(byte b : digest) {
@@ -172,7 +193,7 @@ public class Function {
 		}
 		return sb.toString();
 	}
-	
+
 	public void printArrayList(ArrayList<?> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -184,7 +205,7 @@ public class Function {
 				System.out.println("\n]");
 		}
 	}
-	
+
 	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -202,9 +223,11 @@ public class Function {
 				System.out.println("]");
 		}
 	}
+
 	/**
-	 * Returns the current timestamp in unix time
-	 * @return timestamp in type long
+	 * Returns the current <code>timestamp</code> in <code>unix</code> time.
+	 * 
+	 * @return <code>timestamp</code> in type <code>long</code>
 	 * @throws IOException
 	 */
 	public long timestamp() throws IOException {
@@ -227,8 +250,10 @@ public class Function {
 		}
 		return timestamp;
 	}
+
 	/**
-	 * Method for increasing the timestamp by 1
+	 * Method for increasing the <code>timestamp</code> by 1.
+	 * 
 	 * @throws IOException
 	 */
 	public void timestampInc() throws IOException {
@@ -236,8 +261,10 @@ public class Function {
 			timestamp++;
 		else timestamp();
 	}
+
 	/**
 	 * Hvad gør denne her metode leow?
+	 * 
 	 * @param arr
 	 * @param seperator
 	 * @return
@@ -252,8 +279,11 @@ public class Function {
 		String joined = sb.toString();
 		return joined;
 	}
+
 	/**
-	 * Converts an arraylist of integers to a int[]
+	 * Converts an <code>Arraylist</code> of <code>Integers</code> to a
+	 * <code>int[]</code>.
+	 * 
 	 * @param integers
 	 * @return int[]
 	 */
@@ -264,10 +294,12 @@ public class Function {
 		}
 		return ret;
 	}
+
 	/**
-	 * Checks whether of not a string only contains numbers
+	 * Checks whether of not a <code>String</code> only contains numbers.
+	 * 
 	 * @param string
-	 * @return true if it does and false if it doesn't
+	 * @return <code>true</code> if it does and <code>false</code> if it doesn't
 	 */
 	public boolean isNumeric(String string) {
 		try {

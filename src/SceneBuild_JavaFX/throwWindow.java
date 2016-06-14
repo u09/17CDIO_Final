@@ -2,7 +2,6 @@ package SceneBuild_JavaFX;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import QuickConnect.Function;
 import QuickConnect.FunctionUser;
@@ -15,9 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -25,7 +24,7 @@ import javafx.stage.Stage;
 public class throwWindow implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
-	private Scene myScene; 
+	private Scene myScene;
 	private AnchorPane ThrowFrame;
 	@FXML private ListView<String> groupMembers;
 	@FXML private Button bThrow;
@@ -33,23 +32,23 @@ public class throwWindow implements EventHandler<ActionEvent> {
 	private int[] usersID;
 	private int au;
 	private FunctionUser fu;
-	
-	public void start(Stage stage, int activeUser) throws SQLException, IOException{
+
+	public void start(Stage stage, int activeUser) throws SQLException, IOException {
 		User user = new User();
 		Function f = new Function(user);
 		this.fu = new FunctionUser(f);
-		this.activeUser = activeUser; 
+		this.activeUser = activeUser;
 		this.myStage = stage;
 		this.myStage.setTitle("QuickConnect - Group members");
 		this.myStage.setResizable(false);
 		showThrowFrame();
-		
+
 		myScene = new Scene(ThrowFrame);
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}
-	
+
 	private void showThrowFrame() throws SQLException, IOException {
 
 		FXMLLoader loader = new FXMLLoader();
@@ -60,32 +59,32 @@ public class throwWindow implements EventHandler<ActionEvent> {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		String[] allItems = fu.getAllMembersNickname(activeUser);
 		usersID = fu.getAllMembersID(activeUser);
 		ObservableList<String> onlineItems = FXCollections.observableArrayList(allItems);
 		groupMembers.setItems(onlineItems);
-		
+
 		groupMembers.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				int index = groupMembers.getSelectionModel().getSelectedIndex();
 				if(index == -1)
 					return;
-				au=index;
+				au = index;
 			}
 		});
-		
+
 		bThrow.setOnAction(this);
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		
-		if(event.getSource() == bThrow){
+
+		if(event.getSource() == bThrow) {
 			try {
-				fu.kickMember(activeUser,usersID[au]);
-			} catch (SQLException e) {
+				fu.kickMember(activeUser, usersID[au]);
+			} catch(SQLException e) {
 				e.printStackTrace();
 			}
 			groupMembers.getItems().remove(au);
@@ -97,5 +96,4 @@ public class throwWindow implements EventHandler<ActionEvent> {
 		}
 	}
 
-	
 }

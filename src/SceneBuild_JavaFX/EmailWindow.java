@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import QuickConnect.EmailVal;
-import QuickConnect.Function;
 import QuickConnect.FunctionUser;
-import QuickConnect.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,8 +50,8 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 		this.myStage.show();
 		code = eVal.getCode();
 		eVal.sendMail(this.HostMail, this.HostPass, this.eMail, "QuickConnect",
-		        "Venligst indtast følgende kode ind\n" + code);
-		System.out.println(this.HostMail+this.HostPass+this.eMail);
+		        "Hej " + userName + "\n\nVenligst indtast følgende kode ind:\n\n" + code);
+		System.out.println(this.HostMail + this.HostPass + this.eMail);
 	}
 
 	private void showEmailFrame() {
@@ -77,7 +75,7 @@ public class EmailWindow implements EventHandler<ActionEvent> {
 			System.out.println("Send");
 			code = eVal.getCode();
 			eVal.sendMail(this.HostMail, this.HostPass, this.eMail, "QuickConnect",
-			        "Venligst indtast følgende kode ind\n" + code);
+			        "Hej " + userName + "\n\nVenligst indtast følgende kode ind:\n\n" + code);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Ny kode sendt");
 			alert.setHeaderText(null);

@@ -3,7 +3,6 @@
 	-fx-font-size: 14px;
 	-fx-font-weight: normal;
 	-fx-font-style: normal;
-	/*-fx-background-image: url("bg.jpg");*/
 }
 
 #friendsOfflineList {
@@ -60,10 +59,6 @@
 
 #bSearch {
 	-fx-graphic: url(../Icons/search-icon.png);
-}
-
-#bEmoji {
-	-fx-graphic: url(../Icons/emoticons-icon.png);
 }
 
 #bAddPlus {

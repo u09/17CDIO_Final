@@ -14,7 +14,6 @@ import com.restfb.types.User;
 
 import QuickConnect.EmailVal;
 import QuickConnect.FunctionUser;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -23,15 +22,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ButtonType;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.ir.CallNode.EvalArgs;
 
 public class FacebookAPI {
 
@@ -76,10 +72,9 @@ public class FacebookAPI {
 				if(newState == Worker.State.SUCCEEDED) {
 					String url = webEngine.getLocation();
 					myStage.setTitle(url);
-					
+
 					if(url.contains("#access_token")) {
 						String accessUrl = webEngine.getLocation();
-						System.out.println(accessUrl);
 						String token = accessUrl.substring(accessUrl.indexOf("#access_token") + 1);
 						String code = accessUrl.substring(accessUrl.indexOf("&code") + 6);
 						getUserInfo(token);
@@ -96,38 +91,39 @@ public class FacebookAPI {
 	}
 
 	private void getUserInfo(String token) {
-		
+
 		AccessToken tokenInfo = AccessToken.fromQueryString(token);
-		FacebookClient fbClient = new DefaultFacebookClient(tokenInfo.getAccessToken(), MY_APP_SECRET, Version.VERSION_2_6);
+		FacebookClient fbClient = new DefaultFacebookClient(tokenInfo.getAccessToken(), MY_APP_SECRET,
+		        Version.VERSION_2_6);
 		User user = fbClient.fetchObject("me", User.class,
 		        Parameter.with("fields", "name, first_name, last_name, email, age_range, gender"));
-		
+
 		Integer age = null;
 		if(user.getAgeRange().getMax() == null) {
 			age = user.getAgeRange().getMin();
-		}
-		else age = user.getAgeRange().getMax();
-		
+		} else age = user.getAgeRange().getMax();
+		String ranPass = fu.randomString();
 		try {
-			fu.addFacebookUser(user.getEmail(), user.getEmail(), age);
+			fu.addFacebookUser(user.getEmail(), ranPass, age);
 		} catch(NoSuchAlgorithmException | SQLException | IOException e) {
 			e.printStackTrace();
 		}
 		myStage.close();
 		EmailVal eVal = new EmailVal();
-		eVal.sendMail(eVal.getMail(), eVal.getPass(), user.getEmail(), "QuickConnect",
-		        "Hej "+user.getFirstName()+"\n\nDin første adgangskode er:\n\nQwerty1234\n\nDu kan ændre denne efter du er logget ind.");
-		
+		eVal.sendMail(eVal.getMail(), eVal.getPass(), user.getEmail(), "QuickConnect", "Hej " + user.getFirstName()
+		        + "\n\nDin første adgangskode er:\n\n" + ranPass + "\n\nDu kan ændre denne efter du er logget ind.");
+
 		ButtonType bSignIn = new ButtonType("Log ind", ButtonData.OK_DONE);
 		ButtonType bClose = new ButtonType("Luk", ButtonData.NO);
 		Alert fbRegisterSuccess = new Alert(AlertType.CONFIRMATION, null, bSignIn, bClose);
 		fbRegisterSuccess.initOwner(myStage);
 		fbRegisterSuccess.setTitle("Registrering");
 		fbRegisterSuccess.setHeaderText("Du er nu registreret igennem Facebook!");
-		fbRegisterSuccess.setContentText("\nDit brugernavn er din email og du har modtaget\ndin første adgangskode på email.\nVi du logge ind nu eller lukke programmet?");
-		
+		fbRegisterSuccess.setContentText(
+		        "\nDit brugernavn er din email og du har modtaget\ndin første adgangskode på email.\nVi du logge ind nu eller lukke programmet?");
+
 		Optional<ButtonType> result = fbRegisterSuccess.showAndWait();
-		
+
 		if(result.get() == bSignIn) {
 			Stage stage = new Stage();
 			loginWindow lW = new loginWindow();
@@ -136,8 +132,7 @@ public class FacebookAPI {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-		}
-		else System.exit(0);
-		
+		} else System.exit(0);
+
 	}
 }
