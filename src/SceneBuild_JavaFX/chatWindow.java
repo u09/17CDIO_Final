@@ -12,6 +12,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -52,7 +54,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea messagesArea, inMessageArea;
-	@FXML private TextField inSearchFriends;
+	@FXML private TextField inSearchFriends,inSearchGroups;
 	@FXML private Button bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
 	@FXML private ColorPicker colorPick;
 	private ArrayList<Integer> notification = new ArrayList<Integer>();
@@ -232,31 +234,67 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-
-		this.onlineFriends = fu.getOnlineUsersId();
-		String[] on = fu.getOnlineUsersNickname();
-		if(notification.size() > 0 && checkType == true) {
-			for(int j = 0; j < notification.size(); j++) {
-				System.out.println("blabla " + "notifation" + notification.get(j));
-				on[j] = "(!)" + on[j];
+		if(inSearchFriends.getText().length() == 0){
+			this.onlineFriends = fu.getOnlineUsersId();
+			String[] on = fu.getOnlineUsersNickname();
+			if(notification.size() > 0 && checkType == true) {
+				for(int j = 0; j < notification.size(); j++) {
+					System.out.println("blabla " + "notifation" + notification.get(j));
+					on[j] = "(!)" + on[j];
+				}
 			}
+			ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
+			FilteredList<String> filteredonlineData = new FilteredList<>(onlineItems, s -> true);
+			inSearchFriends.textProperty().addListener(obs->{
+				String filter = inSearchFriends.getText(); 
+				if(filter == null || filter.length() == 0) {
+					filteredonlineData.setPredicate(s -> true);
+				}
+				else {
+					filteredonlineData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
+				}
+			});
+			SortedList<String> sortedonlineData = new SortedList<>(filteredonlineData);
+			friendsOnlineList.setItems(sortedonlineData);
+			onlinePane.setText("Online (" + onlineItems.size() + " venner)");
 		}
-
-		ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
-		friendsOnlineList.setItems(onlineItems);
-		onlinePane.setText("Online (" + onlineItems.size() + " venner)");
-
-		this.offlineFriends = fu.getOfflineUsersId();
-		String[] off = fu.getOfflineUsersNickname();
-		ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
-		friendsOfflineList.setItems(offlineItems);
-		offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
-
-		this.groups = fu.getGroupsId();
-		String[] gro = fu.getGroupsNames();
-		ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
-		groupsList.setItems(groupsItems);
-
+		
+		if(inSearchFriends.getText().length() == 0){
+			this.offlineFriends = fu.getOfflineUsersId();
+			String[] off = fu.getOfflineUsersNickname();
+			ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
+			FilteredList<String> filteredofflineData = new FilteredList<>(offlineItems, s -> true);
+			friendsOfflineList.setItems(offlineItems);
+			inSearchFriends.textProperty().addListener(obs->{
+				String filter = inSearchFriends.getText(); 
+				if(filter == null || filter.length() == 0) {
+					filteredofflineData.setPredicate(s -> true);
+				}
+				else {
+					filteredofflineData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
+				}
+			});
+			SortedList<String> sortedofflineData = new SortedList<>(filteredofflineData);
+			friendsOfflineList.setItems(sortedofflineData);
+			offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
+		}
+		if(inSearchGroups.getText().length() == 0){
+			this.groups = fu.getGroupsId();
+			String[] gro = fu.getGroupsNames();
+			ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
+			FilteredList<String> filteredgroupsData = new FilteredList<>(groupsItems, s -> true);
+			inSearchGroups.textProperty().addListener(obs->{
+				String filter = inSearchGroups.getText(); 
+				if(filter == null || filter.length() == 0) {
+					filteredgroupsData.setPredicate(s -> true);
+				}
+				else {
+					filteredgroupsData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
+				}
+			});
+			SortedList<String> sortedgroupsData = new SortedList<>(filteredgroupsData);
+			groupsList.setItems(sortedgroupsData);
+		}
 	}
 
 	private void setListsFunctions() {
