@@ -95,12 +95,10 @@ public class Function {
 	}
 
 	/**
-	 * Checks whether or not the <code>email</code> has the correct
-	 * structure
+	 * Checks whether or not the <code>email</code> has the correct structure
 	 * 
 	 * @param email
-	 * @return <code>true</code> if it has and <code>false</code>
-	 * if it hasn't.
+	 * @return <code>true</code> if it has and <code>false</code> if it hasn't.
 	 */
 	public boolean checkEmail(String email) {
 		boolean b = email
@@ -111,12 +109,11 @@ public class Function {
 	}
 
 	/**
-	 * Determines whether or not the user is approved to be registered
-	 * by using <code>{@link #checkUsername(String)}</code>, 
-	 * <code>{@link #checkPassword(String)}</code>, 
-	 * <code>{@link #checkEmail(String)}</code> and also the age 
-	 * (using the <code>date</code>) and whether the <code>username</code> 
-	 * already exists.
+	 * Determines whether or not the user is approved to be registered by using
+	 * <code>{@link #checkUsername(String)}</code>,
+	 * <code>{@link #checkPassword(String)}</code>,
+	 * <code>{@link #checkEmail(String)}</code> and also the age (using the
+	 * <code>date</code>) and whether the <code>username</code> already exists.
 	 * 
 	 * @param user
 	 * @param pass1
