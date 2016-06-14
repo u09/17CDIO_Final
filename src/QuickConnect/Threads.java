@@ -14,13 +14,8 @@ public class Threads implements Runnable {
 		while(true) {
 			try {
 				fu.f.timestampInc();
-			} catch(IOException e) {
-				e.printStackTrace();
-			}
-
-			try {
 				Thread.sleep(1000);
-			} catch(InterruptedException ex) {
+			} catch(InterruptedException | IOException ex) {
 				Thread.currentThread().interrupt();
 			}
 		}
