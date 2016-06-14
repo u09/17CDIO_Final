@@ -147,7 +147,7 @@ public class Function {
 			return 6;
 		if(!checkEmail(email))
 			return 7;
-		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 10)
+		if(ChronoUnit.YEARS.between(date, LocalDate.now()) < 13)
 			return 8;
 		bool = getConnector().check("SELECT username FROM users WHERE UPPER(username) LIKE UPPER(?)", user);
 		if(bool)

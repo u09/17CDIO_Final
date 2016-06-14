@@ -51,10 +51,9 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private MenuItem mAbout, mClose, mSettings, mSignOut, mFullScreen, mExitFullScreen;
 	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
-	@FXML private TextArea textArea;
-	@FXML private TextField inMessage, inSearchFriends;
+	@FXML private TextArea messagesArea, inMessageArea;
+	@FXML private TextField inSearchFriends;
 	@FXML private Button bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
-	@FXML private HBox hBoxMessage;
 	@FXML private ColorPicker colorPick;
 	private ArrayList<Integer> notification = new ArrayList<Integer>();
 	private FunctionUser fu;
@@ -97,7 +96,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					            if(checkType == false) {
 						            ArrayList<ArrayList<String>> msg = fu.getGroupMessages(activeUser);
 						            for(int i = 1; i <= msg.get(0).size(); i++) {
-							            textArea.appendText(
+							            messagesArea.appendText(
 		                                        msg.get(1).get(i - 1) + ":\n" + msg.get(0).get(i - 1) + "\n\n");
 						            }
 					            } else {
@@ -105,7 +104,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 						            for(int i = 1; i <= messages.size(); i++) {
 							            for(int t = 1; t <= messages.get(i - 1).size(); t++) {
 								            if(users.get(i - 1) == activeUser)
-									            textArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
+									            messagesArea.appendText(fu.idToNickname(users.get(i - 1)) + ":\n"
 		                                                + messages.get(i - 1).get(t - 1) + "\n\n");
 							            }
 
@@ -147,16 +146,14 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 
 		titledPane.setText("QuickConnect chat");
-		HBox.setHgrow(inMessage, Priority.ALWAYS);
 		bSearchFriends.setId("bSearch");
 		bSearchGroups.setId("bSearch");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
 		if(titledPane.getText().equals("QuickConnect chat"))
-			inMessage.setEditable(false);
-		else inMessage.setEditable(true);
-
-		textArea.setEditable(false);
+			inMessageArea.setEditable(false);
+		else inMessageArea.setEditable(true);
+		
 		setInMessageFunctions();
 		setButtonFunctions();
 		getListsContents();
@@ -165,16 +162,16 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void setInMessageFunctions() {
-		addTextLimiter(inMessage, 900);
-		inMessage.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		addTextLimiter(inMessageArea, 900);
+		inMessageArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if(event.getCode().equals(KeyCode.ENTER)) {
-					String msg = inMessage.getText();
+					String msg = inMessageArea.getText();
 					// FunctionUser.sendMessage(msg, user.UserID,
 		            // titledPane.getText());
 					try {
-						textArea.appendText(fu.getNickName() + ":\n" + msg + "\n\n");
+						messagesArea.appendText(fu.getNickName() + ":\n" + msg + "\n\n");
 					} catch(SQLException e) {
 						e.printStackTrace();
 					}
@@ -187,14 +184,13 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					} catch(SQLException | IOException e) {
 						e.printStackTrace();
 					}
-					inMessage.clear();
+					inMessageArea.clear();
 				}
 			}
 		});
-		inMessage.setId("messageInput");
 	}
 
-	public static void addTextLimiter(final TextField tf, final int maxLength) {
+	public static void addTextLimiter(final TextArea tf, final int maxLength) {
 		tf.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(final ObservableValue<? extends String> ov, final String oldValue,
@@ -203,18 +199,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					String s = tf.getText().substring(0, maxLength);
 					tf.appendText(s);
 				}
-				// final HashMap<String, String> smileys = new HashMap<String,
-		        // String>();
-		        // String msg = tf.getText();
-		        // smileys.put("&:\\)", "<img src='file: Emoji
-		        // Smiley-01.png'/>");
-		        // smileys.put("&:O", "<img src='file:/17CDIO_Final/Emojis/Emoji
-		        // Smiley/Emoji Smiley-02.png'/>");
-		        // smileys.put("&:\\(", "<img
-		        // src='file:/17CDIO_Final/Emojis/Emoji Smiley/Emoji
-		        // Smiley-03.png'/>");
-		        // for(Entry<String, String> smiley : smileys.entrySet())
-		        // msg = msg.replaceAll(smiley.getKey(), smiley.getValue());
 			}
 		});
 	}
@@ -307,7 +291,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				}
 
 				System.out.println("clicked on " + activeUser);
-				textArea.clear();
+				messagesArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
 				try {
 					msgs = fu.getMessages(activeUser, loginTime);
@@ -316,11 +300,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					e1.printStackTrace();
 				}
 				for(int i = 1; i <= msgs.get(0).size(); i++)
-					textArea.appendText(msgs.get(1).get(i - 1) + ":\n" + msgs.get(0).get(i - 1) + "\n\n");
-				textArea.setScrollTop(Double.MAX_VALUE);
+					messagesArea.appendText(msgs.get(1).get(i - 1) + ":\n" + msgs.get(0).get(i - 1) + "\n\n");
+				messagesArea.setScrollTop(Double.MAX_VALUE);
 				if(name != null && !name.isEmpty())
 					titledPane.setText(name);
-				inMessage.setEditable(true);
+				inMessageArea.setEditable(true);
 			}
 		});
 	}
@@ -412,7 +396,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 		if(event.getSource() == colorPick) {
 			String hexColor = "#" + Integer.toHexString(colorPick.getValue().hashCode());
-			inMessage.setStyle("-fx-text-inner-color: " + hexColor + "; -fx-focus-color: " + hexColor + ";");
+			inMessageArea.setStyle("-fx-text-inner-color: " + hexColor + "; -fx-focus-color: " + hexColor + ";");
 		}
 		if(event.getSource() == bAddFriend) {
 			Stage stage = new Stage();

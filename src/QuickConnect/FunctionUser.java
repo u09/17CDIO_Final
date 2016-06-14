@@ -30,17 +30,7 @@ public class FunctionUser {
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
 	}
-
-	static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	static SecureRandom rnd = new SecureRandom();
-
-	public String randomString() {
-		StringBuilder sb = new StringBuilder(10);
-		for(int i = 0; i < 10; i++)
-			sb.append(AB.charAt(rnd.nextInt(AB.length())));
-		return sb.toString();
-	}
-
+	
 	public void activateUser() throws SQLException {
 		con().update("UPDATE users SET user_deleted=0 WHERE user_ID=" + user().getUserID());
 	}
@@ -250,6 +240,20 @@ public class FunctionUser {
 		return msg;
 	}
 
+	public ArrayList<ArrayList<String>> getAllMessages(int id) throws SQLException {
+		ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
+		messages.add(new ArrayList<String>());
+		messages.add(new ArrayList<String>());
+		ResultSet rs = con().select("SELECT message,user_ID FROM messages WHERE ((receiver_id='" + user().getUserID()
+		        + "' AND user_ID=" + id + ") OR" + " (receiver_id='" + id + "' AND user_ID=" + user().getUserID()
+		        + ")) AND message_deleted=0 ORDER BY message_sent ASC");
+		while(rs.next()) {
+			messages.get(0).add(rs.getString("message"));
+			messages.get(1).add(idToNickname(rs.getInt("user_ID")));
+		}
+		return messages;
+	}
+	
 	public void getMessages(ArrayList<ArrayList<String>> msg, ArrayList<Integer> users) throws SQLException {
 		ResultSet rs = con()
 		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
@@ -590,6 +594,15 @@ public class FunctionUser {
 		return rs.getString("nickname");
 	}
 
+	public String randomString() {
+		final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		SecureRandom rnd = new SecureRandom();
+		StringBuilder sb = new StringBuilder(10);
+		for(int i = 0; i < 10; i++)
+			sb.append(AB.charAt(rnd.nextInt(AB.length())));
+		return sb.toString();
+	}
+	
 	public Connector con() {
 		return f.getConnector();
 	}
@@ -597,19 +610,5 @@ public class FunctionUser {
 	public User user() {
 		return f.getUser();
 	}
-
-	public ArrayList<ArrayList<String>> getAllMessages(int id) throws SQLException {
-		ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
-		messages.add(new ArrayList<String>());
-		messages.add(new ArrayList<String>());
-		ResultSet rs = con().select("SELECT message,user_ID FROM messages WHERE ((receiver_id='" + user().getUserID()
-		        + "' AND user_ID=" + id + ") OR" + " (receiver_id='" + id + "' AND user_ID=" + user().getUserID()
-		        + ")) AND message_deleted=0 ORDER BY message_sent ASC");
-		while(rs.next()) {
-			messages.get(0).add(rs.getString("message"));
-			messages.get(1).add(idToNickname(rs.getInt("user_ID")));
-		}
-		return messages;
-	}
-
+	
 }
