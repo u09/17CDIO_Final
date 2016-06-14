@@ -171,8 +171,7 @@ public class FunctionUser {
 		allFriendsId2.add(user().getUserID());
 		int[] ids = f.convertIntegers(allFriendsId2);
 		allFriendsId2.remove(allFriendsId2.indexOf(user().getUserID()));
-		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('" + groupOwner + "','" + groupName
-		        + "','" + f.timestamp() + "')");
+		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('" + groupOwner + "',?,'" + f.timestamp() + "')",new String[]{groupName});
 		ResultSet rs = con()
 		        .select("SELECT group_id FROM groups WHERE owner_id='" + groupOwner + "' ORDER BY group_id DESC");
 		rs.next();

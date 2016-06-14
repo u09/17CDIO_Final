@@ -291,6 +291,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				if(list==friendsOnlineList){
 					checkType=true;
 					activeUser=onlineFriends[id];
+					if(notification.contains(activeUser)) notification.remove(notification.indexOf(activeUser));
 				}
 				else if(list==friendsOfflineList){
 					checkType=true;
@@ -299,11 +300,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				else{
 					checkType=false;
 					activeUser=groups[id];
-				}
-				
-				if(notification.contains(activeUser)){
-					notification.remove(notification.indexOf(activeUser));
-
 				}
 				
 				System.out.println("clicked on " + activeUser);
