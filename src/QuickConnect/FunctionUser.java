@@ -50,7 +50,7 @@ public class FunctionUser {
 	}
 
 	public void activateUserMail(String username) throws SQLException {
-		con().update("UPDATE users SET activated=1 WHERE username='" + username + "'");
+		con().update("UPDATE users SET activated=1 WHERE UPPER(username)= UPPER('" + username.toUpperCase() + "')");
 	}
 
 	public String getEmail(String userIn) throws SQLException {
