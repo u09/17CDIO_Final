@@ -48,7 +48,7 @@ public class Function {
 	}
 
 	/**
-	 * Checks whether or not the username is valid
+	 * Checks whether or not the <code>username</code> is valid.
 	 * 
 	 * @param username
 	 * @return 0 : valid <br>
@@ -68,7 +68,7 @@ public class Function {
 	}
 
 	/**
-	 * Checks whether or not the password is valid
+	 * Checks whether or not the <code>password</code> is valid.
 	 * 
 	 * @param pass
 	 * @return 0 : valid <br>
@@ -95,10 +95,12 @@ public class Function {
 	}
 
 	/**
-	 * Checks whether or not the email has the correct structure
+	 * Checks whether or not the <code>email</code> has the correct
+	 * structure
 	 * 
 	 * @param email
-	 * @return true if it has and false if it hasn't
+	 * @return <code>true</code> if it has and <code>false</code>
+	 * if it hasn't.
 	 */
 	public boolean checkEmail(String email) {
 		boolean b = email
@@ -109,9 +111,12 @@ public class Function {
 	}
 
 	/**
-	 * Determines whether or not the user is approved to be registered by <br>
-	 * checking the username, password, email and also the age and <br>
-	 * whether the user already exists
+	 * Determines whether or not the user is approved to be registered
+	 * by using <code>{@link #checkUsername(String)}</code>, 
+	 * <code>{@link #checkPassword(String)}</code>, 
+	 * <code>{@link #checkEmail(String)}</code> and also the age 
+	 * (using the <code>date</code>) and whether the <code>username</code> 
+	 * already exists.
 	 * 
 	 * @param user
 	 * @param pass1
@@ -151,7 +156,8 @@ public class Function {
 	}
 
 	/**
-	 * Updates all fields in the user object from the User class
+	 * Updates all fields in the <code>user</code> object from the
+	 * <code>{@link #User}</code> class.
 	 * 
 	 * @param id
 	 * @param username
@@ -170,15 +176,16 @@ public class Function {
 	}
 
 	/**
-	 * Hvad gør denne her metode leow?
+	 * Method to digest a <code>String</code> such as a password or message
+	 * using the Message Digest algorithm 5.
 	 * 
-	 * @param str
-	 * @return
+	 * @param string
+	 * @return encrypted <code>String</code>
 	 * @throws NoSuchAlgorithmException
 	 */
-	public String md5(String str) throws NoSuchAlgorithmException {
+	public String md5(String string) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(str.getBytes());
+		md.update(string.getBytes());
 		byte[] digest = md.digest();
 		StringBuffer sb = new StringBuffer();
 		for(byte b : digest) {
@@ -218,9 +225,9 @@ public class Function {
 	}
 
 	/**
-	 * Returns the current timestamp in unix time
+	 * Returns the current <code>timestamp</code> in <code>unix</code> time.
 	 * 
-	 * @return timestamp in type long
+	 * @return <code>timestamp</code> in type <code>long</code>
 	 * @throws IOException
 	 */
 	public long timestamp() throws IOException {
@@ -245,7 +252,7 @@ public class Function {
 	}
 
 	/**
-	 * Method for increasing the timestamp by 1
+	 * Method for increasing the <code>timestamp</code> by 1.
 	 * 
 	 * @throws IOException
 	 */
@@ -274,7 +281,8 @@ public class Function {
 	}
 
 	/**
-	 * Converts an arraylist of integers to a int[]
+	 * Converts an <code>Arraylist</code> of <code>Integers</code> to a
+	 * <code>int[]</code>.
 	 * 
 	 * @param integers
 	 * @return int[]
@@ -288,10 +296,10 @@ public class Function {
 	}
 
 	/**
-	 * Checks whether of not a string only contains numbers
+	 * Checks whether of not a <code>String</code> only contains numbers.
 	 * 
 	 * @param string
-	 * @return true if it does and false if it doesn't
+	 * @return <code>true</code> if it does and <code>false</code> if it doesn't
 	 */
 	public boolean isNumeric(String string) {
 		try {
