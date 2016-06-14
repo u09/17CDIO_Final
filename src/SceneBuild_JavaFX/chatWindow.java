@@ -292,13 +292,15 @@ public class chatWindow implements EventHandler<ActionEvent> {
 				messagesArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
 				try {
-					msgs = fu.getMessages(activeUser, loginTime);
-					msgs = fu.getAllMessages(activeUser);
+					if(list==groupsList) msgs=fu.getGroupMessages(activeUser,0);
+					else msgs=fu.getMessages(activeUser,0);
 				} catch(SQLException e1) {
 					e1.printStackTrace();
 				}
-				for(int i = 1; i <= msgs.get(0).size(); i++)
-					messagesArea.appendText(msgs.get(1).get(i - 1) + ":\n" + msgs.get(0).get(i - 1) + "\n\n");
+				if(msgs.get(0).size()>0){
+					for(int i = 1; i <= msgs.get(0).size(); i++)
+						messagesArea.appendText(msgs.get(1).get(i - 1) + ":\n" + msgs.get(0).get(i - 1) + "\n\n");
+				}
 				messagesArea.setScrollTop(Double.MAX_VALUE);
 				if(name != null && !name.isEmpty())
 					titledPane.setText(name);
