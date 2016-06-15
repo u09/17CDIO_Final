@@ -135,7 +135,6 @@ public class FunctionUser {
 	}
 
 	public int addFriend(String username) throws SQLException {
-		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
 		if(!con().check("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 		        new String[][] { { "s", "" + username } }))
 			return 4;
