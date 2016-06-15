@@ -35,7 +35,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class FacebookAPI implements EventHandler<ActionEvent> {
+public class Google implements EventHandler<ActionEvent> {
 
 	/*
 	 * Facebooks guide:
@@ -56,8 +56,10 @@ public class FacebookAPI implements EventHandler<ActionEvent> {
 	private static final String MY_APP_ID = "153262288412700";
 	private static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
 	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
-	private static final String REQUEST_URI = "https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
-	        + "&response_type=token" + "&redirect_uri=" + REDIRECT_URI + "&scope=email";
+	private static final String REQUEST_URI = "https://accounts.google.com/o/oauth2/device/code";
+	private static final String GOOGLE_CLIENT_ID = "1093871311551-ps463872ot7tl33mct1shrll4vq88itk.apps.googleusercontent.com";
+	private static final String GOOGLE_REQUEST = "https://accounts.google.com/o/oauth2/device/code?client_id="
+	        + GOOGLE_CLIENT_ID + "&scope=email%20profile";
 
 	public void start(Stage stage, FunctionUser fu) {
 		this.fu = fu;
@@ -65,8 +67,8 @@ public class FacebookAPI implements EventHandler<ActionEvent> {
 		CookieHandler.setDefault(manager);
 		FXMLLoader loader1 = new FXMLLoader();
 		FXMLLoader loader2 = new FXMLLoader();
-		loader1.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
-		loader2.setLocation(FacebookAPI.class.getResource("FBFail.fxml"));
+		loader1.setLocation(Google.class.getResource("FacebookFrame.fxml"));
+		loader2.setLocation(Google.class.getResource("FBFail.fxml"));
 		loader1.setController(this);
 		loader2.setController(this);
 		try {
@@ -99,7 +101,7 @@ public class FacebookAPI implements EventHandler<ActionEvent> {
 		});
 		cancel.setOnAction(this);
 		tryAgain.setOnAction(this);
-		
+
 		webEngine.load(REQUEST_URI);
 
 		this.myStage.setScene(myScene);
@@ -151,7 +153,6 @@ public class FacebookAPI implements EventHandler<ActionEvent> {
 
 	}
 
-	
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == tryAgain) {

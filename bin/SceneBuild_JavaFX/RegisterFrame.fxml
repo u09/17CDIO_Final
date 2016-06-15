@@ -30,7 +30,7 @@
             <HBox alignment="CENTER">
                <children>
                   <Label alignment="CENTER" prefHeight="20.0" prefWidth="103.0" text="QuickConnects" />
-                  <Hyperlink fx:id="hyperlink" prefHeight="9.0" prefWidth="139.0" text="vilkår og betingelser" textAlignment="CENTER" />
+                  <Hyperlink fx:id="hyperlink" focusTraversable="false" prefHeight="16.0" prefWidth="139.0" text="vilkår og betingelser" textAlignment="CENTER" />
                   <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="0.0">
                      <effect>
                         <InnerShadow color="#a1d7f8" />
