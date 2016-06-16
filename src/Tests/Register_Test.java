@@ -18,7 +18,7 @@ public class Register_Test {
 		Function f = new Function(u);
 		FunctionUser fu = new FunctionUser(f);
 		
-		fu.con().update("DELETE FROM users WHERE username=test");
+		fu.con().update("DELETE FROM users WHERE username='test'");
 		
 		final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		final String input = "01-01-2000";
