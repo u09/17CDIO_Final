@@ -20,6 +20,10 @@ public class changePassword_Test {
 		String newPass = "newTest1234";
 		u.setUserID(1);
 		
+		fu.con().update("UPDATE users SET password='"+f.md5(oldPass)+"WHERE user_id="+u.getUserID());
+		
+		
+		
 		ResultSet rs = fu.con().select("SELECT password FROM users WHERE user_id=1");
 		rs.next();
 		System.out.println(rs.getString("password")+ "--> OLD PASSWORD MD5");
