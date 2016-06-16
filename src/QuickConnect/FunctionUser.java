@@ -29,7 +29,7 @@ public class FunctionUser {
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
 	}
-	
+
 	public void activateUser() throws SQLException {
 		con().update("UPDATE users SET user_deleted=0 WHERE user_ID=" + user().getUserID());
 	}
@@ -134,7 +134,6 @@ public class FunctionUser {
 	}
 
 	public int addFriend(String username) throws SQLException {
-		// DENNE FUNKTION SKAL RETTES, DEN VIRKER IKKE KORREKT
 		if(!con().check("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 		        new String[][] { { "s", "" + username } }))
 			return 4;
@@ -171,7 +170,8 @@ public class FunctionUser {
 		allFriendsId2.add(user().getUserID());
 		int[] ids = f.convertIntegers(allFriendsId2);
 		allFriendsId2.remove(allFriendsId2.indexOf(user().getUserID()));
-		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('" + groupOwner + "',?,'" + f.timestamp() + "')",new String[]{groupName});
+		con().update("INSERT INTO groups(owner_id,group_name, group_created) VALUES ('" + groupOwner + "',?,'"
+		        + f.timestamp() + "')", new String[] { groupName });
 		ResultSet rs = con()
 		        .select("SELECT group_id FROM groups WHERE owner_id='" + groupOwner + "' ORDER BY group_id DESC");
 		rs.next();
@@ -251,7 +251,7 @@ public class FunctionUser {
 		}
 		return messages;
 	}
-	
+
 	public void getMessages(ArrayList<ArrayList<String>> msg, ArrayList<Integer> users) throws SQLException {
 		ResultSet rs = con()
 		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
@@ -600,7 +600,7 @@ public class FunctionUser {
 			sb.append(AB.charAt(rnd.nextInt(AB.length())));
 		return sb.toString();
 	}
-	
+
 	public Connector con() {
 		return f.getConnector();
 	}
@@ -608,5 +608,5 @@ public class FunctionUser {
 	public User user() {
 		return f.getUser();
 	}
-	
+
 }

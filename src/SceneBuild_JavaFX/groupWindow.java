@@ -17,7 +17,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -30,7 +29,6 @@ public class groupWindow implements EventHandler<ActionEvent> {
 	@FXML private TextField inGroupName;
 	@FXML private Button bAdd, bRemove, bCreate;
 	@FXML private ListView<String> allFriends, groupMembers;
-	@FXML private TableView myGroups;
 	private FunctionUser fu;
 	private ArrayList<Integer> allFriendsId1 = new ArrayList<Integer>(), allFriendsId2 = new ArrayList<Integer>();
 
@@ -140,7 +138,6 @@ public class groupWindow implements EventHandler<ActionEvent> {
 				myStage.close();
 
 			} catch(SQLException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

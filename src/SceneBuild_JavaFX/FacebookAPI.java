@@ -1,6 +1,8 @@
 package SceneBuild_JavaFX;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -18,6 +20,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,11 +29,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class FacebookAPI {
+public class FacebookAPI implements EventHandler<ActionEvent> {
 
 	/*
 	 * Facebooks guide:
@@ -38,53 +44,63 @@ public class FacebookAPI {
 	 */
 
 	private Stage myStage;
-	private Scene myScene;
-	WebView facebookFrame;
+	private Scene myScene, secondScene;
+	private AnchorPane fbFail;
+	private WebView facebookFrame;
 	private static WebEngine webEngine;
+	CookieManager manager = new CookieManager();
 	private FunctionUser fu;
 	@FXML private WebView browser;
+	@FXML private Hyperlink cancel, tryAgain;
 
-	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
-	private static String USER_ACCESS_TOKEN;
-	// Facebook App
 	private static final String MY_APP_ID = "153262288412700";
-	public static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
+	private static final String MY_APP_SECRET = "29b8cdc1c083c8de50d411257829a786";
+	private static final String REDIRECT_URI = "https://www.facebook.com/connect/login_success.html";
+	private static final String REQUEST_URI = "https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
+	        + "&response_type=token" + "&redirect_uri=" + REDIRECT_URI + "&scope=email";
 
 	public void start(Stage stage, FunctionUser fu) {
 		this.fu = fu;
 		this.myStage = stage;
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
-		loader.setController(this);
+		CookieHandler.setDefault(manager);
+		FXMLLoader loader1 = new FXMLLoader();
+		FXMLLoader loader2 = new FXMLLoader();
+		loader1.setLocation(FacebookAPI.class.getResource("FacebookFrame.fxml"));
+		loader2.setLocation(FacebookAPI.class.getResource("FBFail.fxml"));
+		loader1.setController(this);
+		loader2.setController(this);
 		try {
-			facebookFrame = (WebView) loader.load();
+			facebookFrame = loader1.load();
+			fbFail = loader2.load();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		this.myScene = new Scene(facebookFrame);
+		this.secondScene = new Scene(fbFail);
 
 		webEngine = browser.getEngine();
 		browser.setContextMenuEnabled(true);
-
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 			@Override
-			public void changed(ObservableValue ov, State oldState, State newState) {
+			public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
 				if(newState == Worker.State.SUCCEEDED) {
 					String url = webEngine.getLocation();
 					myStage.setTitle(url);
-
 					if(url.contains("#access_token")) {
 						String accessUrl = webEngine.getLocation();
 						String token = accessUrl.substring(accessUrl.indexOf("#access_token") + 1);
-						String code = accessUrl.substring(accessUrl.indexOf("&code") + 6);
 						getUserInfo(token);
+					}
+					if(url.contains("error_code=200")) {
+						myStage.setScene(secondScene);
 					}
 				}
 			}
 		});
-
-		webEngine.load("https://www.facebook.com/dialog/oauth?" + "client_id=" + MY_APP_ID + "&display=popup"
-		        + "&response_type=code%20token" + "&redirect_uri=" + REDIRECT_URI + "&scope=email");
+		cancel.setOnAction(this);
+		tryAgain.setOnAction(this);
+		
+		webEngine.load(REQUEST_URI);
 
 		this.myStage.setScene(myScene);
 		this.myStage.show();
@@ -121,7 +137,6 @@ public class FacebookAPI {
 		fbRegisterSuccess.setHeaderText("Du er nu registreret igennem Facebook!");
 		fbRegisterSuccess.setContentText(
 		        "\nDit brugernavn er din email og du har modtaget\ndin første adgangskode på email.\nVi du logge ind nu eller lukke programmet?");
-
 		Optional<ButtonType> result = fbRegisterSuccess.showAndWait();
 
 		if(result.get() == bSignIn) {
@@ -134,5 +149,25 @@ public class FacebookAPI {
 			}
 		} else System.exit(0);
 
+	}
+
+	
+	@Override
+	public void handle(ActionEvent event) {
+		if(event.getSource() == tryAgain) {
+			manager.getCookieStore().removeAll();
+			webEngine.load(REQUEST_URI);
+			myStage.setScene(myScene);
+		}
+		if(event.getSource() == cancel) {
+			Stage stage = new Stage();
+			registerWindow rW = new registerWindow();
+			myStage.close();
+			try {
+				rW.start(stage, fu);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

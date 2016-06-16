@@ -37,6 +37,7 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 	@FXML private TextField inNickname;
 	@FXML private PasswordField inCurrentPass, inNewPass, inNewPass2, inCurrentPass2;
 	@FXML private Button bSaveNickname, bSavePass, bDeleteUser;
+	@SuppressWarnings("rawtypes")
 	@FXML private ListView blockedList;
 	@FXML private ContextMenu rightClick;
 	@FXML private MenuItem unBlock;
@@ -97,7 +98,6 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 				        try {
 					        fu.unBlockContact(fu.usernameToId(name));
 				        } catch(SQLException e) {
-					        // TODO Auto-generated catch block
 					        e.printStackTrace();
 				        }
 				        Items.remove(blockedList.getSelectionModel().getSelectedItem());
@@ -105,27 +105,8 @@ public class settingsWindow extends chatWindow implements EventHandler<ActionEve
 		        });
 			}
 		});
-
-		// System.out.println(blockedList.getSelectionModel().getSelectedItem());
-		// String name = (String)
-		// blockedList.getSelectionModel().getSelectedItem();
-		// System.out.println(name);
-		// int id = fu.usernameToID(name);
-		// System.out.println(name);
-		// unBlock.setText("Fjern blokeringen");
-		// unBlock.setOnAction(new EventHandler<ActionEvent>() {
-		// @Override
-		// public void handle(ActionEvent event) {
-		// try {
-		// fu.unBlockContact(id);
-		// } catch (SQLException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// });
 	}
-
+	
 	private void setButtonFunctions() {
 		EventHandler<KeyEvent> keyEvent = new EventHandler<KeyEvent>() {
 			@Override

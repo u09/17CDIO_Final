@@ -51,8 +51,8 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private ListView<String> friendsOnlineList, friendsOfflineList, groupsList;
 	@FXML private TitledPane titledPane, onlinePane, offlinePane;
 	@FXML private TextArea messagesArea, inMessageArea;
-	@FXML private TextField inSearchFriends,inSearchGroups;
-	@FXML private Button bSearchRecent, bSearchFriends, bSearchGroups, bAddFriend, bAddGroup;
+	@FXML private TextField inSearchFriends, inSearchGroups;
+	@FXML private Button bAddFriend, bAddGroup;
 	@FXML private ColorPicker colorPick;
 	private ArrayList<Integer> notification = new ArrayList<Integer>();
 	private FunctionUser fu;
@@ -143,14 +143,12 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		}
 
 		titledPane.setText("QuickConnect chat");
-		bSearchFriends.setId("bSearch");
-		bSearchGroups.setId("bSearch");
 		bAddFriend.setId("bAddPlus");
 		bAddGroup.setId("bAddPlus");
 		if(titledPane.getText().equals("QuickConnect chat"))
 			inMessageArea.setEditable(false);
 		else inMessageArea.setEditable(true);
-		
+
 		setInMessageFunctions();
 		setButtonFunctions();
 		getListsContents();
@@ -229,7 +227,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	}
 
 	private void getListsContents() throws SQLException, IOException {
-		if(inSearchFriends.getText().length() == 0){
+		if(inSearchFriends.getText().length() == 0) {
 			this.onlineFriends = fu.getOnlineUsersId();
 			String[] on = fu.getOnlineUsersNickname();
 			if(notification.size() > 0 && checkType == true) {
@@ -240,12 +238,11 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			}
 			ObservableList<String> onlineItems = FXCollections.observableArrayList(on);
 			FilteredList<String> filteredonlineData = new FilteredList<>(onlineItems, s -> true);
-			inSearchFriends.textProperty().addListener(obs->{
-				String filter = inSearchFriends.getText(); 
+			inSearchFriends.textProperty().addListener(obs -> {
+				String filter = inSearchFriends.getText();
 				if(filter == null || filter.length() == 0) {
 					filteredonlineData.setPredicate(s -> true);
-				}
-				else {
+				} else {
 					filteredonlineData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
 				}
 			});
@@ -253,19 +250,18 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			friendsOnlineList.setItems(sortedonlineData);
 			onlinePane.setText("Online (" + onlineItems.size() + " venner)");
 		}
-		
-		if(inSearchFriends.getText().length() == 0){
+
+		if(inSearchFriends.getText().length() == 0) {
 			this.offlineFriends = fu.getOfflineUsersId();
 			String[] off = fu.getOfflineUsersNickname();
 			ObservableList<String> offlineItems = FXCollections.observableArrayList(off);
 			FilteredList<String> filteredofflineData = new FilteredList<>(offlineItems, s -> true);
 			friendsOfflineList.setItems(offlineItems);
-			inSearchFriends.textProperty().addListener(obs->{
-				String filter = inSearchFriends.getText(); 
+			inSearchFriends.textProperty().addListener(obs -> {
+				String filter = inSearchFriends.getText();
 				if(filter == null || filter.length() == 0) {
 					filteredofflineData.setPredicate(s -> true);
-				}
-				else {
+				} else {
 					filteredofflineData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
 				}
 			});
@@ -273,17 +269,16 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			friendsOfflineList.setItems(sortedofflineData);
 			offlinePane.setText("Offline (" + offlineItems.size() + " venner)");
 		}
-		if(inSearchGroups.getText().length() == 0){
+		if(inSearchGroups.getText().length() == 0) {
 			this.groups = fu.getGroupsId();
 			String[] gro = fu.getGroupsNames();
 			ObservableList<String> groupsItems = FXCollections.observableArrayList(gro);
 			FilteredList<String> filteredgroupsData = new FilteredList<>(groupsItems, s -> true);
-			inSearchGroups.textProperty().addListener(obs->{
-				String filter = inSearchGroups.getText(); 
+			inSearchGroups.textProperty().addListener(obs -> {
+				String filter = inSearchGroups.getText();
 				if(filter == null || filter.length() == 0) {
 					filteredgroupsData.setPredicate(s -> true);
-				}
-				else {
+				} else {
 					filteredgroupsData.setPredicate(s -> s.toLowerCase().contains(filter.toLowerCase()));
 				}
 			});
@@ -307,30 +302,30 @@ public class chatWindow implements EventHandler<ActionEvent> {
 					return;
 
 				String name = list.getSelectionModel().getSelectedItem();
-				if(list==friendsOnlineList){
-					checkType=true;
-					activeUser=onlineFriends[id];
-					if(notification.contains(activeUser)) notification.remove(notification.indexOf(activeUser));
+				if(list == friendsOnlineList) {
+					checkType = true;
+					activeUser = onlineFriends[id];
+					if(notification.contains(activeUser))
+						notification.remove(notification.indexOf(activeUser));
+				} else if(list == friendsOfflineList) {
+					checkType = true;
+					activeUser = offlineFriends[id];
+				} else {
+					checkType = false;
+					activeUser = groups[id];
 				}
-				else if(list==friendsOfflineList){
-					checkType=true;
-					activeUser=offlineFriends[id];
-				}
-				else{
-					checkType=false;
-					activeUser=groups[id];
-				}
-				
+
 				System.out.println("clicked on " + activeUser);
 				messagesArea.clear();
 				ArrayList<ArrayList<String>> msgs = new ArrayList<ArrayList<String>>();
 				try {
-					if(list==groupsList) msgs=fu.getGroupMessages(activeUser,0);
-					else msgs=fu.getMessages(activeUser,0);
+					if(list == groupsList)
+						msgs = fu.getGroupMessages(activeUser, 0);
+					else msgs = fu.getMessages(activeUser, 0);
 				} catch(SQLException e1) {
 					e1.printStackTrace();
 				}
-				if(msgs.get(0).size()>0){
+				if(msgs.get(0).size() > 0) {
 					for(int i = 1; i <= msgs.get(0).size(); i++)
 						messagesArea.appendText(msgs.get(1).get(i - 1) + ":\n" + msgs.get(0).get(i - 1) + "\n\n");
 				}
@@ -531,14 +526,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		if(event.getSource() == bSearchFriends) {
-			try {
-				fu.searchFriends(inSearchFriends.getText());
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-
 		}
 	}
 

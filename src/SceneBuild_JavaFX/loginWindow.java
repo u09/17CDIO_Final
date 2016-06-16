@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 public class loginWindow extends Application implements EventHandler<ActionEvent> {
 
 	private Stage myStage;
-	private Scene myScene, myScene2;
+	private Scene myScene;
 	private VBox loginFrame;
 	@FXML private Label lTitle, lUser, lPass, lNoUser, lRegister;
 	@FXML private Button bLogin;
@@ -84,13 +84,12 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 
 			if(bool == true) {
 				try {
-					activated = fu.con()
-					        .check("SELECT username FROM users WHERE UPPER(username)= UPPER('" + userIn.toUpperCase() + "') AND activated=1");
+					activated = fu.con().check("SELECT username FROM users WHERE UPPER(username)= UPPER('"
+					        + userIn.toUpperCase() + "') AND activated=1");
 				} catch(SQLException e2) {
 					e2.printStackTrace();
 				}
 				if(activated) {
-					User user = null;
 					try {
 						ResultSet sql = fu.con().select(
 						        "SELECT user_ID,username,email,nickname,age,user_created FROM users WHERE UPPER(username) LIKE UPPER(?) AND password=?",
@@ -112,15 +111,14 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 				} else {
 					ResultSet mail = null;
 					try {
-						mail = fu.con().select("SELECT email FROM users WHERE UPPER(username) = UPPER('" + userIn.toUpperCase() + "')");
+						mail = fu.con().select("SELECT email FROM users WHERE UPPER(username) = UPPER('"
+						        + userIn.toUpperCase() + "')");
 					} catch(SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					try {
 						mail.next();
 					} catch(SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					String email = null;
@@ -128,7 +126,6 @@ public class loginWindow extends Application implements EventHandler<ActionEvent
 
 						email = mail.getString("email");
 					} catch(SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					myStage.close();

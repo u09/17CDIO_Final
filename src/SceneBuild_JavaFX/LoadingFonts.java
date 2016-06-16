@@ -15,10 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class LoadingFonts implements ActionListener {
+	@SuppressWarnings("rawtypes")
 	JComboBox fontCombo;
 	JLabel label;
 	Font font;
 
+	@SuppressWarnings({"unchecked","rawtypes"})
 	public LoadingFonts() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String[] fontNames = ge.getAvailableFontFamilyNames();
@@ -40,6 +42,7 @@ public class LoadingFonts implements ActionListener {
 		return panel;
 	}
 
+	@SuppressWarnings("serial")
 	private JLabel getLabel() {
 		String name = (String) fontCombo.getItemAt(0);
 		font = new Font(name, Font.PLAIN, 24);
