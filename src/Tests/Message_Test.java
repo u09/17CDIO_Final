@@ -19,10 +19,9 @@ public class Message_Test {
 		u.setUserID(2);
 		u.setUsername("test2");
 		
-		fu.con().update("DELETE FROM messages WHERE user_id=2");
+		fu.con().update("DELETE FROM messages WHERE user_id=2 AND receiver_id=1");
 		
 		for(int i= 1; i<10; i++){
-			fu.sendMessage("Besked"+i, 1);
 		}
 		
 		System.out.println(samil());
