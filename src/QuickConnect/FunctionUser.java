@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class FunctionUser {
 	public Function f;
-	private ArrayList<Integer> messages;
-
+	
 	public FunctionUser(Function f) {
 		this.f = f;
 	}

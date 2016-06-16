@@ -289,31 +289,14 @@ public class Function {
 	 */
 	public int[] convertIntegers(ArrayList<Integer> integers) {
 		int[] ret = new int[integers.size()];
-		for(int i = 0; i < ret.length; i++) {
-			ret[i] = integers.get(i).intValue();
-		}
+		for(int i = 0; i < ret.length; i++) ret[i] = integers.get(i).intValue();
 		return ret;
 	}
-
-	/**
-	 * Checks whether of not a <code>String</code> only contains numbers.
-	 * 
-	 * @param string
-	 * @return <code>true</code> if it does and <code>false</code> if it doesn't
-	 */
-	public boolean isNumeric(String string) {
-		try {
-			int nr = Integer.parseInt(string);
-		} catch(NumberFormatException nfe) {
-			return false;
-		}
-		return true;
-	}
-
+	
 	public Connector getConnector() {
 		return connector;
 	}
-
+	
 	public User getUser() {
 		return this.user;
 	}

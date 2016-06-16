@@ -1,7 +1,7 @@
 package QuickConnect;
 
 public class User {
-	private int UserID, GroupID;
+	private int UserID;
 	private String Username;
 	private String Email;
 	private String Nickname;

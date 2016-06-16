@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import QuickConnect.FunctionUser;
 import QuickConnect.Threads;
 import javafx.application.Platform;
@@ -39,8 +38,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class chatWindow implements EventHandler<ActionEvent> {
@@ -68,7 +65,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	@FXML private ContextMenu contextMenu;
 	@FXML private MenuItem mDeleteOn, mDeleteOff, mBlockOn, mBlockOff, mInfoOn, mInfoOff, mLeave, mInfoGroup,
 	        mDeleteGroup, mThrow;
-	private long loginTime;
 	private boolean checkType;
 
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
@@ -77,7 +73,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 		this.myStage.setTitle("QuickConnect - user: " + fu.user().getUsername());
 		this.myStage.setMinHeight(450);
 		this.myStage.setMinWidth(425);
-		this.loginTime = fu.f.timestamp();
 		fu.activateUser();
 		fu.setUserOnline();
 
@@ -541,7 +536,6 @@ public class chatWindow implements EventHandler<ActionEvent> {
 			try {
 				fu.searchFriends(inSearchFriends.getText());
 			} catch(SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
