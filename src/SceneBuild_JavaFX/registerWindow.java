@@ -120,7 +120,7 @@ public class registerWindow implements EventHandler<ActionEvent> {
 				else if(check == 7)
 					msg = "Ugyldigt email";
 				else if(check == 8)
-					msg = "Du skal være over 10 år for at oprette en bruger";
+					msg = "Du skal være 10 år eller over for at oprette en bruger";
 				else if(check == 9)
 					msg = "Brugeren eksisterer allerede i systemet";
 				else msg = "Du er registreret";
