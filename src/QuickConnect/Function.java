@@ -242,7 +242,6 @@ public class Function {
 			}
 			String body = new String(baos.toByteArray(), encoding);
 			timestamp = Long.parseLong(body);
-			System.out.println(timestamp);
 			return timestamp;
 		}
 		return timestamp;

@@ -91,8 +91,6 @@ public class FunctionUser {
 			String em = rs.getString("password");
 			arr = em.replace("\n", ",");
 		}
-		System.out.println(arr);
-		System.out.println(f.md5(oldPass));
 
 		if(f.checkPassword(newPass) == 0 && newPass.equals(newPass2) && f.md5(oldPass).equals(arr)) {
 			con().update("UPDATE users SET password=? WHERE user_id =?", new String[] { "s", f.md5(newPass) },
@@ -341,7 +339,6 @@ public class FunctionUser {
 			String uName = rs.getString("nickname");
 			allFriendsUsername.add(uName);
 		}
-		f.printArrayList(allFriendsUsername);
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
 

@@ -23,12 +23,14 @@ public class Register_Test {
 		final LocalDate localDate = LocalDate.parse(input, DATE_FORMAT);
 		
 		int i =f.checkRegister("test", "Test1234", "Test1234", "test123@gmail.com", localDate);
-		if(i==10) fu.addUser("test", "Test1234", "test123@gmail.com", 19);
-		ResultSet rs = fu.con().select("SELECT email FROM users WHERE username='test'");
-		rs.next();
-		System.out.println(rs.getString("email"));
+		System.out.println(i);
+		if(i==10){
+			fu.addUser("test", "Test1234", "test123@gmail.com", 19);
+			ResultSet rs = fu.con().select("SELECT email FROM users WHERE username='test'");
+			rs.next();
+			System.out.println(rs.getString("email"));
+		} else{
+			System.out.println("Opfylder ikke betingelser");
+		}
 	}
-	
-	
-	
 }

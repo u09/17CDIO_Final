@@ -14,10 +14,9 @@ public class Message_Test {
 	static User u = new User();
 	static Function f = new Function(u);
 	static FunctionUser fu = new FunctionUser(f);
-	public static void main(String[] args) throws SQLException, IOException {
 	
-		
-		u.setUserID(38);
+	public static void main(String[] args) throws SQLException, IOException {
+		u.setUserID(2);
 		u.setUsername("Samilesma");
 		
 		for(int i= 1; i<10; i++){
@@ -34,11 +33,9 @@ public class Message_Test {
 			      for(int j = 0; j < fu.getAllMessages(1).get(i).size(); j++){
 			          result += fu.getAllMessages(1).get(i).get(j);
 			      }
-			      // System.out.println();
 			      result += "\n";
 			  }
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	      return result;
