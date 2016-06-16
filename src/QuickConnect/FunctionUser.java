@@ -16,7 +16,7 @@ public class FunctionUser {
 
 	public boolean addUser(String user, String pass, String email, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,'',?,0,?,0,0,0)", new String[] { "s", user },
+		con().update("INSERT INTO users VALUES (0,?,?,?,nicknamedefaultnull,?,0,?,0,0,0)", new String[] { "s", user },
 		        new String[] { "s", f.md5(pass) }, new String[] { "s", email }, new String[] { "i", "" + age },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
@@ -24,7 +24,7 @@ public class FunctionUser {
 
 	public boolean addFacebookUser(String email, String ranPass, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,'',?,0,?,0,0,1)", new String[] { "s", email },
+		con().update("INSERT INTO users VALUES (0,?,?,?,nicknamedefaultnull,?,0,?,0,0,1)", new String[] { "s", email },
 		        new String[] { "s", f.md5(ranPass) }, new String[] { "s", email }, new String[] { "i", "" + age },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
@@ -387,7 +387,7 @@ public class FunctionUser {
 	public String[] getOnlineUsersNickname() throws SQLException, IOException {
 		ArrayList<String> onlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
-		        .select("SELECT user_ID, nickname FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
+		        .select("SELECT user_ID, nickname,username FROM users WHERE (user_ID = ANY(SELECT user_id FROM contacts WHERE contact_id = "
 		                + user().getUserID()
 		                + " AND status= 1) OR user_id = ANY(SELECT contact_id FROM contacts WHERE user_id = "
 		                + user().getUserID() + " AND status= 1))  AND online=1");
@@ -397,7 +397,10 @@ public class FunctionUser {
 			        .check("SELECT user_ID FROM users WHERE user_ID=" + uid + " AND last_on<" + (f.timestamp() - 10));
 			if(chk)
 				con().update("UPDATE users SET online=0 WHERE user_ID=" + uid);
-			else onlineUsers.add(rs.getString("nickname"));
+			else {
+				if(rs.getString("nickname").equals("nicknamedefaultnull")) onlineUsers.add(rs.getString("username"));
+				else onlineUsers.add(rs.getString("nickname"));
+			}
 		}
 		return onlineUsers.toArray(new String[onlineUsers.size()]);
 	}
@@ -417,12 +420,14 @@ public class FunctionUser {
 	public String[] getOfflineUsersNickname() throws SQLException {
 		ArrayList<String> offlineUsers = new ArrayList<String>();
 		ResultSet rs = con()
-		        .select("SELECT nickname FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "
+		        .select("SELECT nickname, username FROM users  WHERE (user_id = ANY(SELECT user_ID FROM contacts WHERE contact_id = "
 		                + user().getUserID()
 		                + " AND status= 1) OR user_ID = ANY(SELECT contact_id FROM contacts WHERE user_ID = "
 		                + user().getUserID() + " AND status= 1))  AND online=0");
 		while(rs.next())
-			offlineUsers.add(rs.getString("nickname"));
+			if(rs.getString("nickname").equals("nicknamedefaultnull")) offlineUsers.add(rs.getString("username"));
+			else offlineUsers.add(rs.getString("nickname"));
+
 		return offlineUsers.toArray(new String[offlineUsers.size()]);
 	}
 
