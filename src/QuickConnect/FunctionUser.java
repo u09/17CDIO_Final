@@ -351,7 +351,6 @@ public class FunctionUser {
 			String nName = rs.getString("Nickname");
 			allMembersNickname.add(nName);
 		}
-		f.printArrayList(allMembersNickname);
 		return allMembersNickname.toArray(new String[allMembersNickname.size()]);
 	}
 

@@ -22,12 +22,13 @@ public class Message_Test {
 		fu.con().update("DELETE FROM messages WHERE user_id=2 AND receiver_id=1");
 		
 		for(int i= 1; i<10; i++){
+			fu.sendMessage("BeskedTest"+i+" ", 1);
 		}
 		
-		System.out.println(samil());
+		System.out.println(test());
 	}
 	
-	public static String samil(){
+	public static String test(){
 	      String result = "";
 	      try {
 			for(int i = 0; i < fu.getAllMessages(1).size(); i++){
