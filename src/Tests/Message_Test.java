@@ -17,7 +17,6 @@ public class Message_Test {
 	
 	public static void main(String[] args) throws SQLException, IOException {
 		u.setUserID(2);
-		u.setUsername("test2");
 		
 		fu.con().update("DELETE FROM messages WHERE user_id=2 AND receiver_id=1");
 		

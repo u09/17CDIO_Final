@@ -13,6 +13,7 @@ public class group_Test {
 	static Function f = new Function(u);
 	static FunctionUser fu = new FunctionUser(f);
 	public static void main(String[] args) throws SQLException, IOException {
+		ArrayList<Integer> allFriendsId = new ArrayList<>();
 		
 		fu.con().update("TRUNCATE TABLE group_members");
 		fu.con().update("TRUNCATE TABLE group_messages");
@@ -20,11 +21,12 @@ public class group_Test {
 		fu.con().update("ALTER TABLE groups AUTO_INCREMENT = 1");
 
 		u.setUserID(1);
-		ArrayList<Integer> allFriendsId = new ArrayList<>();
 		allFriendsId.add(2);
 		fu.createGroup(u.getUserID(), "TestGruppe", allFriendsId);
+		System.out.println("Gruppe navnet er: "+fu.getGroupsNames()[0]);
 
 		fu.sendGroupMessage("Testbesked ", 1);
+		u.setUserID(2);
 		fu.sendGroupMessage("Testbesked 2", 1);
 		
 		System.out.println("Beskeder i gruppe 1: " + test() +"\n");
