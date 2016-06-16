@@ -17,7 +17,7 @@ public class Message_Test {
 	
 	public static void main(String[] args) throws SQLException, IOException {
 		u.setUserID(2);
-		u.setUsername("Samilesma");
+		u.setUsername("test2");
 		
 		for(int i= 1; i<10; i++){
 			fu.sendMessage("Besked"+i, 1);

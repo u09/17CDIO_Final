@@ -13,7 +13,7 @@ public class Friends_Test {
 		User u = new User();
 		Function f = new Function(u);
 		FunctionUser fu = new FunctionUser(f);
-
+		fu.con().update("DELETE FROM contacts WHERE user_ID=1 AND contact_ID=2");
 		u.setUserID(1);
 
 		fu.addFriend("test2");
