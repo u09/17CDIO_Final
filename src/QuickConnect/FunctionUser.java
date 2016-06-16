@@ -16,7 +16,7 @@ public class FunctionUser {
 
 	public boolean addUser(String user, String pass, String email, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,nicknamedefaultnull,?,0,?,0,0,0)", new String[] { "s", user },
+		con().update("INSERT INTO users VALUES (0,?,?,?,'nicknamedefaultnull',?,0,?,0,0,0)", new String[] { "s", user },
 		        new String[] { "s", f.md5(pass) }, new String[] { "s", email }, new String[] { "i", "" + age },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
@@ -24,7 +24,7 @@ public class FunctionUser {
 
 	public boolean addFacebookUser(String email, String ranPass, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
-		con().update("INSERT INTO users VALUES (0,?,?,?,nicknamedefaultnull,?,0,?,0,0,1)", new String[] { "s", email },
+		con().update("INSERT INTO users VALUES (0,?,?,?,'nicknamedefaultnull',?,0,?,0,0,1)", new String[] { "s", email },
 		        new String[] { "s", f.md5(ranPass) }, new String[] { "s", email }, new String[] { "i", "" + age },
 		        new String[] { "l", Long.toString(f.timestamp()) });
 		return false;
