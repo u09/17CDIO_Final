@@ -97,11 +97,10 @@ public class FacebookAPI implements EventHandler<ActionEvent> {
 				}
 			}
 		});
-		cancel.setOnAction(this);
-		tryAgain.setOnAction(this);
-		
 		webEngine.load(REQUEST_URI);
 
+		cancel.setOnAction(this);
+		tryAgain.setOnAction(this);
 		this.myStage.setScene(myScene);
 		this.myStage.show();
 	}
