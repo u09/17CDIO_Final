@@ -445,7 +445,7 @@ public class FunctionUser {
 	}
 
 	/**
-	 * 
+	 * It gets messages depending on the timestamp
 	 * @param id
 	 * @param timestamp
 	 * @return
@@ -464,7 +464,13 @@ public class FunctionUser {
 		}
 		return messages;
 	}
-
+	
+	/**
+	 * Gets groupmessages and return an arrayslist with the group messages
+	 * @param groupId
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<ArrayList<String>> getGroupMessages(int groupId) throws SQLException {
 		ArrayList<ArrayList<String>> msg = new ArrayList<ArrayList<String>>();
 		ResultSet rs = con()
@@ -480,7 +486,14 @@ public class FunctionUser {
 		}
 		return msg;
 	}
-
+	
+	/**
+	 * Gets group messages dependent on the timestamp
+	 * @param id
+	 * @param timestamp
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<ArrayList<String>> getGroupMessages(int id, long timestamp) throws SQLException {
 		ArrayList<ArrayList<String>> groupMessages = new ArrayList<ArrayList<String>>();
 		groupMessages.add(new ArrayList<String>());
@@ -493,7 +506,12 @@ public class FunctionUser {
 		}
 		return groupMessages;
 	}
-
+	
+	/**
+	 * Gets all friends id in a arraylist
+	 * @return ArrayList of allFriendsId
+	 * @throws SQLException
+	 */
 	public ArrayList<Integer> getAllFriendsId() throws SQLException {
 		ArrayList<Integer> allFriendsId = new ArrayList<Integer>();
 		ResultSet rs = con()
@@ -506,7 +524,12 @@ public class FunctionUser {
 		f.printArrayList(allFriendsId);
 		return allFriendsId;
 	}
-
+	
+	/**
+	 * create a select statement to get nickname from users friends
+	 * @return array with all friends
+	 * @throws SQLException
+	 */
 	public String[] getAllFriendsNickname() throws SQLException {
 		ArrayList<String> allFriendsUsername = new ArrayList<String>();
 		ResultSet rs = con()
@@ -520,7 +543,13 @@ public class FunctionUser {
 		}
 		return allFriendsUsername.toArray(new String[allFriendsUsername.size()]);
 	}
-
+	
+	/**
+	 * Create a select statement to get all members' nickname of a group 
+	 * @param groupID
+	 * @return array with members nickname
+	 * @throws SQLException
+	 */
 	public String[] getAllMembersNickname(int groupID) throws SQLException {
 		ArrayList<String> allMembersNickname = new ArrayList<String>();
 		ResultSet rs = con().select("SELECT nickname FROM users WHERE user_id=ANY(SELECT user_id FROM group_members"
