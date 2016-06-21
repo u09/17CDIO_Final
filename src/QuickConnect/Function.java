@@ -19,11 +19,21 @@ public class Function {
 	private User user;
 	private long timestamp = 0;
 
+	/**
+	 * Constructor for the function class.
+	 * +
+	 * @param user
+	 */
 	public Function(User user) {
 		this.user = user;
 		connector = mysql();
 	}
 
+	/**
+	 * En Connector funktion, som læser fra db.txt, og forbinder til databasen.
+	 * 
+	 * @return returnerer et nyt objekt af connector klassen, med forbindelse til databasen.
+	 */
 	private Connector mysql() {
 		BufferedReader br = null;
 		try {
@@ -190,7 +200,11 @@ public class Function {
 		}
 		return sb.toString();
 	}
-
+	
+	/**
+	 * Prints an Arraylist, which we use to print messages.
+	 * @param msg
+	 */
 	public void printArrayList(ArrayList<?> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -203,6 +217,12 @@ public class Function {
 		}
 	}
 
+	/**
+	 * Prints multidimensional ArrayList, which we use to print
+	 * the messages a user receives, at the same time to see which
+	 * user sends the message.
+	 * @param msg
+	 */
 	public void printArrayListMulti(ArrayList<ArrayList<String>> msg) {
 		if(msg != null) {
 			if(msg.size() != 0)
@@ -259,26 +279,8 @@ public class Function {
 	}
 
 	/**
-	 * Hvad gør denne her metode leow?
-	 * 
-	 * @param arr
-	 * @param seperator
-	 * @return
-	 */
-	public String implode(String[] arr, String seperator) {
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < arr.length; i++) {
-			sb.append(arr[i]);
-			if(i != arr.length - 1)
-				sb.append(seperator);
-		}
-		String joined = sb.toString();
-		return joined;
-	}
-
-	/**
 	 * Converts an <code>Arraylist</code> of <code>Integers</code> to a
-	 * <code>int[]</code>.
+	 * <code>int[]</code> array.
 	 * 
 	 * @param integers
 	 * @return int[]
@@ -288,6 +290,7 @@ public class Function {
 		for(int i = 0; i < ret.length; i++) ret[i] = integers.get(i).intValue();
 		return ret;
 	}
+	
 	
 	public Connector getConnector() {
 		return connector;

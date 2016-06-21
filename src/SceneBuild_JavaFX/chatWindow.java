@@ -67,6 +67,7 @@ public class chatWindow implements EventHandler<ActionEvent> {
 	        mDeleteGroup, mThrow;
 	private boolean checkType;
 
+	
 	public void start(Stage stage, FunctionUser fu) throws SQLException, IOException {
 		this.fu = fu;
 		this.myStage = stage;

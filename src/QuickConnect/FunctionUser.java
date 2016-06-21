@@ -13,7 +13,19 @@ public class FunctionUser {
 	public FunctionUser(Function f) {
 		this.f = f;
 	}
-
+	
+	/**
+	 * Adds a user to the database, and only inserts the user, pass, email,
+	 * user_created and age value the rest gets a default value. 
+	 * @param user
+	 * @param pass
+	 * @param email
+	 * @param age
+	 * @return 
+	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
 	public boolean addUser(String user, String pass, String email, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
 		con().update("INSERT INTO users VALUES (0,?,?,?,'nicknamedefaultnull',?,0,?,0,0,0)", new String[] { "s", user },
@@ -30,10 +42,22 @@ public class FunctionUser {
 		return false;
 	}
 
+	/**
+	 * Activates a user, so everytime the user is logged in 
+	 * @throws SQLException
+	 */
 	public void activateUser() throws SQLException {
 		con().update("UPDATE users SET user_deleted=0 WHERE user_ID=" + user().getUserID());
 	}
-
+	
+	/**
+	 * Deactivates the user.
+	 * @param password: Checks whether the password is correct or not. 
+	 * @return <code>0</code> if the password is true, and ther gets deactivated.
+	 *  	   <code>1</code> if the password is incorrect.		
+	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public int deactivateUser(String password) throws SQLException, NoSuchAlgorithmException {
 		boolean bool = false;
 		bool = con().check("SELECT user_id FROM users WHERE user_ID=? AND password=?",
@@ -48,6 +72,11 @@ public class FunctionUser {
 		}
 	}
 
+	/**
+	 * Activates the user, if the user enters the correct code through mail. 
+	 * @param username
+	 * @throws SQLException
+	 */
 	public void activateUserMail(String username) throws SQLException {
 		con().update("UPDATE users SET activated=1 WHERE UPPER(username)= UPPER('" + username.toUpperCase() + "')");
 	}
@@ -58,18 +87,42 @@ public class FunctionUser {
 		return rs.getString("email");
 	}
 
+	/**
+	 * User is set online
+	 * @throws SQLException
+	 */
 	public void setUserOnline() throws SQLException {
 		con().update("UPDATE users SET online=1 WHERE user_ID=" + user().getUserID());
 	}
 
+	/**
+	 * User is set offline
+	 * @throws SQLException
+	 */
 	public void setUserOffline() throws SQLException {
 		con().update("UPDATE users SET online=0 WHERE user_ID=" + user().getUserID());
 	}
 
+	/**
+	 * Updates the User class. 
+	 * @param id
+	 * @param username
+	 * @param email
+	 * @param nickname
+	 * @param age
+	 * @param user_created
+	 */
 	public void updateUser(int id, String username, String email, String nickname, int age, int user_created) {
 		f.updateUser(id, username, email, nickname, age, user_created);
 	}
-
+	
+	/**
+	 * Gets user info
+	 * @param ID Which user
+	 * @param choice Which info to get
+	 * @return username, nickname, age, user_created
+	 * @throws SQLException
+	 */
 	public String getInfoUser(int ID, int choice) throws SQLException {
 		ResultSet rs = con().select("SELECT username,nickname,age,user_created FROM users WHERE user_id='" + ID + "'");
 		rs.next();
@@ -82,6 +135,17 @@ public class FunctionUser {
 		else return Integer.toString(rs.getInt("user_created"));
 	}
 
+	/**
+	 * Changes the user password, first checks whether the old
+	 * password is correct or not, if it is correct and the
+	 * new password meets the conditions, the password gets changed.
+	 * @param oldPass 
+	 * @param newPass
+	 * @param newPass2
+	 * @return <code>0</code> if succeded.<code>1,2,3,4,5</code> depends on the conditions
+	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public int changePassword(String oldPass, String newPass, String newPass2)
 	        throws SQLException, NoSuchAlgorithmException {
 		ResultSet rs = con().select("SELECT password FROM users WHERE user_id=?",
