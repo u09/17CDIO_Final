@@ -16,7 +16,7 @@ public class FunctionUser {
 	
 	/**
 	 * Adds a user to the database, and only inserts the user, pass, email,
-	 * user_created and age value the rest gets a default value. 
+	 * user_created and age value the rest gets a default value.
 	 * @param user
 	 * @param pass
 	 * @param email
@@ -34,6 +34,17 @@ public class FunctionUser {
 		return false;
 	}
 
+	/**
+	 * Adds a user to the database, and only inserts the email, pass,
+	 * user and age value the rest gets a default value.
+	 * @param email
+	 * @param ranPass
+	 * @param age
+	 * @return
+	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
 	public boolean addFacebookUser(String email, String ranPass, int age)
 	        throws SQLException, NoSuchAlgorithmException, IOException {
 		con().update("INSERT INTO users VALUES (0,?,?,?,'nicknamedefaultnull',?,0,?,0,0,1)", new String[] { "s", email },
@@ -81,6 +92,12 @@ public class FunctionUser {
 		con().update("UPDATE users SET activated=1 WHERE UPPER(username)= UPPER('" + username.toUpperCase() + "')");
 	}
 
+	/**
+	 * Returnerer <code>email</code> fra <code>user_ID</code>
+	 * @param userIn
+	 * @return email
+	 * @throws SQLException
+	 */
 	public String getEmail(String userIn) throws SQLException {
 		ResultSet rs = con().select("SELECT email FROM users WHERE username='" + userIn + "'");
 		rs.next();
@@ -88,7 +105,7 @@ public class FunctionUser {
 	}
 
 	/**
-	 * User is set online
+	 * <code>User</code> is set online
 	 * @throws SQLException
 	 */
 	public void setUserOnline() throws SQLException {
@@ -96,7 +113,7 @@ public class FunctionUser {
 	}
 
 	/**
-	 * User is set offline
+	 * <code>User</code> is set offline
 	 * @throws SQLException
 	 */
 	public void setUserOffline() throws SQLException {
@@ -104,7 +121,7 @@ public class FunctionUser {
 	}
 
 	/**
-	 * Updates the User class. 
+	 * Updates the <code>User</code> class.
 	 * @param id
 	 * @param username
 	 * @param email
@@ -136,10 +153,11 @@ public class FunctionUser {
 	}
 
 	/**
-	 * Changes the user password, first checks whether the old
-	 * password is correct or not, if it is correct and the
-	 * new password meets the conditions, the password gets changed.
-	 * @param oldPass 
+	 * Changes the user's <code>password</code>, first checks whether the <code>old
+	 * password</code> is correct or not. If it's correct and the
+	 * <code>new password</code> meets the conditions, the <code>password</code>
+	 * gets changed.
+	 * @param oldPass
 	 * @param newPass
 	 * @param newPass2
 	 * @return <code>0</code> if succeded.<code>1,2,3,4,5</code> depends on the conditions
@@ -178,6 +196,11 @@ public class FunctionUser {
 		}
 	}
 
+	/**
+	 * Changes the <code>nickname</code> of the current user
+	 * @param nickname
+	 * @return state of the function: <code>0</code> successful; <code>1,2</code> error
+	 */
 	public int changeNickname(String nickname) {
 		if(nickname.length() == 0 || nickname.equals(" "))
 			return 2;
@@ -191,10 +214,21 @@ public class FunctionUser {
 		}
 	}
 
+	/**
+	 * Returns the <code>nickname</code> of the current user
+	 * @return nickname
+	 * @throws SQLException
+	 */
 	public String getNickName() throws SQLException {
 		return user().getNickname();
 	}
 
+	/**
+	 * Adds a <code>user</code> to the current user's friendlist
+	 * @param username
+	 * @return state of the function: <code>0</code> successful; <code>1,2,3,4</code> error
+	 * @throws SQLException
+	 */
 	public int addFriend(String username) throws SQLException {
 		if(!con().check("SELECT user_id FROM users WHERE UPPER(username) LIKE UPPER(?)",
 		        new String[][] { { "s", "" + username } }))
@@ -222,11 +256,24 @@ public class FunctionUser {
 		return 0;
 	}
 
+	/**
+	 * Deletes a <code>user</code> from the current user's friendlist
+	 * @param ID
+	 * @throws SQLException
+	 */
 	public void deleteFriend(int ID) throws SQLException {
 		con().update("DELETE FROM contacts WHERE (user_ID='" + ID + "' AND contact_ID='" + user().getUserID() + "') "
 		        + "OR (contact_ID='" + ID + "' AND user_ID='" + user().getUserID() + "')");
 	}
 
+	/**
+	 * Creates a <code>group</code> with a list of <code>users</code>
+	 * @param groupOwner
+	 * @param groupName
+	 * @param allFriendsId2
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public void createGroup(int groupOwner, String groupName, ArrayList<Integer> allFriendsId2)
 	        throws SQLException, IOException {
 		allFriendsId2.add(user().getUserID());
@@ -244,6 +291,12 @@ public class FunctionUser {
 		}
 	}
 
+	/**
+	 * Deletes a <code>group</code> and all its users
+	 * @param groupID
+	 * @return state of function: <code>1</code> successful; <code>0</code> error
+	 * @throws SQLException
+	 */
 	public int deleteGroup(int groupID) throws SQLException {
 		if(isOwner(groupID)) {
 			con().update("DELETE FROM group_members WHERE group_id=" + groupID);
@@ -253,6 +306,12 @@ public class FunctionUser {
 		return 0;
 	}
 
+	/**
+	 * Checks if the current <code>user</code> is the owner of the <code>group</code>
+	 * @param groupID
+	 * @return <code>true</code> if he's owner and <code>false</code> if he's not owner
+	 * @throws SQLException
+	 */
 	public boolean isOwner(int groupID) throws SQLException {
 		if(con().check(
 		        "SELECT owner_id FROM groups where owner_id =" + user().getUserID() + " AND group_id=" + groupID))
@@ -260,14 +319,32 @@ public class FunctionUser {
 		return false;
 	}
 
+	/**
+	 * Deletes a <code>group</code> from the current user's grouplist
+	 * @param groupID
+	 * @throws SQLException
+	 */
 	public void leaveGroup(int groupID) throws SQLException {
 		con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id=" + user().getUserID());
 	}
 
+	/**
+	 * Deletes a <code>group</code> from a user's grouplist
+	 * @param groupID
+	 * @param ID
+	 * @throws SQLException
+	 */
 	public void kickMember(int groupID, int ID) throws SQLException {
 		con().update("DELETE FROM group_members WHERE group_id=" + groupID + " AND user_id=" + ID);
 	}
 
+	/**
+	 * Sends a <code>message</code>
+	 * @param msg
+	 * @param receive_id
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public void sendMessage(String msg, int receive_id) throws SQLException, IOException {
 		msg = cencorMessage(msg);
 		con().update("INSERT INTO messages (message,user_ID,message_sent,receiver_id) VALUES (?,'" + user().getUserID()
@@ -276,6 +353,13 @@ public class FunctionUser {
 		        + user().getUserID() + "','" + f.timestamp() + "','" + receive_id + "')");
 	}
 
+	/**
+	 * Sends a group <code>message</code>
+	 * @param msg
+	 * @param groupID
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public void sendGroupMessage(String msg, int groupID) throws SQLException, IOException {
 		msg = cencorMessage(msg);
 		con().update("INSERT INTO group_messages (group_message,user_ID,group_message_sent,group_id) VALUES (?,'"
@@ -284,11 +368,23 @@ public class FunctionUser {
 		        + user().getUserID() + "','" + f.timestamp() + "','" + groupID + "')");
 	}
 
+	/**
+	 * Checks if a <code>message</code> has a banned word
+	 * @param msg
+	 * @return the 
+	 * @throws SQLException
+	 */
 	public String checkBannedWords(String msg) throws SQLException {
 		ResultSet rs = con().select("SELECT word FROM banned_words WHERE word_id = 1");
 		return rs.getString("word");
 	}
 
+	/**
+	 * Cencor a <code>message</code>'s baned words
+	 * @param msg
+	 * @return cencored message
+	 * @throws SQLException
+	 */
 	public String cencorMessage(String msg) throws SQLException {
 		ResultSet rs = con().select(
 		        "SELECT * FROM banned_words WHERE MATCH (word) AGAINST ('" + msg + "' IN NATURAL LANGUAGE MODE)");
@@ -300,6 +396,12 @@ public class FunctionUser {
 		return msg;
 	}
 
+	/**
+	 * Gets all <code>messages</code> sent to the current <code>user</code>
+	 * @param id
+	 * @return multidimensional array with messages and its sender
+	 * @throws SQLException
+	 */
 	public ArrayList<ArrayList<String>> getAllMessages(int id) throws SQLException {
 		ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
 		messages.add(new ArrayList<String>());
@@ -314,6 +416,12 @@ public class FunctionUser {
 		return messages;
 	}
 
+	/**
+	 * Get all <code>messages</code> from a <code>user</code>
+	 * @param msg
+	 * @param users
+	 * @throws SQLException
+	 */
 	public void getMessages(ArrayList<ArrayList<String>> msg, ArrayList<Integer> users) throws SQLException {
 		ResultSet rs = con()
 		        .select("SELECT message,user_ID,message_sent FROM messages WHERE receiver_id='" + user().getUserID()
@@ -336,6 +444,13 @@ public class FunctionUser {
 		f.printArrayList(users);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param timestamp
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<ArrayList<String>> getMessages(int id, long timestamp) throws SQLException {
 		ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
 		messages.add(new ArrayList<String>());
